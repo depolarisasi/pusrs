@@ -84,17 +84,21 @@
                   <li class="nav-item">
                     <a href="{{url('/')}}" class="nav-link active"><i class="fe fe-home"></i> Dashboard</a>
                   </li>
+                  @if(Auth::user()->role == 1)
+                  <li class="nav-item">
+                  <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown"><i class="fe fe-box"></i>Fasilitas Kesehatan</a>
+                    <div class="dropdown-menu dropdown-menu-arrow">
+                    <a href="{{url('faskes/new')}}" class="dropdown-item ">Tambah Faskes</a>
+                      <a href="{{url('faskes/')}}" class="dropdown-item ">Semua Faskes</a>
+                    </div>
+                  </li>
+                  @endif
                   <li class="nav-item">
                   <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown"><i class="fe fe-box"></i>Pelaporan</a>
                     <div class="dropdown-menu dropdown-menu-arrow">
                     <a href="{{url('laporan/new')}}" class="dropdown-item ">Pelaporan Baru</a>
-                  @if(Auth::user()->role == 1 || Auth::user()->role == NULL)
                       <a href="{{url('laporan/upload')}}" class="dropdown-item ">Upload Pelaporan Baru</a>
-                    @elseif(Auth::user()->role == 2)
-                      <a href="{{url('laporan/upload')}}" class="dropdown-item ">Upload Pelaporan Baru</a>
-                    @else
                       <a href="{{url('laporan/')}}" class="dropdown-item ">Semua Laporan</a>
-                    @endif
                     </div>
                   </li>
                   <li class="nav-item">

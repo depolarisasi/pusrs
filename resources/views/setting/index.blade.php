@@ -16,8 +16,8 @@
                           <small>Untuk mengubah email harap hubungi administrator</small>
                         </div>
                         <div class="form-group">
-                          <label class="form-label">Nama Faskes</label>
-                          <div class="form-control-plaintext">{{Auth::user()->nama_faskes}}</div>
+                          <label class="form-label">Kode Faskes</label>
+                          <input type="text" name="nama_fakes" class="form-control" value="{{Auth::user()->kode_faskes}}">
                         </div>
                         <div class="form-group">
                           <label class="form-label">Kelurahan Faskes</label>
@@ -27,7 +27,14 @@
                           <label class="form-label">Kecamatan Faskes</label>
                           <div class="form-control-plaintext">{{Auth::user()->nama_kecamatan}}</div>
                         </div>
-                       
+                        <div class="form-group">
+                          <label class="form-label">Kelurahan Faskes</label>
+                          <div class="form-control-plaintext">{{Auth::user()->nama_kelurahan}}</div>
+                        </div>
+                        <div class="form-group">
+                          <label class="form-label">Kecamatan Faskes</label>
+                          <div class="form-control-plaintext">{{Auth::user()->nama_kecamatan}}</div>
+                        </div>
                        
                         
                     
