@@ -16,8 +16,10 @@ use App\Pasien;
 
 class ApiController extends Controller
 {
-    public function getkec(Request $request){
-
+    public function getkec(Request $request){ 
+/*
+ Cari kecamatan berdasarkan nama
+*/
         if ($request->has('q')) {
             $cari = $request->q;
             $data = Kecamatan::where('nama_kecamatan', 'LIKE', "%$cari%")->get();
@@ -25,9 +27,12 @@ class ApiController extends Controller
         }
     }
 
-    public function getkel(Request $request){
-        $data = Kelurahan::where('kode_kecamatan', $request->kodekecamatan)->pluck('nama_kelurahan', 'kode_kelurahan');
+/*
+ Cari kelurahan berdasarkan kode kecamatan
+*/
 
+public function getkel(Request $request){
+        $data = Kelurahan::where('kode_kecamatan', $request->kodekecamatan)->pluck('nama_kelurahan', 'kode_kelurahan');
         return response()->json($data);
     }
 
@@ -37,6 +42,11 @@ class ApiController extends Controller
 
         return response()->json($data);
     }
+
+    
+/*
+ Upload gambar
+*/
 
     public function apiupload(Request $request)
     {
@@ -63,22 +73,31 @@ class ApiController extends Controller
             }
         }
 
-        return $data;
+        return $data; //return status and file name
     }
+
+/*
+ Hapus gambar dari folder temporary
+*/
 
     public function apidelete(Request $request)
     {
         if (file_exists('temporary/'.$request->file_name)) {
             Storage::delete('temporary/'.$request->file_name);
-            $arr = [['status' => 1]];
+            $arr = [['status' => 1]]; //jika sukses return 1
         } else {
-            $arr = [['status' => 0]];
+            $arr = [['status' => 0]]; //jika gagal return 0
         }
 
         return $arr;
     }
 
-    public function apiside(Request $request){
+
+/*
+ API INI DIGUNAKAN DI INDEX DASHBOARD
+*/
+
+    public function apiside(Request $request){ //untuk sidebar sebelah peta depan
     
     $data = DB::table('pasien2')
     ->where('pasien2.kd_kec',$request->kode_kec)
@@ -91,7 +110,7 @@ class ApiController extends Controller
     return $data->all();
     }
 
-    public function apitabel(Request $request){
+    public function apitabel(Request $request){ //untuk tabel dibawah peta
     $data2 = Pasien::where('pasien2.kd_kec',$request->kode_kec)
     ->join('kecamatan','kecamatan.kode_kecamatan','=','pasien2.kd_kec')
     ->join('kelurahan','kelurahan.kode_kelurahan','=','pasien2.kd_kel')

@@ -22,12 +22,8 @@ class Kelurahan extends Model
 
    /**
     * Attributes that should be mass-assignable.
-    *   $table->bigIncrements('idpasien');
+    * Setiap kelurahan memiliki kode kelurahan dan kode kecamatan tempat kelurahan tersebut
     * @var array
     */
-   protected $fillable = ['nama_kelurahan',
-   'kode_kelurahan', 
-   'kode_kecamatan',
-       'created_at',
-        'updated_at'];
+   protected $fillable = ['nama_kelurahan', 'kode_kelurahan', 'kode_kecamatan', 'created_at', 'updated_at'];
 }

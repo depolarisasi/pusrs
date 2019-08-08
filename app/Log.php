@@ -22,11 +22,9 @@ class Log extends Model
 
    /**
     * Attributes that should be mass-assignable.
-    *   $table->bigIncrements('idpasien');
+    * Log event adalah aktivitas yg dilakukan
+    * Log user adalah pengguna yang melakukan aktivitas tersebut
     * @var array
     */
-   protected $fillable = ['log_event',
-   'log_user',
-       'created_at',
-        'updated_at'];  
+   protected $fillable = ['log_event','log_user', 'created_at', 'updated_at'];  
 }

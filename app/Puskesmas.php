@@ -22,7 +22,6 @@ class Puskesmas extends Model
 
    /**
     * Attributes that should be mass-assignable.
-    *   $table->bigIncrements('idpasien');
     * @var array
     */
    protected $fillable = ['nama_puskesmas',

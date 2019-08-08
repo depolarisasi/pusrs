@@ -22,11 +22,8 @@ class Kecamatan extends Model
 
    /**
     * Attributes that should be mass-assignable.
-    *   $table->bigIncrements('idpasien');
-    * @var array
+    *   
+    * Setiap kecamatan memiliki kode kecamatan
     */
-   protected $fillable = ['nama_kecamatan', 
-   'kode_kecamatan',
-       'created_at',
-        'updated_at'];
+   protected $fillable = ['nama_kecamatan',  'kode_kecamatan', 'created_at', 'updated_at'];
 }
