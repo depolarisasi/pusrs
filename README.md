@@ -12,7 +12,7 @@ Language used : PHP 7.3 (with Laravel Framework)
 ## Where to start ?
 
 1. Clone repository ini
-2. Install composer
+2. Install php composer
 3. Run command berikut :
 ```
 composer install //install composer dependencies
@@ -25,4 +25,9 @@ php artisan migrate
 5. Lihat dokumentasi yg tersedia di code
 
 ToDo
-**- to be updated**
+- find alternatif untuk peta yang bisa memetakan heatmap berdasarkan jumlah kasus
+- ubah algoritma laporan, 1 pasien dapat memiliki banyak kasus / laporan tapi tidak boleh dalam bulan yang sama (jika dibulan yang sama dianggap 1 laporan)
+- buat API untuk keperluan mobile apps
+- pemetaan berdasarkan kecamatan, cari peta kelurahan 
+- buat chart untuk kasus perbulan, pertahun dan per minggu, chartnya bisa pake donut, atau linechart
+- buat fitur export laporan kedalam bentuk xlsx
