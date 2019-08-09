@@ -23,3 +23,6 @@ php artisan migrate
 ```
 4. Buat database, lalu download database yg tersedia yg sudah berisi data, lalu import database tersebut
 5. Lihat dokumentasi yg tersedia di code
+
+ToDo
+**- to be updated**
