@@ -28,7 +28,7 @@ Pemetaan
 Route::get('setting','UserController@setting')->middleware('auth'); //halaman user setting
 Route::post('setting','UserController@savesSetting')->middleware('auth'); //save setting user
 Route::get('setting/password','UserController@settingPassword')->middleware('auth'); //halaman ubah password
-Route::post('setting/password','UserController@savePassword')->middleware('auth'); //save password setelah diubah
+Route::post('setting/password','UserController@saveuserpassword')->middleware('auth'); //save password setelah diubah
 
 
 /*/////////////////////////////////////////////////////////////////////
