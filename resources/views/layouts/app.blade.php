@@ -82,7 +82,7 @@
               <div class="col-lg order-lg-first">
                 <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
                   <li class="nav-item">
-                    <a href="{{url('/')}}" class="nav-link active"><i class="fe fe-home"></i> Dashboard</a>
+                    <a href="{{url('/')}}" class="nav-link"><i class="fe fe-home"></i> Dashboard</a>
                   </li>
                   @if(Auth::user()->role == 1)
                   <li class="nav-item">

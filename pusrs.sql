@@ -1,0 +1,864 @@
+-- phpMyAdmin SQL Dump
+-- version 4.8.0.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Aug 11, 2019 at 05:06 AM
+-- Server version: 10.1.32-MariaDB
+-- PHP Version: 7.2.5
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `dinkes`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `kecamatan`
+--
+
+CREATE TABLE `kecamatan` (
+  `idkec` int(10) UNSIGNED NOT NULL,
+  `nama_kecamatan` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kode_kecamatan` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `kecamatan`
+--
+
+INSERT INTO `kecamatan` (`idkec`, `nama_kecamatan`, `kode_kecamatan`, `created_at`, `updated_at`) VALUES
+(1, 'Bandung Kulon', '3273010', NULL, NULL),
+(2, 'Babakan Ciparay', '3273020', NULL, NULL),
+(3, 'Bojongloa Kaler', '3273030', NULL, NULL),
+(4, 'Bojongloa Kidul', '3273040', NULL, NULL),
+(5, 'Astana Anyar', '3273050', NULL, NULL),
+(6, 'Regol', '3273060', NULL, NULL),
+(7, 'Lengkong', '3273070', NULL, NULL),
+(8, 'Bandung Kidul', '3273080', NULL, NULL),
+(9, 'Buahbatu', '3273090', NULL, NULL),
+(10, 'Rancasari', '3273100', NULL, NULL),
+(11, 'Gedebage', '3273101', NULL, NULL),
+(12, 'Cibiru', '3273110', NULL, NULL),
+(13, 'Panyileukan', '3273111', NULL, NULL),
+(14, 'Cinambo', '3273121', NULL, NULL),
+(15, 'Arcamanik', '3273130', NULL, NULL),
+(16, 'Antapani', '3273141', NULL, NULL),
+(17, 'Mandalajati', '3273142', NULL, NULL),
+(18, 'Kiaracondong', '3273150', NULL, NULL),
+(19, 'Batununggal', '3273160', NULL, NULL),
+(20, 'Sumur Bandung', '3273170', NULL, NULL),
+(21, 'Andir', '3273180', NULL, NULL),
+(22, 'Cicendo', '3273190', NULL, NULL),
+(23, 'Bandung Wetan', '3273200', NULL, NULL),
+(24, 'Cibeunying Kidul', '3273210', NULL, NULL),
+(25, 'Cibeunying Kaler', '3273220', NULL, NULL),
+(26, 'Coblong', '3273230', NULL, NULL),
+(27, 'Sukajadi', '3273240', NULL, NULL),
+(28, 'Sukasari', '3273250', NULL, NULL),
+(29, 'Cidadap', '3273260', NULL, NULL),
+(56, 'Ujung Berung', '3273120', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `kelurahan`
+--
+
+CREATE TABLE `kelurahan` (
+  `idkel` int(10) UNSIGNED NOT NULL,
+  `nama_kelurahan` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kode_kelurahan` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kode_kecamatan` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `kelurahan`
+--
+
+INSERT INTO `kelurahan` (`idkel`, `nama_kelurahan`, `kode_kelurahan`, `kode_kecamatan`, `created_at`, `updated_at`) VALUES
+(1, 'GEMPOL SARI', '3273010001', '3273010', NULL, NULL),
+(2, 'CIGONDEWAH KALER', '3273010002', '3273010', NULL, NULL),
+(3, 'CIGONDEWAH KIDUL', '3273010003', '3273010', NULL, NULL),
+(4, 'CIGONDEWAH RAHAYU', '3273010004', '3273010', NULL, NULL),
+(5, 'CARINGIN', '3273010005', '3273010', NULL, NULL),
+(6, 'WARUNG MUNCANG', '3273010006', '3273010', NULL, NULL),
+(7, 'CIBUNTU', '3273010007', '3273010', NULL, NULL),
+(8, 'CIJERAH', '3273010008', '3273010', NULL, NULL),
+(9, 'MARGASUKA', '3273020001', '3273020', NULL, NULL),
+(10, 'CIRANGRANG', '3273020002', '3273020', NULL, NULL),
+(11, 'MARGAHAYU UTARA', '3273020003', '3273020', NULL, NULL),
+(12, 'BABAKAN CIPARAY', '3273020004', '3273020', NULL, NULL),
+(13, 'BABAKAN', '3273020005', '3273020', NULL, NULL),
+(14, 'SUKAHAJI', '3273020006', '3273020', NULL, NULL),
+(15, 'KOPO', '3273030001', '3273030', NULL, NULL),
+(16, 'SUKA ASIH', '3273030002', '3273030', NULL, NULL),
+(17, 'BABAKAN ASIH', '3273030003', '3273030', NULL, NULL),
+(18, 'BABAKAN TAROGONG', '3273030004', '3273030', NULL, NULL),
+(19, 'JAMIKA', '3273030005', '3273030', NULL, NULL),
+(20, 'BOJONGLOA KIDUL', '3273040000', '3273040', NULL, NULL),
+(21, 'CIBADUYUT KIDUL', '3273040001', '3273040', NULL, NULL),
+(22, 'CIBADUYUT WETAN', '3273040002', '3273040', NULL, NULL),
+(23, 'MEKAR WANGI', '3273040003', '3273040', NULL, NULL),
+(24, 'CIBADUYUT', '3273040004', '3273040', NULL, NULL),
+(25, 'KEBON LEGA', '3273040005', '3273040', NULL, NULL),
+(26, 'SITUSAEUR', '3273040006', '3273040', NULL, NULL),
+(27, 'KARASAK', '3273050001', '3273050', NULL, NULL),
+(28, 'PELINDUNG HEWAN', '3273050002', '3273050', NULL, NULL),
+(29, 'NYENGSERET', '3273050003', '3273050', NULL, NULL),
+(30, 'PANJUNAN', '3273050004', '3273050', NULL, NULL),
+(31, 'CIBADAK', '3273050005', '3273050', NULL, NULL),
+(32, 'KARANG ANYAR', '3273050006', '3273050', NULL, NULL),
+(33, 'CISEUREUH', '3273060001', '3273060', NULL, NULL),
+(34, 'PASIRLUYU', '3273060002', '3273060', NULL, NULL),
+(35, 'ANCOL', '3273060003', '3273060', NULL, NULL),
+(36, 'CIGERELENG', '3273060004', '3273060', NULL, NULL),
+(37, 'CIATEUL', '3273060005', '3273060', NULL, NULL),
+(38, 'PUNGKUR', '3273060006', '3273060', NULL, NULL),
+(39, 'BALONG GEDE', '3273060007', '3273060', NULL, NULL),
+(40, 'CIJAGRA', '3273070001', '3273070', NULL, NULL),
+(41, 'TURANGGA', '3273070002', '3273070', NULL, NULL),
+(42, 'LINGKAR SELATAN', '3273070003', '3273070', NULL, NULL),
+(43, 'MALABAR', '3273070004', '3273070', NULL, NULL),
+(44, 'BURANGRANG', '3273070005', '3273070', NULL, NULL),
+(45, 'CIKAWAO', '3273070006', '3273070', NULL, NULL),
+(46, 'PALEDANG', '3273070007', '3273070', NULL, NULL),
+(47, 'WATES', '3273080001', '3273080', NULL, NULL),
+(48, 'MENGGER', '3273080002', '3273080', NULL, NULL),
+(49, 'BATUNUNGGAL', '3273080003', '3273080', NULL, NULL),
+(50, 'KUJANGSARI', '3273080004', '3273080', NULL, NULL),
+(51, 'CIJAURA', '3273090001', '3273090', NULL, NULL),
+(52, 'MARGASARI', '3273090002', '3273090', NULL, NULL),
+(53, 'SEKEJATI', '3273090003', '3273090', NULL, NULL),
+(54, 'JATI SARI', '3273090004', '3273090', NULL, NULL),
+(55, 'DERWATI', '3273100001', '3273100', NULL, NULL),
+(56, 'CIPAMOKOLAN', '3273100002', '3273100', NULL, NULL),
+(57, 'MANJAHLEGA', '3273100005', '3273100', NULL, NULL),
+(58, 'MEKARJAYA', '3273100006', '3273100', NULL, NULL),
+(59, 'RANCABOLANG', '3273101001', '3273101', NULL, NULL),
+(60, 'RANCANUMPANG', '3273101002', '3273101', NULL, NULL),
+(61, 'CISARANTEN KIDUL', '3273101003', '3273101', NULL, NULL),
+(62, 'CIMINCRANG', '3273101004', '3273101', NULL, NULL),
+(63, 'PASIR BIRU', '3273110003', '3273110', NULL, NULL),
+(64, 'CIPADUNG', '3273110004', '3273110', NULL, NULL),
+(65, 'PALASARI', '3273110005', '3273110', NULL, NULL),
+(66, 'CISURUPAN', '3273110006', '3273110', NULL, NULL),
+(67, 'MEKAR MULYA', '3273111001', '3273111', NULL, NULL),
+(68, 'CIPADUNG KIDUL', '3273111002', '3273111', NULL, NULL),
+(69, 'CIPADUNG WETAN', '3273111003', '3273111', NULL, NULL),
+(70, 'CIPADUNG KULON', '3273111004', '3273111', NULL, NULL),
+(71, 'UJUNG BERUNG', '3273120000', '3273120', NULL, NULL),
+(72, 'PASANGGRAHAN', '3273120003', '3273120', NULL, NULL),
+(73, 'PASIRJATI', '3273120004', '3273120', NULL, NULL),
+(74, 'PASIR WANGI', '3273120005', '3273120', NULL, NULL),
+(75, 'CIGENDING', '3273120006', '3273120', NULL, NULL),
+(76, 'PASIR ENDAH', '3273120007', '3273120', NULL, NULL),
+(77, 'CISARANTEN WETAN', '3273121001', '3273121', NULL, NULL),
+(78, 'BABAKAN PENGHULU', '3273121002', '3273121', NULL, NULL),
+(79, 'PAKEMITAN', '3273121003', '3273121', NULL, NULL),
+(80, 'SUKAMULYA', '3273121004', '3273121', NULL, NULL),
+(81, 'CISARANTEN KULON', '3273130001', '3273130', NULL, NULL),
+(82, 'CISARANTEN BINA HARAPAN', '3273130002', '3273130', NULL, NULL),
+(83, 'SUKAMISKIN', '3273130003', '3273130', NULL, NULL),
+(84, 'CISARANTEN ENDAH', '3273130005', '3273130', NULL, NULL),
+(85, 'ANTAPANI KIDUL', '3273141001', '3273141', NULL, NULL),
+(86, 'ANTAPANI TENGAH', '3273141002', '3273141', NULL, NULL),
+(87, 'ANTAPANI WETAN', '3273141003', '3273141', NULL, NULL),
+(88, 'ANTAPANI KULON', '3273141004', '3273141', NULL, NULL),
+(89, 'JATIHANDAP', '3273142001', '3273142', NULL, NULL),
+(90, 'KARANG PAMULANG', '3273142002', '3273142', NULL, NULL),
+(91, 'SINDANG JAYA', '3273142003', '3273142', NULL, NULL),
+(92, 'PASIR IMPUN', '3273142004', '3273142', NULL, NULL),
+(93, 'KEBON KANGKUNG', '3273150001', '3273150', NULL, NULL),
+(94, 'SUKAPURA', '3273150002', '3273150', NULL, NULL),
+(95, 'KEBUN JAYANTI', '3273150003', '3273150', NULL, NULL),
+(96, 'BABAKAN SARI', '3273150004', '3273150', NULL, NULL),
+(97, 'BABAKAN SURABAYA', '3273150005', '3273150', NULL, NULL),
+(98, 'CICAHEUM', '3273150006', '3273150', NULL, NULL),
+(99, 'GUMURUH', '3273160001', '3273160', NULL, NULL),
+(100, 'BINONG', '3273160002', '3273160', NULL, NULL),
+(101, 'KEBON GEDANG', '3273160003', '3273160', NULL, NULL),
+(102, 'MALEER', '3273160004', '3273160', NULL, NULL),
+(103, 'CIBANGKONG', '3273160005', '3273160', NULL, NULL),
+(104, 'SAMOJA', '3273160006', '3273160', NULL, NULL),
+(105, 'KACAPIRING', '3273160007', '3273160', NULL, NULL),
+(106, 'KEBON WARU', '3273160008', '3273160', NULL, NULL),
+(107, 'BRAGA', '3273170001', '3273170', NULL, NULL),
+(108, 'KEBON PISANG', '3273170002', '3273170', NULL, NULL),
+(109, 'MERDEKA', '3273170003', '3273170', NULL, NULL),
+(110, 'BABAKAN CIAMIS', '3273170004', '3273170', NULL, NULL),
+(111, 'CAMPAKA', '3273180001', '3273180', NULL, NULL),
+(112, 'MALEBER', '3273180002', '3273180', NULL, NULL),
+(113, 'GARUDA', '3273180003', '3273180', NULL, NULL),
+(114, 'DUNGUS CARIANG', '3273180004', '3273180', NULL, NULL),
+(115, 'CIROYOM', '3273180005', '3273180', NULL, NULL),
+(116, 'KEBON JERUK', '3273180006', '3273180', NULL, NULL),
+(117, 'ARJUNA', '3273190001', '3273190', NULL, NULL),
+(118, 'PASIRKALIKI', '3273190002', '3273190', NULL, NULL),
+(119, 'PAMOYANAN', '3273190003', '3273190', NULL, NULL),
+(120, 'PAJAJARAN', '3273190004', '3273190', NULL, NULL),
+(121, 'HUSEN SASTRANEGARA', '3273190005', '3273190', NULL, NULL),
+(122, 'SUKARAJA', '3273190006', '3273190', NULL, NULL),
+(123, 'TAMAN SARI', '3273200001', '3273200', NULL, NULL),
+(124, 'CITARUM', '3273200002', '3273200', NULL, NULL),
+(125, 'CIHAPIT', '3273200003', '3273200', NULL, NULL),
+(126, 'SUKAMAJU', '3273210001', '3273210', NULL, NULL),
+(127, 'CICADAS', '3273210002', '3273210', NULL, NULL),
+(128, 'CIKUTRA', '3273210003', '3273210', NULL, NULL),
+(129, 'PADASUKA', '3273210004', '3273210', NULL, NULL),
+(130, 'PASIRLAYUNG', '3273210005', '3273210', NULL, NULL),
+(131, 'SUKAPADA', '3273210006', '3273210', NULL, NULL),
+(132, 'CIHAURGEULIS', '3273220001', '3273220', NULL, NULL),
+(133, 'SUKALUYU', '3273220002', '3273220', NULL, NULL),
+(134, 'NEGLASARI', '3273220003', '3273220', NULL, NULL),
+(135, 'CIGADUNG', '3273220004', '3273220', NULL, NULL),
+(136, 'CIPAGANTI', '3273230001', '3273230', NULL, NULL),
+(137, 'LEBAK SILIWANGI', '3273230002', '3273230', NULL, NULL),
+(138, 'LEBAK GEDE', '3273230003', '3273230', NULL, NULL),
+(139, 'SADANG SERANG', '3273230004', '3273230', NULL, NULL),
+(140, 'SEKELOA', '3273230005', '3273230', NULL, NULL),
+(141, 'DAGO', '3273230006', '3273230', NULL, NULL),
+(142, 'SUKAWARNA', '3273240001', '3273240', NULL, NULL),
+(143, 'SUKAGALIH', '3273240002', '3273240', NULL, NULL),
+(144, 'SUKABUNGAH', '3273240003', '3273240', NULL, NULL),
+(145, 'CIPEDES', '3273240004', '3273240', NULL, NULL),
+(146, 'PASTEUR', '3273240005', '3273240', NULL, NULL),
+(147, 'SARIJADI', '3273250001', '3273250', NULL, NULL),
+(148, 'SUKARASA', '3273250002', '3273250', NULL, NULL),
+(149, 'GEGERKALONG', '3273250003', '3273250', NULL, NULL),
+(150, 'ISOLA', '3273250004', '3273250', NULL, NULL),
+(151, 'HEGARMANAH', '3273260001', '3273260', NULL, NULL),
+(152, 'CIUMBULEUIT', '3273260002', '3273260', NULL, NULL),
+(153, 'LEDENG', '3273260003', '3273260', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `log_aktivitas`
+--
+
+CREATE TABLE `log_aktivitas` (
+  `logid` int(10) UNSIGNED NOT NULL,
+  `log_event` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `log_user` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `log_aktivitas`
+--
+
+INSERT INTO `log_aktivitas` (`logid`, `log_event`, `log_user`, `created_at`, `updated_at`) VALUES
+(1, 'Laporan Baru  (123)', '2', '2019-03-18 20:37:03', '2019-03-18 20:37:03'),
+(2, 'Laporan Baru  (DADA)', '2', '2019-03-20 08:38:32', '2019-03-20 08:38:32'),
+(3, 'Laporan 138 (123) Diubah', '2', '2019-03-20 08:38:55', '2019-03-20 08:38:55'),
+(4, 'Laporan Baru  (sd)', '2', '2019-03-20 08:40:07', '2019-03-20 08:40:07'),
+(5, 'Laporan Baru  (sd)', '2', '2019-03-20 08:40:12', '2019-03-20 08:40:12'),
+(6, 'Laporan Baru  (d)', '2', '2019-03-20 08:40:56', '2019-03-20 08:40:56'),
+(7, 'Laporan 138 (123) Dihapus', '2', '2019-03-20 10:45:22', '2019-03-20 10:45:22'),
+(8, 'Laporan 136 (3) Dihapus', '2', '2019-03-20 10:45:25', '2019-03-20 10:45:25'),
+(9, 'Laporan 141 (d) Dihapus', '2', '2019-03-20 10:45:28', '2019-03-20 10:45:28'),
+(10, 'Laporan 139 (DADA) Dihapus', '2', '2019-03-20 10:45:33', '2019-03-20 10:45:33'),
+(11, 'Laporan 137 (das) Dihapus', '2', '2019-03-20 10:45:36', '2019-03-20 10:45:36'),
+(12, 'Laporan 140 (sd) Dihapus', '2', '2019-03-20 10:45:38', '2019-03-20 10:45:38'),
+(13, 'Laporan Baru  (3213)', '2', '2019-03-20 18:11:03', '2019-03-20 18:11:03'),
+(14, 'Laporan Baru  (123)', '2', '2019-03-20 18:11:44', '2019-03-20 18:11:44'),
+(15, 'Laporan Baru  (ACD)', '2', '2019-03-22 05:34:35', '2019-03-22 05:34:35'),
+(16, 'Laporan Baru  (123123)', '2', '2019-03-22 05:35:44', '2019-03-22 05:35:44'),
+(17, 'Laporan Baru  (ASDA)', '2', '2019-03-22 05:36:22', '2019-03-22 05:36:22'),
+(18, 'Laporan Baru  (R)', '2', '2019-03-22 05:37:33', '2019-03-22 05:37:33'),
+(19, 'Laporan Baru  (abc)', '2', '2019-03-22 05:48:59', '2019-03-22 05:48:59'),
+(20, 'Laporan Baru  (JUJU)', '2', '2019-03-22 06:22:11', '2019-03-22 06:22:11'),
+(21, 'Laporan Baru  (JAJA JUJU)', '2', '2019-03-22 06:22:43', '2019-03-22 06:22:43'),
+(22, 'Laporan Baru  (CAC)', '2', '2019-03-22 06:23:13', '2019-03-22 06:23:13'),
+(23, 'Laporan Baru  (NURMAJAN)', '2', '2019-03-23 22:13:08', '2019-03-23 22:13:08'),
+(24, 'Laporan Baru  (NURMAJAN)', '2', '2019-03-23 22:14:24', '2019-03-23 22:14:24'),
+(25, 'Laporan Baru  (NURMAJAN)', '2', '2019-03-23 22:14:28', '2019-03-23 22:14:28'),
+(26, 'Laporan Baru  (NURMAJAN)', '2', '2019-03-23 22:14:44', '2019-03-23 22:14:44'),
+(27, 'Laporan 1 (3213) Dihapus', '2', '2019-03-24 08:20:41', '2019-03-24 08:20:41'),
+(28, 'Laporan 2 (123) Dihapus', '2', '2019-03-24 08:20:46', '2019-03-24 08:20:46'),
+(29, 'Laporan 6 (abc) Dihapus', '2', '2019-03-24 08:20:49', '2019-03-24 08:20:49'),
+(30, 'Laporan 3 (ACD) Dihapus', '2', '2019-03-24 08:20:53', '2019-03-24 08:20:53'),
+(31, 'Laporan Baru  (Jajang Jajajang)', '2', '2019-03-24 09:15:11', '2019-03-24 09:15:11'),
+(32, 'Laporan Baru  (Mamang Ujan)', '2', '2019-03-24 09:54:51', '2019-03-24 09:54:51'),
+(33, 'Laporan Baru  (Herman Heran Heran)', '2', '2019-03-24 21:23:14', '2019-03-24 21:23:14'),
+(34, 'Laporan Baru  (John Smith)', '2', '2019-03-24 22:02:00', '2019-03-24 22:02:00'),
+(35, 'Laporan 846 (Abner Bartell DDS) Dihapus', '2', '2019-06-12 21:49:11', '2019-06-12 21:49:11'),
+(36, 'Laporan 950 (Mr. Timmy Feest) Diubah', '1', '2019-07-23 20:16:42', '2019-07-23 20:16:42'),
+(37, 'Laporan 840 (Saranto Sulistiyo) Diubah', '1', '2019-07-23 23:18:38', '2019-07-23 23:18:38'),
+(38, 'Laporan Baru  (Saranto Sulistiyo)', '1', '2019-07-23 23:23:10', '2019-07-23 23:23:10'),
+(39, 'Laporan  (Saranto Sulistiyo) Ditambahkan', '2', '2019-08-07 23:04:21', '2019-08-07 23:04:21'),
+(40, 'Laporan 1020 (Saranto Sulistiyo) Diubah', '2', '2019-08-07 23:06:02', '2019-08-07 23:06:02');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `migrations`
+--
+
+CREATE TABLE `migrations` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `migration` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `migrations`
+--
+
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
+(1, '2014_10_12_000000_create_users_table', 1),
+(2, '2014_10_12_100000_create_password_resets_table', 1),
+(3, '2019_03_09_105222_pasien', 2),
+(4, '2019_03_12_101442_pasien2', 3),
+(7, '2019_03_16_055412_kelurahan', 4),
+(8, '2019_03_12_101715_puskesmas', 5),
+(11, '2019_03_16_055127_kecamatan', 6),
+(12, '2019_03_17_144418_hasil_lab', 7),
+(13, '2019_03_18_125337_log_db', 7),
+(14, '2019_08_08_063313_drop_pasien_table', 8),
+(15, '2019_08_08_063755_table_rumah_sakit', 8),
+(16, '2019_08_08_064756_addloctopuskesmas', 8);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pasien2`
+--
+
+CREATE TABLE `pasien2` (
+  `idpasien` bigint(20) UNSIGNED NOT NULL,
+  `kd_pasien` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nik` bigint(191) NOT NULL,
+  `nama_pasien` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kd_kel` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kd_kec` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `alamat` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `umur` int(11) NOT NULL,
+  `kd_icd` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kode_faskes` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kategori_pasien_wabah` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status_layanan` int(11) DEFAULT NULL,
+  `ns1` tinyint(1) DEFAULT NULL,
+  `hemoglobin` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `leukosit` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `hematokrit` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `trombosit` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `scan_lab` text COLLATE utf8mb4_unicode_ci,
+  `tgl_pelaynan` date DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `pasien2`
+--
+
+INSERT INTO `pasien2` (`idpasien`, `kd_pasien`, `nik`, `nama_pasien`, `kd_kel`, `kd_kec`, `alamat`, `umur`, `kd_icd`, `kode_faskes`, `kategori_pasien_wabah`, `status_layanan`, `ns1`, `hemoglobin`, `leukosit`, `hematokrit`, `trombosit`, `scan_lab`, `tgl_pelaynan`, `created_at`, `updated_at`) VALUES
+(818, 'P32731002024119573', 349793418, 'Rickie Klein', '3273111001', '3273230', '752 Toy Expressway Suite 066\nPort Doraville, OR 06817-2799', 20, 'A91', 'P3273200201', 'Richie Fall', 3, 1, NULL, NULL, NULL, NULL, NULL, '1984-10-14', '2019-03-24 21:51:25', '2019-03-24 21:51:25'),
+(819, 'P327307020182445187', 331066053, 'Martina Stiedemann MD', '3273030001', '3273190', '58807 Geo Cove Apt. 739\nJoanamouth, ME 92129-9992', 35, 'A90', 'P3273200202', 'Breitenberg Spring', 1, 1, NULL, NULL, NULL, NULL, NULL, '2000-06-10', '2019-03-24 21:51:25', '2019-03-24 21:51:25'),
+(820, 'P3273170201577810111', 316062454, 'Elena Anderson', '3273260002', '3273020', '33469 Dickinson Harbors\nNorth Keyshawnview, WV 15758-5073', 67, 'A91', 'P3273190201', 'Greenholt Meadows', 2, 1, NULL, NULL, NULL, NULL, NULL, '1994-02-02', '2019-03-24 21:51:25', '2019-03-24 21:51:25'),
+(821, 'P3273100201693109', 344049659, 'Martine Conn', '3273230002', '3273060', '13990 Jesus Summit Apt. 607\nClarkchester, NE 58203-0588', 8, 'A90', 'P3273170202', 'Bryon Way', 2, 1, NULL, NULL, NULL, NULL, NULL, '1985-10-04', '2019-03-24 21:51:25', '2019-03-24 21:51:25'),
+(822, 'P3273120201499237352', 316079306, 'Mr. Gunnar Kautzer DVM', '3273110003', '3273260', '92804 Zulauf Field Suite 324\nRempelland, MT 56913', 61, 'A90', 'P3273020202', 'Alessandra Fall', 2, 1, NULL, NULL, NULL, NULL, NULL, '2000-12-26', '2019-03-24 21:51:25', '2019-03-24 21:51:25'),
+(823, 'P3273050203904904', 318366198, 'Enos Hudson', '3273111004', '3273080', '901 Dibbert Pike\nNorth Darron, AR 08221-1705', 2, 'A90', 'P3273230201', 'Letha Fords', 2, 1, NULL, NULL, NULL, NULL, NULL, '1987-04-23', '2019-03-24 21:51:25', '2019-03-24 21:51:25'),
+(824, 'P3273220201526416', 329661780, 'Dr. Domenica Pollich III', '3273230001', '3273141', '18319 Cremin Manors Suite 753\nAbigaylechester, LA 42243', 41, 'A90', 'P3273250203', 'Brent Stream', 1, 1, NULL, NULL, NULL, NULL, NULL, '1981-11-08', '2019-03-24 21:51:25', '2019-03-24 21:51:25'),
+(825, 'P3273230102556631', 324099327, 'Osborne Beahan', '3273260001', '3273020', '255 Schowalter Springs\nWest Terrilltown, MS 18281-4236', 70, 'A90', 'P3273230203', 'Wintheiser Gardens', 3, 1, NULL, NULL, NULL, NULL, NULL, '2003-06-26', '2019-03-24 21:51:25', '2019-03-24 21:51:25'),
+(826, 'P327322020270066425', 329056141, 'Mr. Garnett West', '3273020004', '3273050', '821 Smith Cape Suite 297\nNorth Danside, CT 86826-1900', 37, 'A90', 'P3273110202', 'Bosco Route', 2, 1, NULL, NULL, NULL, NULL, NULL, '1993-09-28', '2019-03-24 21:51:25', '2019-03-24 21:51:25'),
+(827, 'P327324020381669709', 328306443, 'Katheryn Jenkins', '3273200003', '3273060', '1737 Kelly Key\nNew Sandrineton, UT 99157-3227', 18, 'A91', 'P3273050101', 'Corkery Turnpike', 3, 1, NULL, NULL, NULL, NULL, NULL, '1973-08-30', '2019-03-24 21:51:25', '2019-03-24 21:51:25'),
+(828, 'P327310020442', 331269962, 'Prof. Randy McGlynn', '3273180004', '3273050', '7419 Nash Bridge\nHermistonmouth, NY 33018-0281', 28, 'A90', 'P3273100201', 'Mallory Expressway', 2, 1, NULL, NULL, NULL, NULL, NULL, '2011-02-27', '2019-03-24 21:51:25', '2019-03-24 21:51:25'),
+(829, 'P32730702012226771', 326826277, 'Dagmar Rath', '3273141002', '3273030', '269 Adams Square\nWintheiserville, VA 48573-7395', 2, 'A90', 'P3273230203', 'Gusikowski Plains', 3, 1, NULL, NULL, NULL, NULL, NULL, '2002-06-12', '2019-03-24 21:51:25', '2019-03-24 21:51:25'),
+(830, 'P3273260202572794', 334855754, 'Icie Nader V', '3273010002', '3273010', '32312 Elbert Brooks Apt. 784\nNew Mackenzie, FL 65943', 52, 'A91', 'P3273210202', 'Treutel Meadows', 1, 1, NULL, NULL, NULL, NULL, NULL, '2000-03-26', '2019-03-24 21:51:25', '2019-03-24 21:51:25'),
+(831, 'P327308020184773840', 342498195, 'Geovanni Schultz', '3273180006', '3273111', '46753 Kuhn Isle Apt. 221\nWest Alejandra, PA 98141', 17, 'A91', 'P3273141202', 'Alessandro Greens', 2, 1, NULL, NULL, NULL, NULL, NULL, '1983-02-19', '2019-03-24 21:51:25', '2019-03-24 21:51:25'),
+(832, 'P32732302034431', 305419579, 'Cristian Feil', '3273230001', '3273220', '59543 Dora Street\nLake Dominic, MD 35565', 60, 'A90', 'P3273190201', 'Elliot Forest', 1, 1, NULL, NULL, NULL, NULL, NULL, '1981-04-18', '2019-03-24 21:51:25', '2019-03-24 21:51:25'),
+(833, 'P3273100204345194956', 347788912, 'Braulio Mitchell', '3273210002', '3273141', '35022 VonRueden Mission Suite 403\nBartonland, DE 29241', 8, 'A90', 'P3273080203', 'Shanahan Estates', 3, 1, NULL, NULL, NULL, NULL, NULL, '1981-07-12', '2019-03-24 21:51:25', '2019-03-24 21:51:25'),
+(834, 'P327314120137180', 302866776, 'Prof. Jay Rohan', '3273030003', '3273070', '100 Balistreri Walks Suite 356\nMozellmouth, OR 27701', 50, 'A90', 'P3273010201', 'Penelope Springs', 3, 1, NULL, NULL, NULL, NULL, NULL, '1998-04-03', '2019-03-24 21:51:25', '2019-03-24 21:51:25'),
+(835, 'P327310020215', 304039517, 'Eulalia Bechtelar Jr.', '3273070004', '3273030', '716 Dickens Knolls\nSouth Brandonshire, ME 45504-8430', 30, 'A91', 'P3273050203', 'Barton Spur', 2, 1, NULL, NULL, NULL, NULL, NULL, '1986-09-19', '2019-03-24 21:51:25', '2019-03-24 21:51:25'),
+(836, 'P32732402013180', 329839305, 'Alena Towne', '3273010003', '3273050', '67195 Walsh Mews Apt. 563\nPort Fernandofurt, AR 63160', 24, 'A91', 'P3273050202', 'Bryon Trace', 2, 1, NULL, NULL, NULL, NULL, NULL, '1998-02-09', '2019-03-24 21:51:25', '2019-03-24 21:51:25'),
+(837, 'P32730602015341893', 333880372, 'Cordie Luettgen', '3273020003', '3273190', '4475 Ricardo Landing Suite 419\nWest Elsieside, LA 09936', 46, 'A90', 'P3273050202', 'McKenzie Island', 1, 1, NULL, NULL, NULL, NULL, NULL, '1985-09-25', '2019-03-24 21:51:25', '2019-03-24 21:51:25'),
+(838, 'P32730802013633', 342692857, 'Dr. Berniece Frami', '3273010008', '3273020', '3076 Kautzer Trafficway Apt. 603\nSallychester, NY 67970-2049', 55, 'A90', 'P3273240202', 'Cruickshank Canyon', 3, 1, NULL, NULL, NULL, NULL, NULL, '1996-05-13', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(839, 'P32732102037212711', 306558626, 'Casimer Kris', '3273060003', '3273050', '5967 Ana Canyon Suite 861\nMuellerfort, VT 34008-2996', 53, 'A90', 'P3273111202', 'Sipes Road', 1, 1, NULL, NULL, NULL, NULL, NULL, '1989-11-27', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(840, 'P34903730523', 306558016, 'Saranto Sulistiyo', '3273120000', '3273120', '5566 Kilback InletEast Jimmy, IL 23043-4339', 37, 'A91', 'P3273111202', 'Puskesmas Neglasari', 3, NULL, '15', '4400', '43', '203000', 'a:1:{i:0;s:24:\"1563949117.hasil-lab.jpg\";}', '1980-03-11', '2019-03-24 21:51:26', '2019-07-23 23:18:38'),
+(841, 'P32732602027', 321284224, 'Violette Leffler', '3273020003', '3273160', '6726 Meta Orchard Apt. 970\nWest Dedric, IL 01201-6788', 5, 'A91', 'P3273250202', 'Carroll Parkway', 1, 1, NULL, NULL, NULL, NULL, NULL, '2004-02-12', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(842, 'P327310020169', 315898638, 'Jessy Rosenbaum PhD', '3273260001', '3273230', '5083 McClure Fort\nSchowalterborough, ND 65596', 56, 'A90', 'P3273100203', 'Idell Unions', 3, 1, NULL, NULL, NULL, NULL, NULL, '1990-04-22', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(843, 'P32731422035859', 311942258, 'Stephan Ratke', '3273240001', '3273090', '8534 Ruthie Plains\nHoytmouth, MT 39416-2424', 17, 'A91', 'P3273230203', 'Gerhold Expressway', 1, 1, NULL, NULL, NULL, NULL, NULL, '2005-11-06', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(844, 'P32730702013590', 334674519, 'Mr. Demarco Nader', '3273100006', '3273170', '264 Jonathan Coves Apt. 639\nEast Roselyn, WA 79013-1221', 34, 'A91', 'P3273141203', 'Antonio Greens', 1, 1, NULL, NULL, NULL, NULL, NULL, '1974-02-25', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(845, 'P3273150201517', 348651844, 'Miss Alena Conroy PhD', '3273040001', '3273110', '5122 Brittany Path\nKatelynstad, KY 65887', 62, 'A90', 'P3273020201', 'Skiles Pass', 2, 1, NULL, NULL, NULL, NULL, NULL, '2008-01-05', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(847, 'P32731902019732', 303147784, 'Mr. Reed Larson', '3273090002', '3273141', '488 Hansen Manors\nEdwardmouth, ID 63672', 62, 'A90', 'P3273070204', 'Tod Via', 3, 1, NULL, NULL, NULL, NULL, NULL, '1999-06-04', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(848, 'P327311020122895834', 306983166, 'Baylee Grady PhD', '3273230004', '3273090', '310 Nina Forest Apt. 948\nAugusttown, ID 08834', 55, 'A91', 'P3273240202', 'Manuel Rest', 2, 1, NULL, NULL, NULL, NULL, NULL, '2009-09-15', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(849, 'P327302020278', 338049820, 'Prof. Era Rice Jr.', '3273111001', '3273010', '6933 Brown Island\nDietrichberg, NY 20105', 20, 'A90', 'P3273170202', 'Braun Street', 3, 1, NULL, NULL, NULL, NULL, NULL, '2012-06-16', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(850, 'P32731902018345893', 336443301, 'Dr. Madie Cartwright Jr.', '3273120003', '3273070', '996 Anderson Glen\nLydialand, MD 13359-7426', 8, 'A90', 'P3273190202', 'McClure Creek', 3, 1, NULL, NULL, NULL, NULL, NULL, '2006-03-18', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(851, 'P3273070204961873535', 329273605, 'Cayla Hoeger', '3273160005', '3273260', '4558 Marina Mill Suite 473\nLake Reillyberg, CA 22245-6827', 54, 'A90', 'P3273070202', 'Wilson Harbors', 3, 1, NULL, NULL, NULL, NULL, NULL, '1978-08-11', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(852, 'P3273250202914864', 346632056, 'Axel Hyatt', '3273180002', '3273240', '5845 Brekke Knoll\nNew Martin, RI 52307', 29, 'A91', 'P3273142201', 'Corwin Trafficway', 1, 1, NULL, NULL, NULL, NULL, NULL, '1971-09-11', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(853, 'P32732302015', 323705871, 'Willis Larkin', '3273142004', '3273230', '6165 Schaden Corners Apt. 546\nPort Dasiafort, UT 93255', 50, 'A91', 'P3273050204', 'Hessel Viaduct', 1, 1, NULL, NULL, NULL, NULL, NULL, '2011-01-11', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(854, 'P327323020137257', 301623007, 'Darlene Lesch Jr.', '3273170001', '3273190', '9964 Pfeffer Street\nMrazshire, IA 16535', 23, 'A90', 'P3273070204', 'Littel Springs', 3, 1, NULL, NULL, NULL, NULL, NULL, '1971-03-16', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(855, 'P32730402012866048', 321702202, 'Prof. Roy Howell MD', '3273070002', '3273130', '93691 Catherine Stream\nPort Felicita, MD 50557-4236', 38, 'A91', 'P3273070203', 'Mohr Gateway', 3, 1, NULL, NULL, NULL, NULL, NULL, '1981-07-02', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(856, 'P327314220329501886', 310043835, 'Jayce Kertzmann', '3273101004', '3273200', '7859 Johns Lakes Apt. 465\nSouth Elzashire, PA 59944', 23, 'A90', 'P3273110203', 'Barton Dale', 2, 1, NULL, NULL, NULL, NULL, NULL, '1992-03-21', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(857, 'P327302020222596836', 301826496, 'Joe Connelly', '3273010002', '3273121', '64599 Jan Springs\nLake Bridie, CO 32654', 57, 'A90', 'P3273020202', 'Lila Burgs', 3, 1, NULL, NULL, NULL, NULL, NULL, '2013-10-30', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(858, 'P3273230203263716', 325368743, 'Orlando Weissnat IV', '3273150001', '3273250', '8053 Beier Island\nNew Carlimouth, AR 54523-9560', 33, 'A90', 'P3273142203', 'Langosh Fall', 2, 1, NULL, NULL, NULL, NULL, NULL, '1987-12-15', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(859, 'P3273100203242', 311516992, 'Jackson Feil Jr.', '3273160001', '3273142', '860 Maude Island\nEast Virgilmouth, NE 94656', 22, 'A91', 'P3273141201', 'Olson Wall', 3, 1, NULL, NULL, NULL, NULL, NULL, '2001-04-28', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(860, 'P32730702016191', 324640487, 'Ramon Von', '3273040002', '3273210', '93787 Haley Crest\nNorth Brandi, CA 73551-7348', 42, 'A90', 'P3273250203', 'Mitchell Parkways', 3, 1, NULL, NULL, NULL, NULL, NULL, '2013-07-15', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(861, 'P32730702014003954', 327849913, 'Victoria Daugherty', '3273101004', '3273111', '4306 Kessler Viaduct Apt. 420\nNew Gustave, MI 32946-6155', 28, 'A91', 'P3273130203', 'Adrian Pine', 2, 1, NULL, NULL, NULL, NULL, NULL, '2018-10-31', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(862, 'P3273100201388118', 342246435, 'Grayson Murphy', '3273110005', '3273150', '963 Evan Springs Apt. 213\nFriesenview, DE 10951', 9, 'A90', 'P3273080203', 'Madyson Squares', 3, 1, NULL, NULL, NULL, NULL, NULL, '1970-06-13', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(863, 'P3273190201266', 347205820, 'Dock Casper MD', '3273130003', '3273070', '144 Bogan Green\nWhitechester, VA 87127-8410', 61, 'A91', 'P3273141203', 'Elyse Track', 2, 1, NULL, NULL, NULL, NULL, NULL, '1993-08-25', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(864, 'P327322020233', 330620879, 'Elizabeth Dach', '3273180006', '3273080', '37862 Marley Island\nNiaburgh, MA 45703', 18, 'A91', 'P3273220202', 'Hills Drives', 2, 1, NULL, NULL, NULL, NULL, NULL, '1978-10-27', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(865, 'P32731102038888', 320279997, 'Mitchell Wuckert', '3273190002', '3273200', '597 Brendan Plaza Suite 946\nDannyburgh, DE 38402-2146', 9, 'A90', 'P3273040201', 'Vita Mount', 1, 1, NULL, NULL, NULL, NULL, NULL, '2014-08-15', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(866, 'P327313020243', 307197927, 'Danielle Schulist', '3273250001', '3273180', '2440 Jacobs Groves Suite 236\nEast Esta, KS 68834', 42, 'A91', 'P3273141202', 'Bartell Glen', 2, 1, NULL, NULL, NULL, NULL, NULL, '1980-04-24', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(867, 'P327318010289', 340115940, 'Cassie West', '3273111001', '3273101', '9801 Harber Inlet\nZiemannhaven, IN 76435', 51, 'A91', 'P3273250203', 'Madisen Dale', 3, 1, NULL, NULL, NULL, NULL, NULL, '2009-11-23', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(868, 'P3273010203693396', 304248330, 'Jaeden Rippin', '3273040002', '3273240', '570 Andreanne Square\nPort Jeanneside, NC 11851-3108', 54, 'A91', 'P3273050203', 'Lemke Forge', 2, 1, NULL, NULL, NULL, NULL, NULL, '2002-12-29', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(869, 'P327307020337323175', 319299773, 'Mrs. Delilah Bechtelar', '3273130001', '3273120', '3583 Cloyd Route Suite 567\nPort Lesley, GA 23112-7994', 5, 'A91', 'P3273160103', 'Hailie Island', 3, 1, NULL, NULL, NULL, NULL, NULL, '2005-05-05', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(870, 'P327316010335', 342111177, 'Jeff Kulas', '3273120007', '3273150', '89294 Kyle Parkways Suite 746\nEast Stephanmouth, MD 81786', 23, 'A90', 'P3273160201', 'Isai Terrace', 1, 1, NULL, NULL, NULL, NULL, NULL, '2001-02-28', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(871, 'P3273040201875805', 304373310, 'Trenton Terry', '3273010001', '3273010', '57660 Ratke Street\nAnitaland, WI 38212-8917', 54, 'A91', 'P3273250202', 'Stiedemann Inlet', 3, 1, NULL, NULL, NULL, NULL, NULL, '1979-12-26', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(872, 'P3273230201456294802', 323932607, 'Kyra Hyatt V', '3273230003', '3273100', '124 Becker Underpass Suite 241\nBednarfurt, RI 54785-4156', 33, 'A90', 'P3273130201', 'Buckridge Hollow', 3, 1, NULL, NULL, NULL, NULL, NULL, '1997-11-29', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(873, 'P3273110204786', 313634413, 'Cornelius Roberts Sr.', '3273170004', '3273160', '716 Kailyn Bypass\nLake Demarco, AL 44885-2928', 44, 'A91', 'P3273110202', 'Ernestine Falls', 1, 1, NULL, NULL, NULL, NULL, NULL, '1975-03-17', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(874, 'P327321020213792', 310978632, 'Katelynn Fisher', '3273250003', '3273130', '19462 Lorna Underpass Suite 943\nLake Mae, FL 74504', 12, 'A90', 'P3273220202', 'Kyleigh Fork', 2, 1, NULL, NULL, NULL, NULL, NULL, '2014-11-03', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(875, 'P327322020269', 323201470, 'Asia Terry', '3273210004', '3273020', '9330 Karlie Course\nPort Humberto, TX 91635-0421', 33, 'A90', 'P3273190201', 'Jacobson Trail', 3, 1, NULL, NULL, NULL, NULL, NULL, '1989-08-21', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(876, 'P3273130201471819', 348601086, 'Anahi Kohler', '3273080004', '3273150', '465 Elmore Harbor\nEast Gavin, IL 86829', 3, 'A90', 'P3273130202', 'Abdiel Stream', 3, 1, NULL, NULL, NULL, NULL, NULL, '2017-05-12', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(877, 'P32730502049', 326090883, 'Erich Paucek', '3273130001', '3273210', '1581 Sheila Isle Suite 984\nLake Axel, NC 52986', 65, 'A90', 'P3273240201', 'Lueilwitz Plains', 2, 1, NULL, NULL, NULL, NULL, NULL, '1977-02-03', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(878, 'P32731422037208', 306658795, 'Mike Nolan', '3273101004', '3273120', '704 Gottlieb Mall Suite 764\nLake Leliaport, AR 48909-9544', 70, 'A90', 'P3273070201', 'Satterfield Lodge', 3, 1, NULL, NULL, NULL, NULL, NULL, '1971-12-17', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(879, 'P327321020329818', 324744468, 'Andre Simonis', '3273040004', '3273100', '825 Erdman Trace\nHarrisport, OK 93502', 2, 'A90', 'P3273200202', 'Conor Meadow', 1, 1, NULL, NULL, NULL, NULL, NULL, '1990-12-30', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(880, 'P32732402017898630', 307346927, 'Mariano Mayer', '3273060004', '3273170', '4454 Lura Run Suite 089\nZoieshire, HI 86072', 3, 'A90', 'P3273142201', 'Triston Summit', 1, 1, NULL, NULL, NULL, NULL, NULL, '1989-11-17', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(881, 'P3273141201110', 348511815, 'Mrs. Susanna Kohler III', '3273070007', '3273240', '9585 Bernhard Stream Apt. 688\nFerryland, CA 76016', 9, 'A91', 'P3273142201', 'Brandt Lights', 1, 1, NULL, NULL, NULL, NULL, NULL, '1974-12-22', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(882, 'P327311020455', 341515650, 'Chris Stokes', '3273190003', '3273050', '10318 Jackson Flat\nSchummville, TN 79720', 26, 'A91', 'P3273111201', 'Schneider Spurs', 3, 1, NULL, NULL, NULL, NULL, NULL, '1988-02-15', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(883, 'P32730802015727', 304990539, 'Dr. Odessa Gislason PhD', '3273010002', '3273141', '536 Wintheiser Valley\nSouth Shirleymouth, SC 48676-3514', 66, 'A91', 'P3273110201', 'Tromp Ways', 3, 1, NULL, NULL, NULL, NULL, NULL, '1987-06-21', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(884, 'P327326020122603706', 349787104, 'Dr. Colt Auer DDS', '3273120003', '3273060', '486 Lemke Village\nAntoninafurt, NC 74888-5464', 9, 'A91', 'P3273141203', 'Wisozk Corner', 2, 1, NULL, NULL, NULL, NULL, NULL, '1985-08-16', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(885, 'P3273230203220045', 308430356, 'Hayden Marks', '3273142004', '3273040', '7687 Ari Views\nPort Rhiannonville, CA 01391', 39, 'A91', 'P3273110202', 'Carter Lights', 3, 1, NULL, NULL, NULL, NULL, NULL, '1971-04-19', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(886, 'P327302020227290', 308671431, 'Mr. Eugene Effertz', '3273200002', '3273130', '300 Bergnaum Square Apt. 300\nSamaramouth, SC 21006-6556', 30, 'A91', 'P3273070202', 'Robel Trail', 1, 1, NULL, NULL, NULL, NULL, NULL, '2007-03-12', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(887, 'P32730702014717514', 342408764, 'Kenyon Ullrich', '3273260003', '3273240', '40726 Sauer Points Suite 776\nFedericoshire, IA 65554', 51, 'A90', 'P3273240202', 'Mante Path', 1, 1, NULL, NULL, NULL, NULL, NULL, '2006-12-08', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(888, 'P3273090201374', 308190775, 'Rollin Runte', '3273250001', '3273250', '321 Ona Wall Suite 547\nHalvorsonbury, NY 31429', 28, 'A91', 'P3273240201', 'Willms Run', 1, 1, NULL, NULL, NULL, NULL, NULL, '2017-09-05', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(889, 'P32732502012804', 310418045, 'Dr. Jermaine Goyette III', '3273200003', '3273080', '48646 Morissette Bridge Suite 378\nNorth Caesarmouth, VA 67481', 60, 'A90', 'P3273020201', 'Kris Row', 2, 1, NULL, NULL, NULL, NULL, NULL, '1986-09-05', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(890, 'P3273141202604', 312313639, 'Jo Deckow', '3273190003', '3273220', '475 Glover Mission\nWuckerthaven, TX 15423', 14, 'A91', 'P3273130202', 'Claire Key', 1, 1, NULL, NULL, NULL, NULL, NULL, '1981-08-07', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(891, 'P3273230201297003429', 338842282, 'Trenton Sporer', '3273190001', '3273250', '69292 Cedrick Circle\nLake Anabelle, VA 54434', 20, 'A90', 'P3273020202', 'Keanu Forks', 3, 1, NULL, NULL, NULL, NULL, NULL, '1985-06-13', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(892, 'P3273210203471510', 303928608, 'Jennie Durgan PhD', '3273080002', '3273090', '6941 Rhett Streets\nPabloshire, KY 50967', 45, 'A90', 'P3273250202', 'Johathan Underpass', 3, 1, NULL, NULL, NULL, NULL, NULL, '2012-11-07', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(893, 'P3273050202979560461', 319573345, 'Vito Swift', '3273110005', '3273150', '9045 Kristoffer Extensions\nWest Brennaland, IN 09918-7651', 25, 'A91', 'P3273070201', 'Stacey Shores', 2, 1, NULL, NULL, NULL, NULL, NULL, '1970-03-04', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(894, 'P32731102027461600', 318260850, 'Jerel Heaney', '3273040004', '3273060', '235 Greenfelder Crest\nWest Joelmouth, SD 39749-2251', 27, 'A90', 'P3273010201', 'Balistreri Passage', 2, 1, NULL, NULL, NULL, NULL, NULL, '1984-11-21', '2019-03-24 21:51:26', '2019-03-24 21:51:26'),
+(895, 'P3273200202399393484', 340280606, 'Mr. Ernest Terry', '3273020002', '3273150', '21380 Koss Drives\nNorth Timmy, ND 46880', 53, 'A91', 'P3273050203', 'Hettinger Shores', 2, 1, NULL, NULL, NULL, NULL, NULL, '1992-07-17', '2019-03-24 21:51:27', '2019-03-24 21:51:27'),
+(896, 'P327301020469', 345685650, 'Dr. Kyleigh Hessel Sr.', '3273160005', '3273080', '55626 Brock Court Suite 966\nWest Jacklyntown, AL 70412-4561', 65, 'A91', 'P3273080202', 'Kailee Isle', 1, 1, NULL, NULL, NULL, NULL, NULL, '2018-03-09', '2019-03-24 21:51:27', '2019-03-24 21:51:27'),
+(897, 'P32732102024753018', 301395320, 'Candelario Pagac', '3273040006', '3273121', '9470 Steuber Loop Suite 678\nLake Dorrisport, ND 64616', 43, 'A90', 'P3273190202', 'Elenor Shore', 3, 1, NULL, NULL, NULL, NULL, NULL, '2005-01-02', '2019-03-24 21:51:27', '2019-03-24 21:51:27'),
+(898, 'P327321010147681', 311155966, 'Dr. Lawson Fahey', '3273190006', '3273121', '11685 General Divide\nPort Freida, SD 91391', 6, 'A90', 'P3273200201', 'Johnson Landing', 1, 1, NULL, NULL, NULL, NULL, NULL, '2007-04-08', '2019-03-24 21:51:27', '2019-03-24 21:51:27'),
+(899, 'P32730502041906809', 338573863, 'Muhammad Wuckert II', '3273200003', '3273220', '77882 Gennaro Route\nCamilleview, IN 20383-7621', 24, 'A90', 'P3273030202', 'Kshlerin Cove', 2, 1, NULL, NULL, NULL, NULL, NULL, '2010-06-08', '2019-03-24 21:51:27', '2019-03-24 21:51:27'),
+(900, 'P3273090201562707859', 347755187, 'Prof. Trisha Von II', '3273180005', '3273100', '3795 Alexandra Rapids\nHayleefurt, OK 51393', 38, 'A91', 'P3273240201', 'Marlee Hill', 3, 1, NULL, NULL, NULL, NULL, NULL, '2012-05-08', '2019-03-24 21:51:27', '2019-03-24 21:51:27'),
+(901, 'P32731702027326774', 347582703, 'Evelyn Schimmel IV', '3273030003', '3273260', '8705 Orlando Rapids\nNorth Elody, TN 09504', 10, 'A91', 'P3273142202', 'Bergstrom Wells', 3, 1, NULL, NULL, NULL, NULL, NULL, '2005-03-27', '2019-03-24 21:51:27', '2019-03-24 21:51:27'),
+(902, 'P3273130202206', 313448790, 'Bert Harber PhD', '3273050003', '3273121', '516 Felipe Ports Suite 719\nSouth Hilbertburgh, CT 62161', 20, 'A91', 'P3273142202', 'Cartwright Bypass', 3, 1, NULL, NULL, NULL, NULL, NULL, '1976-09-23', '2019-03-24 21:51:27', '2019-03-24 21:51:27'),
+(903, 'P32731602022893', 326663540, 'Genesis Dooley', '3273230004', '3273220', '812 Abigale Mission Suite 631\nNorth Katarina, OK 25037-1923', 66, 'A90', 'P3273010202', 'Cremin Highway', 2, 1, NULL, NULL, NULL, NULL, NULL, '1982-12-01', '2019-03-24 21:51:27', '2019-03-24 21:51:27'),
+(904, 'P3273100202339278960', 303866047, 'Camilla Cummerata', '3273170001', '3273260', '6724 Cathryn Gateway\nDurwardville, AZ 51214-5658', 7, 'A91', 'P3273220201', 'Strosin Vista', 1, 1, NULL, NULL, NULL, NULL, NULL, '1981-10-08', '2019-03-24 21:51:27', '2019-03-24 21:51:27'),
+(905, 'P3273230201564338', 320917847, 'Amara Mayer', '3273160004', '3273260', '614 Hessel Oval Suite 688\nPort Dallin, IL 73064-5326', 33, 'A91', 'P3273070202', 'Kertzmann Tunnel', 1, 1, NULL, NULL, NULL, NULL, NULL, '1982-02-21', '2019-03-24 21:51:27', '2019-03-24 21:51:27'),
+(906, 'P32731602018942815', 311175854, 'Una Nienow', '3273190004', '3273110', '154 Walter Crossing Suite 129\nCharleyport, ME 06059', 52, 'A90', 'P3273010204', 'Denesik Plain', 1, 1, NULL, NULL, NULL, NULL, NULL, '2010-08-07', '2019-03-24 21:51:27', '2019-03-24 21:51:27'),
+(907, 'P32730802033', 349339579, 'Ms. Isabel Schmeler Jr.', '3273210001', '3273170', '827 Haley Heights Suite 282\nPort Donnyville, NM 81584', 67, 'A91', 'P3273120202', 'Emelie Grove', 2, 1, NULL, NULL, NULL, NULL, NULL, '1988-02-25', '2019-03-24 21:51:27', '2019-03-24 21:51:27'),
+(908, 'P3273060203971115976', 331643201, 'Prof. Brandyn Schmitt PhD', '3273110005', '3273150', '98304 Toy Fords\nBoscochester, WI 32500', 26, 'A90', 'P3273060202', 'Russel Parkways', 1, 1, NULL, NULL, NULL, NULL, NULL, '2002-01-20', '2019-03-24 21:51:27', '2019-03-24 21:51:27'),
+(909, 'P327305020344', 322911729, 'Miss Belle Walsh Sr.', '3273150003', '3273110', '47682 Adelbert Run Suite 266\nReichelborough, NV 00075', 18, 'A90', 'P3273100203', 'Armstrong Circle', 3, 1, NULL, NULL, NULL, NULL, NULL, '2012-08-16', '2019-03-24 21:51:27', '2019-03-24 21:51:27'),
+(910, 'P3273260202200', 331626617, 'Isidro O\'Kon', '3273030001', '3273210', '913 Murray Ports Suite 251\nAkeemside, RI 32524-9712', 64, 'A91', 'P3273100203', 'Corine Crossroad', 2, 1, NULL, NULL, NULL, NULL, NULL, '2009-12-11', '2019-03-24 21:51:27', '2019-03-24 21:51:27'),
+(911, 'P32732002017', 323388257, 'Kiarra Koepp III', '3273170002', '3273040', '30039 Justina Orchard\nEast Gillianfurt, WA 19139', 62, 'A90', 'P3273260202', 'Enrique Drives', 3, 1, NULL, NULL, NULL, NULL, NULL, '1990-11-23', '2019-03-24 21:51:27', '2019-03-24 21:51:27'),
+(912, 'P327301020475503093', 313659938, 'Miss Hulda Beatty', '3273220001', '3273040', '8085 Cummings Place\nSouth Efrainport, WV 33126-4592', 30, 'A90', 'P3273250203', 'Johnny Pine', 1, 1, NULL, NULL, NULL, NULL, NULL, '2011-02-12', '2019-03-24 21:51:27', '2019-03-24 21:51:27'),
+(913, 'P32732302013937560', 312198210, 'Kaylah Ziemann', '3273090004', '3273142', '802 Braeden Lakes Apt. 803\nGrimeston, NV 62646-6998', 57, 'A90', 'P3273130203', 'Alexis Junctions', 2, 1, NULL, NULL, NULL, NULL, NULL, '1982-11-27', '2019-03-24 21:51:27', '2019-03-24 21:51:27'),
+(914, 'P3273220202261200', 343084385, 'Ms. Maud Gutmann', '3273200003', '3273150', '24157 Swaniawski Streets Apt. 904\nWest Thaddeusland, IL 29938-6386', 34, 'A91', 'P3273050204', 'Dayton Mall', 3, 1, NULL, NULL, NULL, NULL, NULL, '1997-02-17', '2019-03-24 21:51:27', '2019-03-24 21:51:27'),
+(915, 'P327324020137644', 316276321, 'Prof. Kiara Kertzmann Sr.', '3273150002', '3273101', '205 Derek Road\nKamronview, AK 29252', 66, 'A90', 'P3273110203', 'Melyssa Common', 3, 1, NULL, NULL, NULL, NULL, NULL, '2009-07-09', '2019-03-24 21:51:27', '2019-03-24 21:51:27'),
+(916, 'P327302020154763', 348029214, 'Ms. Clementine Koelpin', '3273220004', '3273010', '180 Dare Glens Suite 976\nBernadetteview, IN 38670', 58, 'A91', 'P3273060203', 'Robb Falls', 3, 1, NULL, NULL, NULL, NULL, NULL, '1998-01-27', '2019-03-24 21:51:27', '2019-03-24 21:51:27'),
+(917, 'P327320020282011160', 328156949, 'Asa Schaden', '3273070004', '3273200', '52442 Aiden Lakes Apt. 037\nSouth Jeromeside, AZ 12960', 26, 'A90', 'P3273170201', 'Frami Curve', 2, 1, NULL, NULL, NULL, NULL, NULL, '1984-09-05', '2019-03-24 21:51:27', '2019-03-24 21:51:27'),
+(918, 'P327302020290', 318324662, 'Prof. Jany Jacobson Sr.', '3273060007', '3273260', '5356 Liliane Islands\nPort Willard, NY 41582', 57, 'A91', 'P3273080201', 'Hills Heights', 2, 1, NULL, NULL, NULL, NULL, NULL, '2001-01-28', '2019-03-24 21:58:26', '2019-03-24 21:58:26'),
+(919, 'P32732502035', 329433548, 'Prof. Rodrick Kessler', '3273120006', '3273150', '946 Daniel Corners Suite 097\nStokeshaven, CA 57077', 56, 'A90', 'P3273130201', 'Mariano Station', 3, 1, NULL, NULL, NULL, NULL, NULL, '1979-01-08', '2019-03-24 21:58:26', '2019-03-24 21:58:26'),
+(920, 'P32731422018', 331448591, 'Forest Pagac IV', '3273111003', '3273030', '89739 Klocko Mews Apt. 781\nWest Clovisville, IN 54863', 53, 'A90', 'P3273210203', 'Cathy Gateway', 2, 1, NULL, NULL, NULL, NULL, NULL, '2000-11-21', '2019-03-24 21:58:26', '2019-03-24 21:58:26'),
+(921, 'P3273090202514', 314397225, 'Dr. Myron Runolfsdottir II', '3273030002', '3273050', '9894 Lang Fall\nPort Eduardomouth, MA 90285-3973', 68, 'A91', 'P3273030202', 'Lemke Wall', 2, 1, NULL, NULL, NULL, NULL, NULL, '2006-11-13', '2019-03-24 21:58:26', '2019-03-24 21:58:26'),
+(922, 'P327322020295712', 302440705, 'Alexandrine Von', '3273120003', '3273250', '940 Bella Branch Apt. 704\nSouth Princessstad, KS 31608', 64, 'A91', 'P3273010201', 'Hills Junctions', 2, 1, NULL, NULL, NULL, NULL, NULL, '2008-04-16', '2019-03-24 21:58:26', '2019-03-24 21:58:26'),
+(923, 'P3273010204418762', 340368802, 'Dakota Bergnaum', '3273101001', '3273180', '278 Boehm Rapids Apt. 568\nGoldnermouth, GA 85084', 16, 'A91', 'P3273200202', 'Larue Squares', 2, 1, NULL, NULL, NULL, NULL, NULL, '2006-08-14', '2019-03-24 21:58:26', '2019-03-24 21:58:26'),
+(924, 'P327326020153925365', 303533779, 'Providenci Ebert', '3273020005', '3273090', '9786 Friesen Ways\nJackytown, IL 89569-4302', 8, 'A91', 'P3273010204', 'Dee Estates', 3, 1, NULL, NULL, NULL, NULL, NULL, '2011-03-25', '2019-03-24 21:58:26', '2019-03-24 21:58:26'),
+(925, 'P327312020271427508', 327124541, 'Mr. Bernhard Heidenreich', '3273200001', '3273141', '9215 Harber Stravenue\nSouth Neva, CT 17325-6307', 36, 'A91', 'P3273050202', 'Bechtelar Station', 1, 1, NULL, NULL, NULL, NULL, NULL, '2012-09-08', '2019-03-24 21:58:26', '2019-03-24 21:58:26'),
+(926, 'P32732302014169660', 335061767, 'Miss Luz Muller', '3273120003', '3273010', '5012 Bechtelar Springs\nPort Chetmouth, SD 51156-1388', 28, 'A91', 'P3273260201', 'Ebony Junction', 3, 1, NULL, NULL, NULL, NULL, NULL, '2001-08-09', '2019-03-24 21:58:26', '2019-03-24 21:58:26'),
+(927, 'P3273200201157489', 346180396, 'Herminio Greenholt', '3273060002', '3273210', '42376 Taurean Drive Suite 888\nNorth Armando, NM 50391', 9, 'A91', 'P3273080203', 'Wolf Vista', 1, 1, NULL, NULL, NULL, NULL, NULL, '2007-12-18', '2019-03-24 21:58:26', '2019-03-24 21:58:26'),
+(928, 'P327314220177', 330474757, 'Prof. Kenyon Weimann PhD', '3273180002', '3273141', '796 Lowe Extension Suite 275\nSouth Clevelandborough, FL 98380-5361', 42, 'A90', 'P3273111201', 'Dulce Greens', 2, 1, NULL, NULL, NULL, NULL, NULL, '1982-06-21', '2019-03-24 21:58:26', '2019-03-24 21:58:26'),
+(929, 'P327307020257', 325629375, 'Zola VonRueden', '3273142001', '3273080', '228 Rafaela Brooks\nMannfort, OK 91487-7757', 64, 'A91', 'P3273010202', 'Braxton Crossroad', 2, 1, NULL, NULL, NULL, NULL, NULL, '2018-10-30', '2019-03-24 21:58:26', '2019-03-24 21:58:26'),
+(930, 'P327316020251929665', 349994769, 'Braeden Stehr', '3273060007', '3273260', '2551 Watsica Shoals\nSouth Nyasiaberg, FL 78773', 48, 'A90', 'P3273240201', 'Enola Radial', 1, 1, NULL, NULL, NULL, NULL, NULL, '2002-02-06', '2019-03-24 21:58:26', '2019-03-24 21:58:26'),
+(931, 'P32732102033763', 320480986, 'Mr. Philip Zulauf', '3273160008', '3273110', '358 Evangeline Plaza\nBartonfurt, OR 49654-0270', 62, 'A91', 'P3273190201', 'Lauriane Parks', 2, 1, NULL, NULL, NULL, NULL, NULL, '1971-04-15', '2019-03-24 21:58:26', '2019-03-24 21:58:26'),
+(932, 'P32730702048893313', 318144567, 'Alisha White', '3273210002', '3273130', '1689 Strosin Lane Suite 843\nNorth Ottoborough, MN 62971', 27, 'A91', 'P3273180102', 'Craig Isle', 3, 1, NULL, NULL, NULL, NULL, NULL, '2001-10-20', '2019-03-24 21:58:26', '2019-03-24 21:58:26'),
+(933, 'P327307020481173760', 349930728, 'Dr. Harold Shanahan', '3273230005', '3273070', '220 Ellsworth Terrace\nCoymouth, CO 64950', 60, 'A91', 'P3273210202', 'Kihn Overpass', 1, 1, NULL, NULL, NULL, NULL, NULL, '1983-05-22', '2019-03-24 21:58:26', '2019-03-24 21:58:26'),
+(934, 'P327321020365993', 317659310, 'Marian Rogahn', '3273121002', '3273070', '7389 Reva Ports\nBarrowstown, NE 27317-0321', 67, 'A90', 'P3273142202', 'Wyman Springs', 3, 1, NULL, NULL, NULL, NULL, NULL, '1998-10-22', '2019-03-24 21:58:26', '2019-03-24 21:58:26'),
+(935, 'P327308020388', 314399186, 'Ismael Larson IV', '3273110006', '3273120', '86306 Laura Walk\nDominicmouth, MD 17806-0886', 5, 'A90', 'P3273130201', 'Goyette Gardens', 1, 1, NULL, NULL, NULL, NULL, NULL, '1992-09-08', '2019-03-24 21:58:26', '2019-03-24 21:58:26'),
+(936, 'P327311120164156302', 311242144, 'Justyn Ledner Sr.', '3273060004', '3273090', '700 Earnestine Plains Apt. 848\nPort Laurenceview, AZ 95658', 41, 'A90', 'P3273210203', 'Edgardo Village', 2, 1, NULL, NULL, NULL, NULL, NULL, '1970-10-21', '2019-03-24 21:58:26', '2019-03-24 21:58:26'),
+(937, 'P3273110201723', 328340265, 'Audra Kreiger III', '3273190003', '3273240', '2567 Hirthe Street Suite 936\nGaylestad, CT 81065', 1, 'A91', 'P3273120202', 'Quigley Tunnel', 1, 1, NULL, NULL, NULL, NULL, NULL, '2005-03-28', '2019-03-24 21:58:26', '2019-03-24 21:58:26'),
+(938, 'P327316020190295', 344466293, 'Samir Sanford', '3273150005', '3273200', '10380 Schinner Stream Apt. 483\nMartyfurt, AK 97739', 17, 'A90', 'P3273190201', 'Donnelly Brooks', 2, 1, NULL, NULL, NULL, NULL, NULL, '2008-02-19', '2019-03-24 21:58:26', '2019-03-24 21:58:26'),
+(939, 'P327311120268483040', 328814882, 'Chad Wisoky III', '3273160003', '3273120', '19309 Zachariah Walks Suite 079\nEast Skylashire, MI 39465-6507', 67, 'A90', 'P3273210202', 'Fatima Lakes', 1, 1, NULL, NULL, NULL, NULL, NULL, '1980-04-15', '2019-03-24 21:58:26', '2019-03-24 21:58:26'),
+(940, 'P327311020169190220', 344482141, 'Ms. Callie Stehr', '3273180002', '3273200', '701 Schinner Squares Apt. 389\nWest Veronicaland, KY 85244-1752', 61, 'A91', 'P3273120201', 'Gilda Fords', 3, 1, NULL, NULL, NULL, NULL, NULL, '1972-06-22', '2019-03-24 21:58:26', '2019-03-24 21:58:26'),
+(941, 'P3273060201645', 330372911, 'Ms. Rosemarie Walker PhD', '3273060005', '3273190', '438 Conroy Garden\nSouth Reinholdmouth, MD 42790', 25, 'A91', 'P3273200202', 'Kiera Turnpike', 2, 1, NULL, NULL, NULL, NULL, NULL, '1986-05-27', '2019-03-24 21:58:26', '2019-03-24 21:58:26'),
+(942, 'P32732502017438156', 345380108, 'Mr. Isaac Bartoletti DDS', '3273070002', '3273090', '6311 Jalon Cove\nPort Oraland, OR 53329-7009', 63, 'A90', 'P3273050204', 'Jameson Stravenue', 2, 1, NULL, NULL, NULL, NULL, NULL, '1970-10-14', '2019-03-24 21:58:26', '2019-03-24 21:58:26'),
+(943, 'P327305020319815', 348500727, 'Ms. Lauren Langworth', '3273050005', '3273101', '93841 Jalyn Summit Suite 035\nEast Forest, TX 93943-6887', 2, 'A90', 'P3273190201', 'Jerrold Stravenue', 2, 1, NULL, NULL, NULL, NULL, NULL, '2012-03-09', '2019-03-24 21:58:26', '2019-03-24 21:58:26'),
+(944, 'P3273060202155', 316927767, 'Mr. Jennings Shanahan III', '3273070003', '3273040', '698 Genesis Common\nBettyefort, MD 70482', 64, 'A91', 'P3273230203', 'Lennie Squares', 2, 1, NULL, NULL, NULL, NULL, NULL, '1976-06-19', '2019-03-24 21:58:27', '2019-03-24 21:58:27'),
+(945, 'P32731302021692597', 311269810, 'Carmella Wehner', '3273090004', '3273040', '3060 Jacobson Skyway\nLennymouth, NY 85518-7945', 44, 'A91', 'P3273070204', 'Jerald Burgs', 2, 1, NULL, NULL, NULL, NULL, NULL, '1976-09-19', '2019-03-24 21:58:27', '2019-03-24 21:58:27'),
+(946, 'P3273020201120', 344276897, 'Sheila Jaskolski', '3273100006', '3273200', '3363 Bruce Burg\nPort Ray, NM 23623-2426', 20, 'A90', 'P3273210203', 'Johnston Brook', 1, 1, NULL, NULL, NULL, NULL, NULL, '1984-06-03', '2019-03-24 21:58:27', '2019-03-24 21:58:27'),
+(947, 'P32731412015', 342953730, 'Ms. Beulah Turcotte', '3273010001', '3273080', '6409 Leta Mall\nSanfordhaven, MT 09123-0870', 35, 'A90', 'P3273080203', 'Pacocha Corner', 3, 1, NULL, NULL, NULL, NULL, NULL, '2015-10-12', '2019-03-24 21:58:27', '2019-03-24 21:58:27'),
+(948, 'P32732502039625690', 344737184, 'Vella Bahringer', '3273020003', '3273101', '562 Flatley Lake\nTorpbury, VT 31780', 64, 'A90', 'P3273230201', 'Faustino Loaf', 3, 1, NULL, NULL, NULL, NULL, NULL, '1971-05-06', '2019-03-24 21:58:27', '2019-03-24 21:58:27'),
+(949, 'P32730502043', 301398109, 'Miss Clementine Mosciski V', '3273060003', '3273141', '9039 Watsica Row\nNew Sheldon, VA 00084-7287', 19, 'A91', 'P3273110201', 'Cartwright Course', 2, 1, NULL, NULL, NULL, NULL, NULL, '1975-01-08', '2019-03-24 21:58:27', '2019-03-24 21:58:27'),
+(950, '317125065', 317125065, 'Mr. Timmy Feest', '3273190001', '3273190', '263 Marianna ViaLake Johnson, MO 16675', 56, 'A91', '', 'Puskesmas Neglasari', 3, 1, NULL, NULL, NULL, NULL, 'N;', '1988-09-22', '2019-03-24 21:58:27', '2019-07-23 20:16:42'),
+(951, 'P3273111201194261904', 307010014, 'Mr. Mateo Yundt', '3273110003', '3273040', '4830 Orion Station\nWildermanland, FL 42582', 66, 'A90', 'P3273230102', 'Kozey Club', 1, 1, NULL, NULL, NULL, NULL, NULL, '1998-01-31', '2019-03-24 21:58:27', '2019-03-24 21:58:27'),
+(952, 'P327315020179', 329200538, 'Stephan Breitenberg', '3273030005', '3273120', '636 Katelin Cliffs Apt. 087\nWest Georgiannafort, NV 84302-6464', 70, 'A90', 'P3273180102', 'Eda Plains', 3, 1, NULL, NULL, NULL, NULL, NULL, '1992-05-09', '2019-03-24 21:58:27', '2019-03-24 21:58:27'),
+(953, 'P3273050203727628', 336896581, 'Mr. Tre Christiansen I', '3273090001', '3273210', '383 Corwin Gateway\nSammieton, IN 72757-6237', 31, 'A90', 'P3273130201', 'Fiona Valley', 3, 1, NULL, NULL, NULL, NULL, NULL, '1979-04-13', '2019-03-24 21:58:27', '2019-03-24 21:58:27'),
+(954, 'P32731502012063', 329178022, 'Julianne Moen', '3273100005', '3273120', '8653 Nona Cliffs Apt. 201\nCollinmouth, CA 91793', 36, 'A91', 'P3273070202', 'Feeney Heights', 3, 1, NULL, NULL, NULL, NULL, NULL, '2017-03-16', '2019-03-24 21:58:27', '2019-03-24 21:58:27'),
+(955, 'P327305020458949', 307978686, 'Dr. Blanca Parisian Sr.', '3273150006', '3273111', '6030 Omer Drives\nMcCulloughborough, SC 39802', 51, 'A91', 'P3273160202', 'Derrick Roads', 3, 1, NULL, NULL, NULL, NULL, NULL, '2019-02-18', '2019-03-24 21:58:27', '2019-03-24 21:58:27'),
+(956, 'P32730102047', 322241240, 'Mrs. Mia Lowe Sr.', '3273040003', '3273160', '765 Graham Lodge Suite 683\nDickinsonview, DE 01510-5936', 55, 'A90', 'P3273190201', 'Alexandria Lights', 2, 1, NULL, NULL, NULL, NULL, NULL, '2015-09-28', '2019-03-24 21:58:27', '2019-03-24 21:58:27'),
+(957, 'P32732102028226377', 304423106, 'Dr. Jalon Mertz Jr.', '3273200002', '3273240', '285 Wiza Prairie Apt. 381\nTimmyport, LA 17452-3459', 23, 'A91', 'P3273160201', 'Nikolaus Coves', 3, 1, NULL, NULL, NULL, NULL, NULL, '1996-03-14', '2019-03-24 21:58:27', '2019-03-24 21:58:27'),
+(958, 'P327305020377368', 302840248, 'Corene Schinner', '3273240002', '3273111', '7781 Randall Junction\nSouth Zitamouth, OR 54671', 14, 'A91', 'P3273110203', 'Shanon Viaduct', 2, 1, NULL, NULL, NULL, NULL, NULL, '2000-03-14', '2019-03-24 21:58:27', '2019-03-24 21:58:27'),
+(959, 'P3273200202175', 334668653, 'Manuel Carter', '3273190004', '3273060', '623 Rutherford Ferry Suite 173\nLake Myah, CO 39679', 69, 'A90', 'P3273180201', 'Gunnar Turnpike', 2, 1, NULL, NULL, NULL, NULL, NULL, '1979-03-11', '2019-03-24 21:58:27', '2019-03-24 21:58:27'),
+(960, 'P32730602034185358', 341500219, 'Brianne Cole', '3273080001', '3273030', '35534 Roderick Road\nNorwoodstad, IN 52585-3317', 36, 'A90', 'P3273190201', 'Feil Plains', 2, 1, NULL, NULL, NULL, NULL, NULL, '1991-02-06', '2019-03-24 21:58:27', '2019-03-24 21:58:27'),
+(961, 'P327316020259991031', 303354936, 'Vena Abshire V', '3273111001', '3273120', '69496 Emmy Spurs\nSmithberg, NC 97043', 58, 'A91', 'P3273150201', 'Franecki Groves', 1, 1, NULL, NULL, NULL, NULL, NULL, '2017-11-03', '2019-03-24 21:58:27', '2019-03-24 21:58:27'),
+(962, 'P3273100201863276494', 340105816, 'Raheem Ryan Sr.', '3273230006', '3273050', '23623 Liza View Apt. 014\nWest Lulu, MN 22026', 36, 'A91', 'P3273141201', 'Rolfson Garden', 2, 1, NULL, NULL, NULL, NULL, NULL, '1972-10-09', '2019-03-24 21:58:27', '2019-03-24 21:58:27'),
+(963, 'P32731302027370', 303836975, 'Kenyon O\'Conner', '3273230001', '3273150', '78024 Alphonso Port Suite 864\nEphraimfort, SD 41295', 5, 'A91', 'P3273070201', 'Hand Trafficway', 1, 1, NULL, NULL, NULL, NULL, NULL, '1984-05-20', '2019-03-24 21:58:27', '2019-03-24 21:58:27'),
+(964, 'P327311120228175993', 317785389, 'Kendall DuBuque', '3273070001', '3273090', '8582 Runolfsson Square\nWest Rosa, ID 62316-7333', 37, 'A90', 'P3273111202', 'Nicolas Alley', 2, 1, NULL, NULL, NULL, NULL, NULL, '2019-03-23', '2019-03-24 21:58:27', '2019-03-24 21:58:27'),
+(965, 'P32731002024516047', 303247281, 'Prof. Kraig Kunde DDS', '3273230004', '3273100', '7731 Treutel Corners Suite 648\nPort Haleighhaven, CA 13452-2817', 61, 'A90', 'P3273260201', 'Chaya Street', 3, 1, NULL, NULL, NULL, NULL, NULL, '2011-10-14', '2019-03-24 21:58:27', '2019-03-24 21:58:27'),
+(966, 'P3273050101981810689', 310262528, 'Orville Flatley', '3273121001', '3273180', '7169 Molly Divide\nFilibertoton, IA 26428-8554', 40, 'A90', 'P3273030202', 'Robel Expressway', 1, 1, NULL, NULL, NULL, NULL, NULL, '1992-04-19', '2019-03-24 21:58:27', '2019-03-24 21:58:27'),
+(967, 'P327325020326', 309318048, 'Rhiannon Dietrich', '3273120006', '3273110', '883 Marie Avenue\nSouth Rupert, ND 76353', 15, 'A90', 'P3273100204', 'Letha Club', 2, 1, NULL, NULL, NULL, NULL, NULL, '1999-08-26', '2019-03-24 21:58:27', '2019-03-24 21:58:27'),
+(968, 'P32732101017260620', 349408808, 'Ms. Raegan Yundt', '3273210006', '3273111', '6479 Madilyn Cape\nPort Reynold, OK 82718-1102', 60, 'A90', 'P3273120202', 'Douglas Garden', 3, 1, NULL, NULL, NULL, NULL, NULL, '2000-12-07', '2019-03-24 21:58:27', '2019-03-24 21:58:27'),
+(969, 'P32732602026', 305418871, 'Mrs. Ida O\'Connell', '3273010007', '3273120', '91036 Kavon Extension Apt. 506\nKlockotown, CT 64208', 43, 'A91', 'P3273080202', 'Sipes Landing', 1, 1, NULL, NULL, NULL, NULL, NULL, '2001-08-01', '2019-03-24 21:58:27', '2019-03-24 21:58:27'),
+(970, 'P32730102010', 328112354, 'Maritza Wiegand DVM', '3273020006', '3273080', '62392 Mertz Mount\nWest Anjali, ME 42581-1022', 56, 'A91', 'P3273050203', 'Idell Courts', 1, 1, NULL, NULL, NULL, NULL, NULL, '1975-09-03', '2019-03-24 21:58:27', '2019-03-24 21:58:27'),
+(971, 'P327311120256480017', 320174909, 'Prof. Kacey Schumm I', '3273141004', '3273142', '3307 Klein Dam\nNew Dejonmouth, TX 35652', 55, 'A91', 'P3273141203', 'Estell Stravenue', 3, 1, NULL, NULL, NULL, NULL, NULL, '2013-12-28', '2019-03-24 21:58:27', '2019-03-24 21:58:27'),
+(972, 'P3273110201259902', 328477642, 'Elisha Howe', '3273230001', '3273020', '3261 Keebler Squares Apt. 159\nNew Dasiafort, SD 66057', 58, 'A90', 'P3273110201', 'Ernestina Way', 3, 1, NULL, NULL, NULL, NULL, NULL, '1985-07-06', '2019-03-24 21:58:27', '2019-03-24 21:58:27'),
+(973, 'P3273141202791839882', 300683614, 'Christian Ledner', '3273160008', '3273030', '12499 Feest Crest Apt. 445\nOkeyfurt, AR 95302', 27, 'A91', 'P3273200201', 'Green Forks', 3, 1, NULL, NULL, NULL, NULL, NULL, '1974-04-18', '2019-03-24 21:58:27', '2019-03-24 21:58:27'),
+(974, 'P3273160201290753919', 301694383, 'Stevie Hegmann', '3273150006', '3273121', '503 Alisha Expressway Suite 063\nPort Brockstad, MN 96682', 51, 'A90', 'P3273070204', 'Etha Fords', 3, 1, NULL, NULL, NULL, NULL, NULL, '2004-09-23', '2019-03-24 21:58:27', '2019-03-24 21:58:27'),
+(975, 'P327310020438', 312560039, 'Amelia Dietrich', '3273260003', '3273121', '52062 Adams Wall Apt. 545\nZboncakberg, TX 29487-7259', 38, 'A90', 'P3273190202', 'Orion Prairie', 2, 1, NULL, NULL, NULL, NULL, NULL, '1985-07-10', '2019-03-24 21:58:27', '2019-03-24 21:58:27'),
+(976, 'P32732002014687', 331578345, 'Mr. Tyreek Schuster Sr.', '3273121002', '3273142', '125 Kemmer Circle\nEast Maritzaport, UT 98073-3361', 18, 'A91', 'P3273120202', 'Eric Estates', 2, 1, NULL, NULL, NULL, NULL, NULL, '2005-06-13', '2019-03-24 21:58:27', '2019-03-24 21:58:27'),
+(977, 'P3273100204685', 326604179, 'Kristoffer Bayer', '3273150001', '3273020', '369 Metz Forks Apt. 269\nColliermouth, HI 63539-6511', 69, 'A90', 'P3273250203', 'Joyce Flats', 2, 1, NULL, NULL, NULL, NULL, NULL, '1999-05-31', '2019-03-24 21:58:27', '2019-03-24 21:58:27'),
+(978, 'P3273120201707451', 336828368, 'Demetris Upton', '3273130003', '3273260', '515 Bauch Row Suite 268\nLake Juvenal, NJ 41732-2705', 54, 'A90', 'P3273160201', 'Langosh Squares', 3, 1, NULL, NULL, NULL, NULL, NULL, '2014-02-11', '2019-03-24 21:58:27', '2019-03-24 21:58:27'),
+(979, 'P327326020122611', 305562567, 'Julio Fay', '3273040000', '3273200', '343 Weimann Lakes Apt. 131\nSouth Fredland, AK 12332-1209', 6, 'A91', 'P3273110201', 'Langworth Vista', 3, 1, NULL, NULL, NULL, NULL, NULL, '2002-03-15', '2019-03-24 21:58:27', '2019-03-24 21:58:27'),
+(980, 'P3273130202792709', 318574497, 'Prof. Kendra Langworth', '3273141002', '3273020', '64143 Crawford Fort Apt. 949\nBaileehaven, IA 90120-1608', 12, 'A90', 'P3273050203', 'Mitchel Coves', 1, 1, NULL, NULL, NULL, NULL, NULL, '2014-05-31', '2019-03-24 21:58:27', '2019-03-24 21:58:27'),
+(981, 'P32732502033498990', 306372392, 'Gay Turcotte', '3273070001', '3273030', '276 Ernser Island\nKreigerside, AL 95770', 11, 'A91', 'P3273080202', 'Bert Meadows', 2, 1, NULL, NULL, NULL, NULL, NULL, '2008-03-01', '2019-03-24 21:58:27', '2019-03-24 21:58:27'),
+(982, 'P3273142203998508', 333193843, 'Beatrice Spencer', '3273141004', '3273170', '209 Josie Parkway\nTodbury, KS 09021-4665', 26, 'A90', 'P3273070202', 'Angie Pike', 3, 1, NULL, NULL, NULL, NULL, NULL, '2015-09-25', '2019-03-24 21:58:28', '2019-03-24 21:58:28'),
+(983, 'P3273150201765172', 338575425, 'Miss Shanelle Kessler', '3273210005', '3273250', '457 Hailee Views Apt. 269\nNorth Margaretchester, KY 72199-8843', 8, 'A90', 'P3273050101', 'Raynor Freeway', 1, 1, NULL, NULL, NULL, NULL, NULL, '1973-10-27', '2019-03-24 21:58:28', '2019-03-24 21:58:28'),
+(984, 'P3273090202958481080', 305475727, 'Kaylee Fritsch', '3273230005', '3273250', '7821 Joey Trafficway\nShadburgh, FL 06176', 23, 'A91', 'P3273190202', 'Torphy Gateway', 1, 1, NULL, NULL, NULL, NULL, NULL, '1996-07-20', '2019-03-24 21:58:28', '2019-03-24 21:58:28'),
+(985, 'P327320020241', 304780096, 'Angela Bergstrom', '3273111004', '3273121', '76668 Jessyca Branch Suite 791\nBessiechester, KS 10788-5645', 65, 'A91', 'P3273142201', 'Thompson Shoal', 3, 1, NULL, NULL, NULL, NULL, NULL, '2014-09-19', '2019-03-24 21:58:28', '2019-03-24 21:58:28'),
+(986, 'P327310020431613751', 345551526, 'Prof. Kameron Okuneva', '3273190003', '3273250', '706 Fritsch Circles Apt. 589\nWest Lukas, GA 38283-9072', 5, 'A91', 'P3273130201', 'Schuyler Creek', 1, 1, NULL, NULL, NULL, NULL, NULL, '1983-09-23', '2019-03-24 21:58:28', '2019-03-24 21:58:28'),
+(987, 'P32730302011', 300016243, 'Miss Isabelle Leuschke PhD', '3273142004', '3273190', '2015 Blair Branch Apt. 484\nGenovevastad, WV 22436', 14, 'A90', 'P3273142201', 'Angie Brooks', 1, 1, NULL, NULL, NULL, NULL, NULL, '1971-01-02', '2019-03-24 21:58:28', '2019-03-24 21:58:28'),
+(988, 'P32732502015686017', 349556366, 'Nikolas Sauer II', '3273142001', '3273040', '9809 Spinka Pike Suite 901\nFriesenmouth, GA 32586', 65, 'A90', 'P3273111202', 'Langworth Plaza', 1, 1, NULL, NULL, NULL, NULL, NULL, '1994-12-09', '2019-03-24 21:58:28', '2019-03-24 21:58:28'),
+(989, 'P327301020230', 344044527, 'Lysanne Rutherford', '3273180001', '3273030', '94448 Johnnie Harbor Apt. 251\nNadertown, NY 52827', 22, 'A91', 'P3273050204', 'Eloisa Via', 1, 1, NULL, NULL, NULL, NULL, NULL, '1971-07-31', '2019-03-24 21:58:28', '2019-03-24 21:58:28'),
+(990, 'P3273110202366844', 349894448, 'Jacynthe Hauck', '3273130002', '3273030', '20134 Predovic Isle\nQuigleyberg, IA 48651', 23, 'A91', 'P3273220201', 'Vita Dam', 2, 1, NULL, NULL, NULL, NULL, NULL, '1978-02-23', '2019-03-24 21:58:28', '2019-03-24 21:58:28'),
+(991, 'P32730102037507992', 326508507, 'Dr. Federico Towne', '3273250002', '3273111', '6916 Rosendo Meadow Apt. 233\nNorth Theresa, CO 85544', 36, 'A91', 'P3273110202', 'Esther Lights', 1, 1, NULL, NULL, NULL, NULL, NULL, '1990-09-13', '2019-03-24 21:58:28', '2019-03-24 21:58:28'),
+(992, 'P3273060202839072716', 338841884, 'Miss Millie Bayer III', '3273180003', '3273141', '641 Jones Station Apt. 535\nRohanchester, SC 28737', 39, 'A90', 'P3273141201', 'Schmeler Coves', 1, 1, NULL, NULL, NULL, NULL, NULL, '2014-06-02', '2019-03-24 21:58:28', '2019-03-24 21:58:28'),
+(993, 'P32731102037373446', 331280790, 'Lorine Braun', '3273090002', '3273190', '644 Shaun Flats\nMcKenzieport, CO 72986-0908', 31, 'A91', 'P3273160201', 'Batz Corner', 3, 1, NULL, NULL, NULL, NULL, NULL, '1993-09-10', '2019-03-24 21:58:28', '2019-03-24 21:58:28'),
+(994, 'P3273090202406157889', 306363943, 'Faustino Ritchie IV', '3273110006', '3273111', '41317 Vance Village\nEast Albert, LA 11208-3007', 58, 'A90', 'P3273010201', 'Donnelly Mission', 3, 1, NULL, NULL, NULL, NULL, NULL, '1994-11-02', '2019-03-24 21:58:28', '2019-03-24 21:58:28'),
+(995, 'P3273010203367', 302847524, 'Mrs. Lulu Powlowski', '3273090004', '3273130', '54383 Helmer Hills\nNew Reneport, CO 03789', 24, 'A90', 'P3273142202', 'Heller Oval', 1, 1, NULL, NULL, NULL, NULL, NULL, '1975-04-23', '2019-03-24 21:58:28', '2019-03-24 21:58:28'),
+(996, 'P327308020136664', 329503607, 'Libbie Borer', '3273050003', '3273090', '58527 Kertzmann Village\nGladycemouth, NM 77142', 15, 'A90', 'P3273070204', 'Leonard Mission', 1, 1, NULL, NULL, NULL, NULL, NULL, '2005-03-15', '2019-03-24 21:58:28', '2019-03-24 21:58:28'),
+(997, 'P3273060202261759', 318193846, 'Brisa Gleichner', '3273160005', '3273110', '6283 Jolie Unions\nLake Paxton, MA 75092-2380', 7, 'A91', 'P3273010203', 'Gay Via', 2, 1, NULL, NULL, NULL, NULL, NULL, '1971-11-12', '2019-03-24 21:58:28', '2019-03-24 21:58:28'),
+(998, 'P327315020262051', 309210295, 'Rick Lowe', '3273120005', '3273060', '6139 Johathan Plains Apt. 159\nLake Daytonfurt, VA 34071', 34, 'A90', 'P3273120201', 'Jeremy Junction', 1, 1, NULL, NULL, NULL, NULL, NULL, '1978-02-15', '2019-03-24 21:58:28', '2019-03-24 21:58:28'),
+(999, 'P3273090202225131', 346567781, 'Ms. Courtney Heathcote DVM', '3273110005', '3273150', '3890 Gorczany Lakes\nNorth Hanna, TN 31636', 34, 'A91', 'P3273070202', 'Johns Highway', 2, 1, NULL, NULL, NULL, NULL, NULL, '1986-08-03', '2019-03-24 21:58:28', '2019-03-24 21:58:28');
+INSERT INTO `pasien2` (`idpasien`, `kd_pasien`, `nik`, `nama_pasien`, `kd_kel`, `kd_kec`, `alamat`, `umur`, `kd_icd`, `kode_faskes`, `kategori_pasien_wabah`, `status_layanan`, `ns1`, `hemoglobin`, `leukosit`, `hematokrit`, `trombosit`, `scan_lab`, `tgl_pelaynan`, `created_at`, `updated_at`) VALUES
+(1000, 'P3273260202708485', 340887011, 'Fermin Borer', '3273030001', '3273120', '4592 Enola Run\nWest Amiya, DC 20535', 8, 'A90', 'P3273160201', 'Ratke Village', 2, 1, NULL, NULL, NULL, NULL, NULL, '2012-02-27', '2019-03-24 21:58:28', '2019-03-24 21:58:28'),
+(1001, 'P3273150201180834', 339825048, 'Kailyn Aufderhar Sr.', '3273111004', '3273141', '7471 Howe Parks\nNew Ottilieport, TX 14662-7608', 59, 'A91', 'P3273010203', 'Nienow Cape', 2, 1, NULL, NULL, NULL, NULL, NULL, '2002-10-07', '2019-03-24 21:58:28', '2019-03-24 21:58:28'),
+(1002, 'P3273240201771596', 334448602, 'Ms. Reanna Kilback', '3273050006', '3273220', '13495 Melba Throughway\nNew Joelle, KS 42017', 16, 'A90', 'P3273080202', 'Lexie Curve', 3, 1, NULL, NULL, NULL, NULL, NULL, '1979-06-08', '2019-03-24 21:58:28', '2019-03-24 21:58:28'),
+(1003, 'P3273070203106180', 315437783, 'Miss Susana Bahringer Sr.', '3273170004', '3273120', '95598 Beahan Stream\nWest Maxie, MS 10285', 29, 'A90', 'P3273050204', 'Zachery Tunnel', 2, 1, NULL, NULL, NULL, NULL, NULL, '2000-03-23', '2019-03-24 21:58:28', '2019-03-24 21:58:28'),
+(1004, 'P327303020124', 349461956, 'Dashawn Kilback MD', '3273240003', '3273130', '2921 Block Fork\nNorth Jaden, MA 81745', 35, 'A90', 'P3273100203', 'Muriel Motorway', 3, 1, NULL, NULL, NULL, NULL, NULL, '1988-02-04', '2019-03-24 21:58:28', '2019-03-24 21:58:28'),
+(1005, 'P327308020133', 322456695, 'Kariane Mosciski', '3273150001', '3273200', '617 Urban Valley\nSouth Pansyberg, IN 31242-9926', 59, 'A90', 'P3273100201', 'Morissette Spring', 2, 1, NULL, NULL, NULL, NULL, NULL, '1978-08-01', '2019-03-24 21:58:28', '2019-03-24 21:58:28'),
+(1006, 'P3273010204156315813', 329423044, 'Agustin McClure III', '3273050005', '3273121', '3625 Blanda Street Suite 507\nEichmannstad, WA 39494-5562', 44, 'A91', 'P3273210101', 'Predovic Cove', 2, 1, NULL, NULL, NULL, NULL, NULL, '1970-11-28', '2019-03-24 21:58:28', '2019-03-24 21:58:28'),
+(1007, 'P327314220157644', 300369540, 'Arlo Cassin', '3273160003', '3273142', '7083 Erwin Common Suite 840\nIsaiahhaven, WA 32146-0747', 34, 'A91', 'P3273160103', 'Mraz Corners', 2, 1, NULL, NULL, NULL, NULL, NULL, '2018-05-24', '2019-03-24 21:58:28', '2019-03-24 21:58:28'),
+(1008, 'P32732302034', 347230143, 'Mr. Enrico Zieme', '3273142002', '3273180', '769 Lonzo Manors Suite 515\nMaryfort, KY 17369', 8, 'A91', 'P3273160201', 'Hamill Lock', 1, 1, NULL, NULL, NULL, NULL, NULL, '1999-04-03', '2019-03-24 21:58:28', '2019-03-24 21:58:28'),
+(1009, 'P3273070203599733154', 320682462, 'Dr. Brandt Leannon V', '3273070002', '3273050', '28353 Dejuan Bypass Suite 842\nRolfsonborough, WY 73424', 17, 'A91', 'P3273230201', 'Lakin Streets', 2, 1, NULL, NULL, NULL, NULL, NULL, '2008-08-22', '2019-03-24 21:58:28', '2019-03-24 21:58:28'),
+(1010, 'P3273010203981243906', 324453394, 'Elody Marvin', '3273030001', '3273230', '8723 Orn Park Apt. 917\nMalvinashire, WI 07427', 65, 'A91', 'P3273100201', 'Summer Green', 1, 1, NULL, NULL, NULL, NULL, NULL, '2000-01-16', '2019-03-24 21:58:28', '2019-03-24 21:58:28'),
+(1011, 'P32730102017870602', 314436080, 'Dovie Wiza PhD', '3273050003', '3273090', '229 Tyree Path Suite 288\nLeschville, GA 76259', 60, 'A91', 'P3273170202', 'Quinton Springs', 2, 1, NULL, NULL, NULL, NULL, NULL, '2003-01-09', '2019-03-24 21:58:28', '2019-03-24 21:58:28'),
+(1012, 'P3273070203607352', 348913897, 'Murl O\'Keefe Sr.', '3273120006', '3273210', '8312 Jose Park\nGaylordside, MS 79414', 66, 'A90', 'P3273250202', 'Block Trafficway', 1, 1, NULL, NULL, NULL, NULL, NULL, '1985-12-27', '2019-03-24 21:58:28', '2019-03-24 21:58:28'),
+(1013, 'P32732002025825251', 317250835, 'Prof. Hillard Conroy', '3273220001', '3273101', '5413 Harber Parks Apt. 566\nLake Keaton, IN 70713-0503', 16, 'A90', 'P3273030201', 'Douglas Dale', 2, 1, NULL, NULL, NULL, NULL, NULL, '2007-08-03', '2019-03-24 21:58:28', '2019-03-24 21:58:28'),
+(1014, 'P32731302038362119', 300845484, 'Adolphus Boyer', '3273141004', '3273080', '350 O\'Hara Fields Suite 417\nKenborough, ID 84348-3372', 40, 'A90', 'P3273210202', 'Kitty Plain', 2, 1, NULL, NULL, NULL, NULL, NULL, '2005-08-19', '2019-03-24 21:58:28', '2019-03-24 21:58:28'),
+(1015, 'P3273142202723', 327933093, 'Dr. Evert Maggio', '3273230001', '3273130', '63502 Emmalee Oval\nWest Sammiemouth, IL 60194', 10, 'A90', 'P3273020202', 'Cornell Unions', 3, 1, NULL, NULL, NULL, NULL, NULL, '2004-08-12', '2019-03-24 21:58:28', '2019-03-24 21:58:28'),
+(1016, 'P327306020375', 322806608, 'Krystal Block DDS', '3273121002', '3273101', '77993 Ian Mountains Suite 679\nTrudieborough, NE 44656', 34, 'A90', 'P3273210203', 'Raynor Ferry', 3, 1, NULL, NULL, NULL, NULL, NULL, '2013-09-21', '2019-03-24 21:58:28', '2019-03-24 21:58:28'),
+(1017, 'P32730202017', 347260694, 'Marcelino Cruickshank', '3273240005', '3273050', '1305 Joshuah Lights\nCronaland, ME 44115-6038', 19, 'A91', 'P3273210202', 'Goyette Park', 3, 1, NULL, NULL, NULL, NULL, NULL, '1978-02-14', '2019-03-24 21:58:28', '2019-03-24 21:58:28'),
+(1018, 'P327302020171577226011231', 71577226011231, 'John Smith', '3273190005', '3273190', 'Jalan Jalan', 99, 'A91', 'P3273020201', 'RS Galuh Pradana', NULL, NULL, '12', '5000', '10', '90000', 'a:4:{i:0;s:44:\"1553490102.benjamin-child-15826-unsplash.jpg\";i:1;s:31:\"1553490106.bromo-homepage-X.jpg\";i:2;s:26:\"1553490111.happy-robot.png\";i:3;s:48:\"1553490118.eutah-mizushima-26887-unsplash(2).jpg\";}', NULL, '2019-03-24 22:02:00', '2019-03-24 22:02:00'),
+(1019, '3437309325231', 3437309325231, 'Saranto Sulistiyo', '3273120000', '3273120', '5566 Kilback InletEast Jimmy, IL 23043-4339', 37, 'A91', '', 'Puskesmas Neglasari', NULL, NULL, '13', '4000', '30', '198000', 'a:1:{i:0;s:24:\"1563949384.hasil-lab.jpg\";}', NULL, '2019-07-23 23:23:10', '2019-07-23 23:23:10'),
+(1020, 'P32730202013273062809990005', 3273062809990005, 'Saranto Sulistiyo', '3273190001', '3273190', '5566 Kilback InletEast Jimmy, IL 23043-4339', 37, 'A90', 'P3273020201', 'RS Galuh Pradana', NULL, 1, NULL, NULL, NULL, NULL, 'a:2:{i:0;s:19:\"1565244256.bg-1.jpg\";i:1;s:19:\"1565244359.bg-4.jpg\";}', NULL, '2019-08-07 23:04:22', '2019-08-07 23:06:02');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `password_resets`
+--
+
+CREATE TABLE `password_resets` (
+  `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `puskesmas`
+--
+
+CREATE TABLE `puskesmas` (
+  `idpus` int(10) UNSIGNED NOT NULL,
+  `nama_puskesmas` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kode_puskesmas` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kode_kelurahan` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `kode_kecamatan` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `telp_puskesmas` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `lokasi_lat_puskesmas` decimal(8,2) NOT NULL,
+  `lokasi_long_puskesmas` decimal(8,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `puskesmas`
+--
+
+INSERT INTO `puskesmas` (`idpus`, `nama_puskesmas`, `kode_puskesmas`, `kode_kelurahan`, `kode_kecamatan`, `created_at`, `updated_at`, `telp_puskesmas`, `lokasi_lat_puskesmas`, `lokasi_long_puskesmas`) VALUES
+(1, 'UPT CIBUNTU', 'P3273010201', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(2, 'CIJERAH', 'P3273010202', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(3, 'CIGONDEWAH', 'P3273010203', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(4, 'UPT CARINGIN', 'P3273010204', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(5, 'SUKAHAJI', 'P3273020201', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(6, 'CIBOLERANG', 'P3273020202', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(7, 'SUKAPAKIR', 'P3273030201', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(8, 'UPT CETARIP', 'P3273030202', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(9, 'UPT KOPO', 'P3273040201', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(10, 'UPT PAGARSIH', 'P3273050101', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(11, 'LIO GENTENG', 'P3273050202', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(12, 'PELINDUNG HEWAN', 'P3273050203', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(13, 'ASTANA ANYAR', 'P3273050204', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(14, 'UPT PASUNDAN', 'P3273060201', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(15, 'MOCH. RAMDAN', 'P3273060202', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(16, 'PASIR LUYU', 'P3273060203', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(17, 'UPT TALAGA BODAS', 'P3273070201', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(18, 'SURYALAYA', 'P3273070202', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(19, 'CIJAGRA LAMA', 'P3273070203', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(20, 'CIJAGRA BARU', 'P3273070204', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(21, 'PASAWAHAN', 'P3273080201', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(22, 'MENGGER', 'P3273080202', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(23, 'UPT KUJANG SARI', 'P3273080203', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(24, 'UPT MARGAHAYU RAYA', 'P3273090201', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(25, 'SEKEJATI', 'P3273090202', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(26, 'DERWATI', 'P3273100201', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(27, 'UPT CIPAMOKOLAN', 'P3273100202', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(28, 'UPT RIUNG BANDUNG', 'P3273100203', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(29, 'CEMPAKA ARUM', 'P3273100204', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(30, 'CILENGKRANG', 'P3273110201', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(31, 'UPT CIBIRU', 'P3273110202', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(32, 'CIPADUNG', 'P3273110203', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(33, 'PANYILEUKAN', 'P3273110204', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(34, 'UPT PANGHEGAR', 'P3273111201', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(35, 'PANYILEUKAN', 'P3273111202', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(36, 'UPT CINAMBO', 'P3273120201', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(37, 'UPT UJUNG BERUNG INDAH', 'P3273120202', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(38, 'UPT ARCAMANIK', 'P3273130201', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(39, 'UPT SINDANG JAYA', 'P3273130202', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(40, 'RUSUNAWA', 'P3273130203', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(41, 'UPT GRIYA ANTAPANI', 'P3273141201', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(42, 'ANTAPANI', 'P3273141202', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(43, 'JAJAWAY', 'P3273141203', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(44, 'MANDALA MEKAR', 'P3273142201', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(45, 'PAMULANG', 'P3273142202', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(46, 'GIRIMANDE', 'P3273142203', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(47, 'UPT BABAKANSARI', 'P3273150201', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(48, 'BABAKAN SURABAYA', 'P3273150202', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(49, 'UPT IBRAHIM ADJIE', 'P3273160103', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(50, 'AHMAD YANI', 'P3273160201', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(51, 'GUMURUH', 'P3273160202', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(52, 'UPT TAMBLONG', 'P3273170201', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(53, 'BALAI KOTA', 'P3273170202', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(54, 'UPT GARUDA', 'P3273180102', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(55, 'BABATAN', 'P3273180201', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(56, 'UPT PASIR KALIKI', 'P3273190201', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(57, 'SUKARAJA', 'P3273190202', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(58, 'UPT SALAM', 'P3273200201', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(59, 'TAMAN SARI', 'P3273200202', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(60, 'UPT PADASUKA', 'P3273210101', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(61, 'PASIRLAYUNG', 'P3273210202', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(62, 'JATIHANDAP', 'P3273210203', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(63, 'CIKUTRA LAMA', 'P3273220201', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(64, 'UPT NEGLASARI', 'P3273220202', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(65, 'UPT PUTER', 'P3273230102', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(66, 'DAGO', 'P3273230201', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(67, 'SEKELOA', 'P3273230203', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(68, 'SUKA WARNA', 'P3273240201', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(69, 'UPT SUKA JADI', 'P3273240202', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(70, 'KARANG SETRA', 'P3273240203', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(71, 'LEDENG', 'P3273250201', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(72, 'UPT SUKA RASA', 'P3273250202', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(73, 'SARIJADI', 'P3273250203', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(74, 'CIPAKU', 'P3273260201', NULL, NULL, NULL, NULL, '', '0.00', '0.00'),
+(75, 'UPT CIUMBULEUIT', 'P3273260202', NULL, NULL, NULL, NULL, '', '0.00', '0.00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `rumahsakit`
+--
+
+CREATE TABLE `rumahsakit` (
+  `idrs` int(10) UNSIGNED NOT NULL,
+  `nama_rs` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kode_rs` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `alamat_rs` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `telp_rs` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `lokasi_lat_rs` double NOT NULL,
+  `lokasi_long_rs` double NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `rumahsakit`
+--
+
+INSERT INTO `rumahsakit` (`idrs`, `nama_rs`, `kode_rs`, `alamat_rs`, `telp_rs`, `lokasi_lat_rs`, `lokasi_long_rs`, `created_at`, `updated_at`) VALUES
+(1, 'RSUD Hasan Sadikin', 'R123799512', 'Jln Ujung Berung No 106', '02286012312', -6.89868, 107.598236, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email_verified_at` timestamp NULL DEFAULT NULL,
+  `password` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kode_faskes` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `alamat_faskes` text COLLATE utf8mb4_unicode_ci,
+  `telp_faskes` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `kode_kecamatan` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `kode_kelurahan` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `role` int(3) DEFAULT NULL,
+  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `kode_faskes`, `alamat_faskes`, `telp_faskes`, `kode_kecamatan`, `kode_kelurahan`, `role`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'Puskesmas Neglasari', 'neglasari@bandung.dinkes.go.id', NULL, '$2y$10$/ffzKEv9xg.4hujLZNoPdOo39SRto5p2tGSVvKOu13A7mI9szmdkC', 'P3273020201', '', '', '', '', 2, 'bH1D9tOYu2RCsCoeNtR5wAxxhVMh480OvzIpgROCb22oXL3MDkUjd9TCGDMs', '2019-03-13 23:58:58', '2019-08-08 18:25:38'),
+(2, 'RS Galuh Pradana', 'rs@galuhpradana.com', '2019-03-15 21:36:54', '$2y$10$nr9t1smiQiWkfnrSA9.02OMREmwpvpH2ATlajCvGbLhixe1pLENka', 'P3273020201', '', '', '', '', 3, 'X2mq2DceK2d1v37BJHIkUwr0g98v4ud1dG95MVnahLETtRvUaRK1YyIMQhOc', '2019-03-15 21:35:15', '2019-08-07 23:53:01'),
+(3, 'Dinkes Kota', 'dinkes@dinkes.bandung.go.id', '2019-08-07 23:19:20', '$2y$10$JiMrZlTctTZsypI4rBQTk.z2QIdheUdHz1jVLiyDMAo8rL3hwgeGW', NULL, NULL, NULL, NULL, NULL, 1, NULL, '2019-08-07 23:18:43', '2019-08-07 23:19:20');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `kecamatan`
+--
+ALTER TABLE `kecamatan`
+  ADD PRIMARY KEY (`idkec`),
+  ADD KEY `kode_kecamatan` (`kode_kecamatan`),
+  ADD KEY `nama_kecamatan` (`nama_kecamatan`);
+
+--
+-- Indexes for table `kelurahan`
+--
+ALTER TABLE `kelurahan`
+  ADD PRIMARY KEY (`idkel`);
+
+--
+-- Indexes for table `log_aktivitas`
+--
+ALTER TABLE `log_aktivitas`
+  ADD PRIMARY KEY (`logid`);
+
+--
+-- Indexes for table `migrations`
+--
+ALTER TABLE `migrations`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `pasien2`
+--
+ALTER TABLE `pasien2`
+  ADD PRIMARY KEY (`idpasien`),
+  ADD UNIQUE KEY `pasien2_nik_unique` (`nik`);
+
+--
+-- Indexes for table `password_resets`
+--
+ALTER TABLE `password_resets`
+  ADD KEY `password_resets_email_index` (`email`);
+
+--
+-- Indexes for table `puskesmas`
+--
+ALTER TABLE `puskesmas`
+  ADD PRIMARY KEY (`idpus`);
+
+--
+-- Indexes for table `rumahsakit`
+--
+ALTER TABLE `rumahsakit`
+  ADD PRIMARY KEY (`idrs`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `users_email_unique` (`email`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `kecamatan`
+--
+ALTER TABLE `kecamatan`
+  MODIFY `idkec` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+
+--
+-- AUTO_INCREMENT for table `kelurahan`
+--
+ALTER TABLE `kelurahan`
+  MODIFY `idkel` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=154;
+
+--
+-- AUTO_INCREMENT for table `log_aktivitas`
+--
+ALTER TABLE `log_aktivitas`
+  MODIFY `logid` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+
+--
+-- AUTO_INCREMENT for table `migrations`
+--
+ALTER TABLE `migrations`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT for table `pasien2`
+--
+ALTER TABLE `pasien2`
+  MODIFY `idpasien` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1021;
+
+--
+-- AUTO_INCREMENT for table `puskesmas`
+--
+ALTER TABLE `puskesmas`
+  MODIFY `idpus` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
+
+--
+-- AUTO_INCREMENT for table `rumahsakit`
+--
+ALTER TABLE `rumahsakit`
+  MODIFY `idrs` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
