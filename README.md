@@ -31,3 +31,11 @@ ToDo
 - pemetaan berdasarkan kecamatan, cari peta kelurahan 
 - buat chart untuk kasus perbulan, pertahun dan per minggu, chartnya bisa pake donut, atau linechart
 - buat fitur export laporan kedalam bentuk xlsx
+
+ToDo for Apps API, setelah yg diatas beres
+- User dapat signup, login, edit profile dan melakukan laporan gigitan nyamuk (bikin model, & table baru)
+ 
+- Laporan penyakit (API dari web) dan juga laporan kasus gigitan nyamuk (laporan pengguna). Laporan pengguna dan faskes menggunakan warna berbeda, - DBD Hotspot memperlihatkan peta yang diberi warna gelap berdasarkan laporan terkonfirmasi dari fasilitas kesehatan (API dari web) 
+- Alamat, gender, umur, dan bisa menambah histori kesehatan (laporan / konfirmasi) DBD - Rumah sakit terdekat / petunjuk ke RS terdekat jika pengguna termasuk dalam area hotspot dan melaporkan gigitan nyamuk atau melaporkan gejala DBD 
+- Educational Video (Api dari dari web) - Berita (Api dari web) - Links website dinas kesehatan terdekat 
+- Reminder Alert : Berupa reminder notification dari web API dan berupa tips / trik pencegahan praktis  
