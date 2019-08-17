@@ -11,7 +11,7 @@ class DashboardController extends Controller
 {
     public function dashboard(){
 
-    $data = DB::table('pasien2')
+    $data = DB::table('laporanfaskes')
     
 ->select(DB::raw('count(kd_kec) as jumlah, kd_kec'))
 ->groupBy('kd_kec')

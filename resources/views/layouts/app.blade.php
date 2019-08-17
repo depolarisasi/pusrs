@@ -94,6 +94,14 @@
                   </li>
                   @endif
                   <li class="nav-item">
+                  <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown"><i class="fe fe-box"></i>Pasien</a>
+                    <div class="dropdown-menu dropdown-menu-arrow">
+                    <a href="{{url('pasien/new')}}" class="dropdown-item ">Pasien Baru</a>
+                      <a href="{{url('pasien/upload')}}" class="dropdown-item ">Upload Pasien Baru</a>
+                      <a href="{{url('pasien')}}" class="dropdown-item ">Semua Pasien</a>
+                    </div>
+                  </li>
+                  <li class="nav-item">
                   <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown"><i class="fe fe-box"></i>Pelaporan</a>
                     <div class="dropdown-menu dropdown-menu-arrow">
                     <a href="{{url('laporan/new')}}" class="dropdown-item ">Pelaporan Baru</a>

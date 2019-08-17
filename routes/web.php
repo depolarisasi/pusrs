@@ -76,3 +76,20 @@ Route::post('api/laporan/','LaporanController@Api')->middleware('api'); //API LA
 
 Route::get('laporan/upload','LaporanController@UploadLaporanBaru')->middleware('auth'); //upload laporan
 Route::post('laporan/upload','LaporanController@SaveUploadLaporanBaru')->middleware('auth'); //proses laporan
+
+
+/*/////////////////////////////////////////////////////////////////////
+Pasien
+*//////////////////////////////////////////////////////////////////////
+
+Route::get('pasien/','PasienController@SemuaPasien')->middleware('auth'); //tampilkan semua Pasien
+Route::get('pasien/new','PasienController@PasienBaru')->middleware('auth'); //tambah 1 Pasien
+Route::post('pasien/new','PasienController@SavePasienBaru')->middleware('auth'); //proses 1 Pasien
+Route::get('pasien/detail/{id}','PasienController@DetailPasien')->middleware('auth');
+Route::get('pasien/edit/{id}','PasienController@EditPasien')->middleware('auth'); //ubah 1 Pasien
+Route::post('pasien/update','PasienController@UpdatePasien')->middleware('auth'); //update 1 Pasien
+Route::get('pasien/delete/{id}','PasienController@HapusPasien')->middleware('auth'); //hapus Pasien
+Route::post('api/pasien/','PasienController@Api')->middleware('api'); //API Pasien
+
+Route::get('pasien/upload','PasienController@UploadPasienBaru')->middleware('auth'); //upload Pasien
+Route::post('pasien/upload','PasienController@SaveUploadPasienBaru')->middleware('auth'); //proses Pasien

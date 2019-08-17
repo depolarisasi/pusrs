@@ -13,6 +13,7 @@ use File;
 use Response;
 use Storage;
 use App\Pasien;
+use App\LaporanFaskes;
 
 class ApiController extends Controller
 {
@@ -99,9 +100,9 @@ public function getkel(Request $request){
 
     public function apiside(Request $request){ //untuk sidebar sebelah peta depan
     
-    $data = DB::table('pasien2')
-    ->where('pasien2.kd_kec',$request->kode_kec)
-    ->join('kelurahan','kelurahan.kode_kelurahan','=','pasien2.kd_kel')
+    $data = DB::table('laporanfaskes')
+    ->where('laporanfaskes.kd_kec',$request->kode_kec)
+    ->join('kelurahan','kelurahan.kode_kelurahan','=','laporanfaskes.kd_kel')
     ->select(DB::raw('nama_kelurahan, count(*) as jumlah'))
     ->groupby('nama_kelurahan')
     
@@ -111,11 +112,11 @@ public function getkel(Request $request){
     }
 
     public function apitabel(Request $request){ //untuk tabel dibawah peta
-    $data2 = Pasien::where('pasien2.kd_kec',$request->kode_kec)
-    ->join('kecamatan','kecamatan.kode_kecamatan','=','pasien2.kd_kec')
-    ->join('kelurahan','kelurahan.kode_kelurahan','=','pasien2.kd_kel')
-    ->join('puskesmas','puskesmas.kode_puskesmas','=','pasien2.kode_faskes')
-    ->select('pasien2.*', 'kecamatan.nama_kecamatan','kelurahan.nama_kelurahan', 'puskesmas.nama_puskesmas')
+    $data2 = LaporanFaskes::where('laporanfaskes.kd_kec',$request->kode_kec)
+    ->join('kecamatan','kecamatan.kode_kecamatan','=','laporanfaskes.kd_kec')
+    ->join('kelurahan','kelurahan.kode_kelurahan','=','laporanfaskes.kd_kel')
+    ->join('puskesmas','puskesmas.kode_puskesmas','=','laporanfaskes.kode_faskes')
+    ->select('laporanfaskes.*', 'kecamatan.nama_kecamatan','kelurahan.nama_kelurahan', 'puskesmas.nama_puskesmas')
     ->get();
     return $data2->all();
     }

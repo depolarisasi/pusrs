@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Pasien;
+use App\LaporanFaskes;
 use App\Kecamatan;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -22,7 +22,7 @@ class LaporanController extends Controller
 * Apakah NIK sudah terdaftar ?
 */
 public function checkNIK($nik){
-    $pasien = Pasien::where('nik',$nik)->first(); 
+    $pasien = LaporanFaskes::where('nik',$nik)->first(); 
     if($pasien){
             return true;
     }else {
@@ -42,9 +42,9 @@ public function pilihICD($hb, $leukosit, $hematokrit, $trombosit){
  }
 }
 
-public function addToLog($idpasien, $namapasien, $action){
+public function addToLog($idlaporan, $namapasien, $action){
     $log = new Log;
-    $log->log_event = "Laporan ".$idpasien." (".$namapasien.")".$action;
+    $log->log_event = "Laporan ".$idlaporan." (".$namapasien.")".$action;
     $log->log_user = Auth::user()->id;
     $log->save();
 }
@@ -53,7 +53,7 @@ public function addToLog($idpasien, $namapasien, $action){
     //PUSKESMAS
     public function SemuaLaporan(){
           $kecamatan = Kecamatan::get();
-          $data = Pasien::join('puskesmas','puskesmas.kode_puskesmas','=','pasien2.kode_faskes')
+          $data = LaporanFaskes::join('puskesmas','puskesmas.kode_puskesmas','=','pasien2.kode_faskes')
          ->join('kecamatan','kecamatan.kode_kecamatan','=','pasien2.kd_kec')
          ->join('kelurahan','kelurahan.kode_kelurahan','=','pasien2.kd_kel')
          ->select('puskesmas.nama_puskesmas','pasien2.*', 'kecamatan.nama_kecamatan','kelurahan.nama_kelurahan')
@@ -66,11 +66,11 @@ public function addToLog($idpasien, $namapasien, $action){
     }
 
     public function DetailLaporan($id){
-         $detail = Pasien::join('puskesmas','puskesmas.kode_puskesmas','=','pasien2.kode_faskes')
+         $detail = LaporanFaskes::join('puskesmas','puskesmas.kode_puskesmas','=','pasien2.kode_faskes')
          ->join('kecamatan','kecamatan.kode_kecamatan','=','pasien2.kd_kec')
          ->join('kelurahan','kelurahan.kode_kelurahan','=','pasien2.kd_kel')
          ->select('puskesmas.nama_puskesmas','pasien2.*', 'kecamatan.nama_kecamatan','kelurahan.nama_kelurahan')
-         ->where('idpasien',$id)->first();
+         ->where('idlaporan',$id)->first();
          return view('laporan.detaillaporan',compact('detail'));
     }
 
@@ -115,9 +115,9 @@ public function addToLog($idpasien, $namapasien, $action){
 
 
             try{
-                $this->addToLog($request->idpasien,$request->nama_pasien," Ditambahkan"); //add to log
+                $this->addToLog($request->idlaporan,$request->nama_pasien," Ditambahkan"); //add to log
                // $log = new Log;
-               // $log->log_event = "Laporan Baru ".$insert->idpasien." (".$insert->nama_pasien.")";
+               // $log->log_event = "Laporan Baru ".$insert->idlaporan." (".$insert->nama_pasien.")";
                // $log->log_user = Auth::user()->id;
                // $log->save();
                 $insert->save();
@@ -133,11 +133,11 @@ public function addToLog($idpasien, $namapasien, $action){
     }
 
     public function EditLaporan($id){
-        $update = Pasien::where('idpasien',$id)->first();
-        $edit = Pasien::join('kecamatan','kecamatan.kode_kecamatan','=','pasien2.kd_kec')
+        $update = LaporanFaskes::where('idlaporan',$id)->first();
+        $edit = LaporanFaskes::join('kecamatan','kecamatan.kode_kecamatan','=','pasien2.kd_kec')
         ->join('kelurahan','kelurahan.kode_kelurahan','=','pasien2.kd_kel')
         ->select('pasien2.*', 'kecamatan.nama_kecamatan','kelurahan.nama_kelurahan')
-        ->where('idpasien',$id)->first();
+        ->where('idlaporan',$id)->first();
         if($edit->scan_lab != NULL){
         $unserial = unserialize($edit->scan_lab);
         
@@ -149,7 +149,7 @@ public function addToLog($idpasien, $namapasien, $action){
     }
 
     public function UpdateLaporan(Request $request){
-        $insert = Pasien::where('idpasien',$request->idpasien)->first();
+        $insert = LaporanFaskes::where('idlaporan',$request->idlaporan)->first();
         $insert->kd_pasien = Auth::user()->kode_faskes.$request->nik;
         $insert->nik = $request->nik;
         $insert->nama_pasien = $request->nama_pasien;
@@ -203,7 +203,7 @@ public function addToLog($idpasien, $namapasien, $action){
 
        
         try{
-            $this->addToLog($request->idpasien,$request->nama_pasien," Diubah"); //tambahkan ke log
+            $this->addToLog($request->idlaporan,$request->nama_pasien," Diubah"); //tambahkan ke log
             $insert->update(); //update record lama
         }catch(QE $e){ return $e; } //show db error message
 
@@ -214,10 +214,10 @@ public function addToLog($idpasien, $namapasien, $action){
 
 
     public function HapusLaporan($id){
-        $hapus = Pasien::where('idpasien',$id)->first();
+        $hapus = LaporanFaskes::where('idlaporan',$id)->first();
         if($hapus) {
             try{
-                $this->addToLog($request->idpasien,$request->nama_pasien," Dihapus"); //tambahkan ke log
+                $this->addToLog($request->idlaporan,$request->nama_pasien," Dihapus"); //tambahkan ke log
                 $hapus->delete(); //delete
             }catch(QE $e){ return $e;}
         }else {
