@@ -1,0 +1,13 @@
+To Do List for Laras
+
+- Implementasi API untuk login, signup di apps (rest api)
+referensi : pakai JWT-Auth, tools untuk ceknya pakai Postman
+https://blog.pusher.com/laravel-jwt/
+user bisa register (signup), & login pakai email
+field buat registernya cukup username, email, password, dan role (user biasa rolenya 4)
+
+-  Buat fitur article
+buat model & migration dengan field : judul, slug,  penulis (id user), isi article, tanggal, foto article besar, thumbnail kecil 
+buat controller untuk CRUD dari admin
+buat API nya untuk dapetin list article (5 buah), sama detail article
+referensi : untuk upload image, copas code yg udh dibuat di controller laporan, pakai Intervention Image
