@@ -30,4 +30,10 @@ Route::post('delete-lab', 'ApiController@apidelete');
 
 Route::post('apiside/','ApiController@apiside');
 
-Route::post('apitabel/','ApiController@apitabel');
+Route::post('register', 'ApiController@register');
+Route::post('login', 'ApiController@login');
+    Route::get('open', 'ApiController@open');
+    Route::group(['middleware' => ['jwt.verify']], function() {
+        Route::get('user', 'ApiController@getAuthenticatedUser');
+        Route::get('closed', 'ApiController@closed');
+    });

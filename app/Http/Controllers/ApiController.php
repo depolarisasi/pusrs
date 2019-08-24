@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Kecamatan;
 use App\Kelurahan;
 use DB;
+use App\User; 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image as Image;
@@ -14,6 +15,10 @@ use Response;
 use Storage;
 use App\Pasien;
 use App\LaporanFaskes;
+use Illuminate\Support\Facades\Auth; 
+use Illuminate\Support\Facades\Hash;
+use JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class ApiController extends Controller
 {
@@ -119,5 +124,101 @@ public function getkel(Request $request){
     ->select('laporanfaskes.*', 'kecamatan.nama_kecamatan','kelurahan.nama_kelurahan', 'puskesmas.nama_puskesmas')
     ->get();
     return $data2->all();
+    }
+
+    public $successStatus = 200;
+/** 
+     * login api 
+     * 
+     * @return \Illuminate\Http\Response 
+     */ 
+    public function login(Request $request){ 
+
+
+        if (count(DB::Select('select password from users where email = ? ',[$request->email] )) > 0){
+
+        $user = DB::Select('select password from users where email = ? ',[$request->email] );
+
+        $passlama = Hash::check($request->password,$user[0]->password);
+            if($passlama){
+                $credentials = $request->only('email', 'password');
+                $token = JWTAuth::attempt($credentials);
+                return response()->json(compact('token'));
+            }
+            else{
+                return response()->json(['error'=>'password salah'], 400); 
+
+            }
+        }
+        else{
+            return response()->json(['error'=>'email salah'], 400); 
+        }
+
+        // if(Auth::attempt(['email' => request('email'), 'password' => request('password')])){ 
+        //     $user = Auth::user(); 
+        //     $success['token'] =  $user->createToken('MyApp')-> accessToken; 
+        //     return response()->json(['success' => $success], $this-> successStatus); 
+        // } 
+        // else{ 
+        //     return response()->json(['error'=>'Unauthorised'], 401); 
+        // } 
+
+
+    }
+/** 
+     * Register api 
+     * 
+     * @return \Illuminate\Http\Response 
+     */ 
+    public function register(Request $request) 
+    { 
+        $user = new User ();
+        $user->name=$request->name;
+        $user->email=$request->email;
+        $user->password=bcrypt($request->password);
+        $user->role="4";
+       
+        if ($user->save()== true){
+            
+            $token = JWTAuth::fromUser($user);
+return response()->json(['success'=>$token], 200); 
+    }
+else{
+    return response()->json(['error'=>'GABISA!'], 401); 
+}}
+/** 
+     * details api 
+     * 
+     * @return \Illuminate\Http\Response 
+     */ 
+    public function details() 
+    { 
+        $user = Auth::user(); 
+
+        return response()->json(['success' => $user], $this-> successStatus); 
+    } 
+    public function getAuthenticatedUser()
+    {
+            try {
+
+                    if (! $user = JWTAuth::parseToken()->authenticate()) {
+                            return response()->json(['user_not_found'], 404);
+                    }
+
+            } catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
+
+                    return response()->json(['token_expired'], $e->getStatusCode());
+
+            } catch (Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
+
+                    return response()->json(['token_invalid'], $e->getStatusCode());
+
+            } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
+
+                    return response()->json(['token_absent'], $e->getStatusCode());
+
+            }
+
+            return response()->json(compact('user'));
     }
 }
