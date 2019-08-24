@@ -35,5 +35,7 @@ Route::post('login', 'ApiController@login');
     Route::get('open', 'ApiController@open');
     Route::group(['middleware' => ['jwt.verify']], function() {
         Route::get('user', 'ApiController@getAuthenticatedUser');
-        Route::get('closed', 'ApiController@closed');
+       
     });
+    Route::get('allarticle','ApiController@getArticle');
+    Route::get('articledetail/{id}','ApiController@getArticleDetails');

@@ -131,6 +131,11 @@ public function getkel(Request $request){
      * login api 
      * 
      * @return \Illuminate\Http\Response 
+     *  start endpoint : api/login
+     * params : email(String),password (String)
+     * response : token (Success), Email salah (Error), Password Salah (Error)
+     * response Data type : JSON
+     * 
      */ 
     public function login(Request $request){ 
 
@@ -154,21 +159,19 @@ public function getkel(Request $request){
             return response()->json(['error'=>'email salah'], 400); 
         }
 
-        // if(Auth::attempt(['email' => request('email'), 'password' => request('password')])){ 
-        //     $user = Auth::user(); 
-        //     $success['token'] =  $user->createToken('MyApp')-> accessToken; 
-        //     return response()->json(['success' => $success], $this-> successStatus); 
-        // } 
-        // else{ 
-        //     return response()->json(['error'=>'Unauthorised'], 401); 
-        // } 
-
+    
 
     }
 /** 
      * Register api 
      * 
      * @return \Illuminate\Http\Response 
+     * 
+     * start endpoint : api/register 
+     * params : name(String),email(String),password (String)
+     * response : token (Success), Register Failed (Error)
+     * response Data type : JSON
+     * note : password validation must do it on client
      */ 
     public function register(Request $request) 
     { 
@@ -184,7 +187,7 @@ public function getkel(Request $request){
 return response()->json(['success'=>$token], 200); 
     }
 else{
-    return response()->json(['error'=>'GABISA!'], 401); 
+    return response()->json(['error'=>'Register Failed'], 401); 
 }}
 /** 
      * details api 
@@ -197,6 +200,16 @@ else{
 
         return response()->json(['success' => $user], $this-> successStatus); 
     } 
+    /** 
+     * Get Authenticated User api with token
+     * 
+     * @return \Illuminate\Http\Response 
+     * 
+     * start endpoint : api/user
+     * Headers : Bearer token (Generate from login)
+     * response : data user 
+     * response Data type : JSON
+     */ 
     public function getAuthenticatedUser()
     {
             try {
@@ -220,5 +233,29 @@ else{
             }
 
             return response()->json(compact('user'));
+    }
+    public function getArticle()
+    {
+    $articles = DB::select('select * from articles');
+    if (count($articles)> 0){
+        return response()->json(['success'=> $articles],200);
+    }
+    else {
+        return response()->json(['error'=>'article kosong'],400);
+    }
+
+    }
+
+
+    public function getArticleDetails(int $id)
+    {
+    $articles = DB::select('select * from articles where id = ?',[$id]);
+    if (count($articles)> 0){
+        return response()->json(['success'=> $articles],200);
+    }
+    else {
+        return response()->json(['error'=>'article kosong'],400);
+    }
+
     }
 }
