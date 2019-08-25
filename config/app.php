@@ -164,6 +164,8 @@ return [
         Codecourse\Notify\NotifyServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         ConsoleTVs\Charts\ChartsServiceProvider::class,
+        Laravel\Passport\PassportServiceProvider::class,
+        Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -230,7 +232,8 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Notify' => Codecourse\Notify\Facades\Notify::class,
         'Image' => Intervention\Image\Facades\Image::class,
-
+        'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class, 
+        'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class
     ],
 
 ];

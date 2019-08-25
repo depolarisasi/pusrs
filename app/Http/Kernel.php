@@ -20,6 +20,9 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\TrustProxies::class,
     ];
+/**
+ * for jwt
+ */
 
     /**
      * The application's route middleware groups.
@@ -51,6 +54,7 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
+        'jwt.verify' => \App\Http\Middleware\JwtMiddleware::class,
         'auth' => \App\Http\Middleware\Authenticate::class,
         'puskesmas' => \App\Http\Middleware\puskesmas::class,
         'dinkes' => \App\Http\Middleware\dinkes::class,
