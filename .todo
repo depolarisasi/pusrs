@@ -13,4 +13,35 @@ buat model & migration dengan field : judul, slug,  penulis (id user), isi artic
 buat controller untuk CRUD dari admin
 buat API nya untuk dapetin list article (5 buah), sama detail article
 referensi : untuk upload image, copas code yg udh dibuat di controller laporan, pakai Intervention Image
-**ADD TO ADMIN** penambahan di admin dashboard untuk crud
+**DONE** penambahan di admin dashboard untuk crud by el
+
+
+- Buat dokumentasi API untuk login & get articles
+buat docs untuk API nya, bisa di git/google docs terserah tapi formatnya begini : 
+https://docs.google.com/document/d/1QEtvW3T72-yBfKwUhp7E_0VK7iHuC-qKKxZBLa99e4U/edit (ini contoh project gua yg lain)
+itu contoh aja, bikin yg begitu karena gua mau build yg apps nya
+
+- Buat API untuk laporan
+jadi nanti di apps nya bisa ngirim laporan gitu si usernya tapi laporannya beda lagi, gua mau pisahin laporan faskes sama laporan pasien
+jadi bikin model baru namanya LaporanPasien 
+isinya : 
+    'nik_pasien', //NIK PASIEN si yg buat laporan
+    'id_pasien', //NIK PASIEN si yg buat laporan
+    'typelaporan', // 1 = gigitan nyamuk db
+                      2 = positif db
+    'latitudelaporan', //koordinat latitude 
+    'longitudelaporan', //koordinat longitude
+    'tgllaporan', //tanggal laporan
+    
+ user bisa bikin laporan, liat list laporan sama hapus laporan
+ 
+ - Buat fitur rekapan
+ini untuk yg dashboard, jadi faskes bisa download rekap laporan dalam bentuk pdf atau xlsx bisa berdasarkan daerah bisa berdasarkan tanggal di sortnya
+role dinkes bisa download semua laporan dari semua faskes
+role puskesmas & rs cuma bisa download laporan dari faskes mereka aja
+
+- Bikin sort & filter untuk laporan
+di page semua laporan, udh gua siapin sort dari tanggal & lokasi, cuman blom gua bikin
+kalo bisa sih di garap aja
+ 
+
