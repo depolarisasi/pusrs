@@ -53,10 +53,10 @@ public function addToLog($idlaporan, $namapasien, $action){
     //PUSKESMAS
     public function SemuaLaporan(){
           $kecamatan = Kecamatan::get();
-          $data = LaporanFaskes::join('puskesmas','puskesmas.kode_puskesmas','=','pasien2.kode_faskes')
-         ->join('kecamatan','kecamatan.kode_kecamatan','=','pasien2.kd_kec')
-         ->join('kelurahan','kelurahan.kode_kelurahan','=','pasien2.kd_kel')
-         ->select('puskesmas.nama_puskesmas','pasien2.*', 'kecamatan.nama_kecamatan','kelurahan.nama_kelurahan')
+          $data = LaporanFaskes::join('puskesmas','puskesmas.kode_puskesmas','=','laporanfaskes.kode_faskes')
+         ->join('kecamatan','kecamatan.kode_kecamatan','=','laporanfaskes.kd_kec')
+         ->join('kelurahan','kelurahan.kode_kelurahan','=','laporanfaskes.kd_kel')
+         ->select('puskesmas.nama_puskesmas','laporanfaskes.*', 'kecamatan.nama_kecamatan','kelurahan.nama_kelurahan')
          ->get();
          return view('laporan.semualaporan',compact('data','kecamatan'));
     }
@@ -66,10 +66,10 @@ public function addToLog($idlaporan, $namapasien, $action){
     }
 
     public function DetailLaporan($id){
-         $detail = LaporanFaskes::join('puskesmas','puskesmas.kode_puskesmas','=','pasien2.kode_faskes')
-         ->join('kecamatan','kecamatan.kode_kecamatan','=','pasien2.kd_kec')
-         ->join('kelurahan','kelurahan.kode_kelurahan','=','pasien2.kd_kel')
-         ->select('puskesmas.nama_puskesmas','pasien2.*', 'kecamatan.nama_kecamatan','kelurahan.nama_kelurahan')
+         $detail = LaporanFaskes::join('puskesmas','puskesmas.kode_puskesmas','=','laporanfaskes.kode_faskes')
+         ->join('kecamatan','kecamatan.kode_kecamatan','=','laporanfaskes.kd_kec')
+         ->join('kelurahan','kelurahan.kode_kelurahan','=','laporanfaskes.kd_kel')
+         ->select('puskesmas.nama_puskesmas','laporanfaskes.*', 'kecamatan.nama_kecamatan','kelurahan.nama_kelurahan')
          ->where('idlaporan',$id)->first();
          return view('laporan.detaillaporan',compact('detail'));
     }
@@ -117,7 +117,7 @@ public function addToLog($idlaporan, $namapasien, $action){
             try{
                 $this->addToLog($request->idlaporan,$request->nama_pasien," Ditambahkan"); //add to log
                // $log = new Log;
-               // $log->log_event = "Laporan Baru ".$insert->idlaporan." (".$insert->nama_pasien.")";
+               // $log->log_event = "Laporan Baru ".$insert->idlaporan." (".$insert->nama_laporanfaskes.")";
                // $log->log_user = Auth::user()->id;
                // $log->save();
                 $insert->save();
@@ -134,9 +134,9 @@ public function addToLog($idlaporan, $namapasien, $action){
 
     public function EditLaporan($id){
         $update = LaporanFaskes::where('idlaporan',$id)->first();
-        $edit = LaporanFaskes::join('kecamatan','kecamatan.kode_kecamatan','=','pasien2.kd_kec')
-        ->join('kelurahan','kelurahan.kode_kelurahan','=','pasien2.kd_kel')
-        ->select('pasien2.*', 'kecamatan.nama_kecamatan','kelurahan.nama_kelurahan')
+        $edit = LaporanFaskes::join('kecamatan','kecamatan.kode_kecamatan','=','laporanfaskes.kd_kec')
+        ->join('kelurahan','kelurahan.kode_kelurahan','=','laporanfaskes.kd_kel')
+        ->select('laporanfaskes.*', 'kecamatan.nama_kecamatan','kelurahan.nama_kelurahan')
         ->where('idlaporan',$id)->first();
         if($edit->scan_lab != NULL){
         $unserial = unserialize($edit->scan_lab);

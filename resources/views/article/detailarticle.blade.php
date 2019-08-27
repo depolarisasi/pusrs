@@ -50,7 +50,7 @@
               <div class="col-md-12">
                 <div class="card">
                   <div class="card-header">
-                    <h3 class="card-title">Detail Pasien</h3>
+                    <h3 class="card-title">Detail Laporan</h3>
                    
                   </div>
                   <div class="card-body">
@@ -64,49 +64,68 @@
         <tbody>
             <tr>
                 <td><b>NIK Pasien</b></td>
-                <td>{{$pasien->nik}}</td>
+                <td>{{$detail->nik}}</td>
                 </tr>
                 <tr>
                 <tr>
                 <td><b>Nama Pasien, umur</b></td>
-                <td>{{$pasien->nama_pasien}} ({{$pasien->umur}} tahun) </td>
+                <td>{{$detail->nama_pasien}} ({{$detail->umur}} tahun) </td>
                 </tr>
                 <tr>
                 <td><b>Alamat Pasien</b></td>
-                <td>{{$pasien->alamat}}
-                <br>{{$pasien->nama_kelurahan}}, <span class="text-uppercase">{{$pasien->nama_kecamatan}}</span></td>
+                <td>{{$detail->alamat}}
+                <br>{{$detail->nama_kelurahan}}, <span class="text-uppercase">{{$detail->nama_kecamatan}}</span></td>
                 </tr>
-               
-              
+                <tr>
+                <td><b>Status Penyakit</b></td>
+                <td><span class="badge badge-warning">@if($detail->kd_icd == "A90")
+                Demam Dengue
+                @elseif($detail->kd_icd == "A91")
+                Dengue Hemorrhagic Fever
+                @endif</span></td>
+                <tr>
+                <td><b>Faskes yang Melayani</b></td>
                 
+                <td>{{$detail->nama_puskesmas}}</td>
+                </tr>
+                <tr>
+                <td><b>Bukti Pemeriksaan Laboratorium</b></td>
+                <td>@if($detail->ns1 != NULL || $detail->ns1 == 1)
+                <p>NS1 dengan hasil Positif</p>
+                @elseif($detail->ns1 == NULL)
+                Pemeriksaan Darah, Hemoglobin = {{$detail->hemoglobin}}, Leukosit = {{$detail->leukosit}}, Hematokrit = {{$detail->hematokrit}}%
+                <br>Trombosit = {{$detail->trombosit}}
+                @endif
+                </td>
         </tbody>
        
     </table>
     </div>
-    <td><b>Riwayat Sakit Pasien :</b> 
-    <br></td>
+    <td>@if($detail->scan_lab != NULL)
+                @php
+                $serial = unserialize($detail->scan_lab);
+                @endphp
+<p><b>Hasil Lab</b></p>
+@foreach($serial as $un)
+<!-- thumbnail image wrapped in a link -->
+<a href="#{{$un}}">
+  <img src="{{asset('hasillab/'.$un)}}" class="thumbnail">
+</a>
 
-@if(count($riwayat) > 0)
-    @foreach($riwayat as $r)
-    <td><b>Laporan #{{$r->idlaporan}}</b></td>
-    
-    <td>@if($pasien->kd_icd == "A90")
-                DD
-                @elseif($pasien->kd_icd == "A91")
-               DHF
-                @endif</td>
+<!-- lightbox container hidden with CSS -->
+<a href="#_" class="lightbox" id="{{$un}}">
+  <img src="{{asset('hasillab/'.$un)}}">
+</a>
+@endforeach
+@else
 
-                <td>{{$pasien->nama_puskesmas}}</td>
-                <td>{{date('d M Y', strtotime($pasien->created_at))}}</td>
-    @endforeach
-    @else
-    Tidak ada laporan penyakit untuk pasien ini
-    @endif
+<p><b>Hasil Lab tidak diupload oleh faskes {{$detail->nama_puskesmas}}</b></p>
+@endif</td>
                         </div>
 
                         <div class="col-md-3">
-                 <a href="{{url('pasien/edit/'.$pasien->idpasien)}}" class="btn btn-md btn-warning">Ubah Pasien</a>
-                 <a href="{{url('pasien/delete/'.$pasien->idpasien)}}" class="btn btn-md btn-danger">Hapus Pasien</a>
+                 <a href="{{url('laporan/edit/'.$detail->idpasien)}}" class="btn btn-md btn-warning">Ubah Laporan</a>
+                 <a href="{{url('laporan/delete/'.$detail->idpasien)}}" class="btn btn-md btn-danger">Hapus Laporan</a>
                  
                         </div>
                         </div>
@@ -120,20 +139,20 @@
                         var href = $(this).attr('href');
                         var message = $(this).data('confirm');
                         swal({
-  title: "Ingin Hapus Pasien?",
-  text: "Pasien yang dhapus tidak dapat dikembalikan, aksi ini akan tercatat. Hapus?",
+  title: "Ingin Hapus Laporan?",
+  text: "Laporan yang dhapus tidak dapat dikembalikan, aksi ini akan tercatat. Hapus?",
   icon: "warning",
   buttons: true,
   dangerMode: true,
 })
 .then((willDelete) => {
   if (willDelete) {
-    swal("Pasien Telah Dihapus", {
+    swal("Laporan Telah Dihapus", {
       icon: "success",
     });
     window.location.href = href;
   } else {
-    swal("Hapus Pasien Dibatalkan", {
+    swal("Hapus Laporan Dibatalkan", {
       icon: "error",
     });
   }

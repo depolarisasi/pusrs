@@ -97,10 +97,10 @@
                   <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown"><i class="fe fe-box"></i>Pasien</a>
                     <div class="dropdown-menu dropdown-menu-arrow">
                     <a href="{{url('pasien/new')}}" class="dropdown-item ">Pasien Baru</a>
-                      <a href="{{url('pasien/upload')}}" class="dropdown-item ">Upload Pasien Baru</a>
                       <a href="{{url('pasien')}}" class="dropdown-item ">Semua Pasien</a>
                     </div>
                   </li>
+                  
                   <li class="nav-item">
                   <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown"><i class="fe fe-box"></i>Pelaporan</a>
                     <div class="dropdown-menu dropdown-menu-arrow">
@@ -116,7 +116,13 @@
                       <a href="{{url('pemetaan/faskes')}}" class="dropdown-item ">Berdasarkan Faskes</a>
                     </div>
                   </li>
-                  
+                  <li class="nav-item">
+                  <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown"><i class="fe fe-box"></i>Artikel</a>
+                    <div class="dropdown-menu dropdown-menu-arrow">
+                    <a href="{{url('artikel/new')}}" class="dropdown-item ">Artikel Baru</a>
+                      <a href="{{url('artikel')}}" class="dropdown-item ">Semua Artikel</a>
+                    </div>
+                  </li>
                   <li class="nav-item">
                     <a href="{{url('log')}}" class="nav-link"><i class="fe fe-map"></i> Log Aktivitas</a>
                     
@@ -130,11 +136,7 @@
 
         <div class="my-3 my-md-5">
           <div class="container">
-            <div class="page-header">
-              <h1 class="page-title">
-                Dashboard
-              </h1>
-            </div>
+           
 
            @yield('content')
 

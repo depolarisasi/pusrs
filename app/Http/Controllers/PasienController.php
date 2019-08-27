@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Auth;
 use App\Pasien;
 use App\Log;
+use App\LaporanFaskes;
 
 class PasienController extends Controller
 {
@@ -45,9 +46,12 @@ public function addToLog( $namapasien,$idlaporan, $action){
     }
 
     public function EditPasien($id){
-        $pasien = Pasien::find($id);
+        $edit = Pasien::join('kecamatan','kecamatan.kode_kecamatan','=','pasien.kd_kec')
+        ->join('kelurahan','kelurahan.kode_kelurahan','=','pasien.kd_kel')
+        ->select('pasien.*','kelurahan.*','kecamatan.*')
+        ->find($id);
 
-        return view('pasien.index')->with(compact('pasien'));
+        return view('pasien.ubahpasien')->with(compact('edit'));
         
     }
 
@@ -65,9 +69,30 @@ public function addToLog( $namapasien,$idlaporan, $action){
     }
 
     public function DetailPasien($id){
-        $pasien = Pasien::find($id);
+        $pasien = Pasien::join('kecamatan','kecamatan.kode_kecamatan','=','pasien.kd_kec')
+        ->join('kelurahan','kelurahan.kode_kelurahan','=','pasien.kd_kel')
+        ->select('pasien.*','kelurahan.*','kecamatan.*')
+        ->find($id);
         $riwayat = LaporanFaskes::where('nik_pasien',$pasien->nik)->get();
-        return view('pasien.index')->with(compact('pasien'));
+        return view('pasien.detailpasien')->with(compact('pasien','riwayat'));
         
+    }
+
+    public function HapusPasien($id){
+        $hapus = Pasien::where('idpasien',$id)->first();
+        if($hapus) {
+            try{
+                $this->addToLog($hapus->idpasien,$hapus->nama_pasien," Dihapus"); //tambahkan ke log
+                $hapus->delete(); //delete
+            }catch(QE $e){ return $e;}
+        }else {
+                   
+        $msg = notify()->flash('Data tidak ditemukan!', 'error'); //return error jika data tersebut tidak ada di db
+        return redirect()->back()->with(compact('msg'));
+        }
+        
+        $msg = notify()->flash('Pasien berhasil dihapus', 'success'); //return to laporan
+        return redirect('pasien')->with(compact('msg'));
+
     }
 }

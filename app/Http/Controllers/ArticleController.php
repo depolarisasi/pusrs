@@ -14,9 +14,17 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        return article::all();
+        $article = article::join('users','users.id', '=','articles.penulis')
+            ->select('articles.*','users.name','users.kode_faskes')->get();
+
+            return view('article.semuaarticle',compact('article'));
     }
 
+
+    public function new(){
+        return view('article.articlebaru');
+
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -24,6 +32,7 @@ class ArticleController extends Controller
      */
     public function create(Request $request)
     {
+
        
 
         if($request->image_upload != '' && $request->image_upload1){
@@ -46,7 +55,7 @@ class ArticleController extends Controller
                     File::delete('temporary/'.$request->image_upload1); //delete saja
                 }
 if ($article->save()){
-
+    $msg = notify()->flash('Jika NS1 NEGATIF Pasien tidak terjangkit dengue!', 'error');
     return true;
 }    
 }
