@@ -20,6 +20,8 @@ referensi : untuk upload image, copas code yg udh dibuat di controller laporan, 
 buat docs untuk API nya, bisa di git/google docs terserah tapi formatnya begini : 
 https://docs.google.com/document/d/1QEtvW3T72-yBfKwUhp7E_0VK7iHuC-qKKxZBLa99e4U/edit (ini contoh project gua yg lain)
 itu contoh aja, bikin yg begitu karena gua mau build yg apps nya
+-Gabisa nemu gdocs jadi dibuat disini ya https://docs.google.com/document/d/1UtqygDBarLY25O7l4KaxL3t57QlLwQZP8phgAU1p8V0/edit?usp=sharing
+
 
 - Buat API untuk laporan
 jadi nanti di apps nya bisa ngirim laporan gitu si usernya tapi laporannya beda lagi, gua mau pisahin laporan faskes sama laporan pasien
