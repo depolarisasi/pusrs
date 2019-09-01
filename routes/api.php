@@ -39,3 +39,6 @@ Route::post('login', 'ApiController@login');
     });
     Route::get('allarticle','ApiController@getArticle');
     Route::get('articledetail/{id}','ApiController@getArticleDetails');
+    Route::post('addlaporan-pasien', 'ApiController@insertLaporan');
+    Route::get('alllaporanpasien','ApiController@getLaporanPasien');
+    Route::post ('deletelaporanpasien','Apicontroller@deleteLaporanPasien');
