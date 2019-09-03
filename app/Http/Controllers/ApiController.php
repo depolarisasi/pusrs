@@ -15,6 +15,7 @@ use Response;
 use Storage;
 use App\Pasien;
 use App\LaporanFaskes;
+use App\LaporanPasien;
 use Illuminate\Support\Facades\Auth; 
 use Illuminate\Support\Facades\Hash;
 use JWTAuth;
@@ -245,6 +246,46 @@ else{
     }
 
     }
+
+    public function getLaporanPasien()
+    {
+    $laporan= DB::select('select * from LaporanPasien');
+    if (count($laporan)> 0){
+        return response()->json(['success'=> $laporan],200);
+    }
+    else {
+        return response()->json(['error'=>'laporan kosong'],400);
+    }
+
+}
+
+public function deleteLaporanPasien(Request $request)
+{
+    $id = $request->id;
+
+    DB::delete('delete from LaporanPasien where id_laporan= ?', [$id]);    
+       return response()->json(['success'=> 'Sudah dihapus!'],200);
+
+
+}
+
+    public function insertLaporan(Request $request)
+    {
+
+        $laporan = new LaporanPasien ();
+        $laporan->nik_pasien=$request->nik_pasien;
+        $laporan->id_pasien=$request->id_pasien;
+        $laporan->typelaporan = $request->typelaporan;
+        $laporan->latitudelaporan = $request->latitudelaporan;
+        $laporan->longitudelaporan = $request->longitudelaporan;
+        // $laporan->tgllaporan = $request->tgllaporan;
+        if ($laporan->save()== true){
+            return response()->json(['success!'=> $laporan],200);
+    }
+    else {
+        return response()->json(['error'=>'tidak bisa memasukan laporan!'],400);
+    }
+}
 
 
     public function getArticleDetails(int $id)
