@@ -101,11 +101,10 @@ Articles
 Route::get('artikel/','ArticleController@index')->middleware('auth'); //tampilkan semua Pasien
 Route::get('artikel/new','ArticleController@new')->middleware('auth'); //tambah 1 Pasien
 Route::post('artikel/new','ArticleController@create')->middleware('auth'); //proses 1 Pasien
-Route::get('artikel/detail/{id}','ArticleController@detail')->middleware('auth');
+Route::get('artikel/detail/{id}','ArticleController@show')->middleware('auth');
 Route::get('artikel/edit/{id}','ArticleController@edit')->middleware('auth'); //ubah 1 Pasien
 Route::post('artikel/update','ArticleController@update')->middleware('auth'); //update 1 Pasien
-Route::get('artikel/delete/{id}','ArticleController@HapusPasien')->middleware('auth'); //hapus Pasien
-Route::post('api/artikel/','ArticleController@Api')->middleware('api'); //API Pasien
+Route::get('artikel/delete/{id}','ArticleController@destroy')->middleware('auth'); //hapus Pasien
 
 Route::get('artikel/upload','ArticleController@UploadPasienBaru')->middleware('auth'); //upload Pasien
 Route::post('artikel/upload','ArticleController@SaveUploadPasienBaru')->middleware('auth'); //proses Pasien

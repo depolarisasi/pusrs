@@ -31,20 +31,19 @@
             <tr>
                 <th>Thumbnail</th>
                 <th>Judul</th>
-              
                 <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
         @foreach($article as $articles)
             <tr>
-                <td><img src="{{asset('img/'.$articles->thumbnailfoto)}}" class="img-responsive img-fluid"></td>
+                <td><img src="{{asset($articles->thumbnailFoto)}}" class="img-responsive img-fluid" width="100" height="70"></td>
 
-                <td><a href="">{{$articles->judul}}</a></td>\
+                <td><a href="">{{$articles->judul}}</a></td>
 
-                <td><a href="{{url('article/detail/'.$articles->idarticle)}}" class="btn btn-info btn-sm"><i class="fe fe-info"></i></a>
-                <a href="{{url('article/edit/'.$articles->idarticle)}}" class="btn btn-warning btn-sm"><i class="fe fe-edit"></i></a>
-                <a href="{{url('article/delete/'.$articles->idarticle)}}" class="btn btn-danger btn-sm"><i class="fe fe-trash-2"></i></a></td>
+                <td><a href="{{url('artikel/detail/'.$articles->id)}}" class="btn btn-info btn-sm"><i class="fe fe-info"></i></a>
+                <a href="{{url('artikel/edit/'.$articles->id)}}" class="btn btn-warning btn-sm"><i class="fe fe-edit"></i></a>
+                <a href="{{url('artikel/delete/'.$articles->id)}}" class="btn btn-danger btn-sm"><i class="fe fe-trash-2"></i></a></td>
             </tr>
          @endforeach   
         </tbody>

@@ -19,6 +19,7 @@
         "laravel/tinker": "^1.0",
         "lcobucci/jwt": "^3.3",
         "maatwebsite/excel": "^3.1",
+        "petehouston/laravel-tinymce-simple-imageupload": "~1.2",
         "tymon/jwt-auth": "dev-develop"
     },
     "require-dev": {

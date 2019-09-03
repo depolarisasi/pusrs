@@ -2,7 +2,26 @@
 @section('css')
 <script src="{{asset('js/tinymce/jquery.tinymce.min.js')}}"></script>
 <script src="{{asset('js/tinymce/tinymce.min.js')}}"></script>
-  <script>tinymce.init({selector:'#text'});</script>
+ 
+@include('mceImageUpload::upload_form')
+<script>
+  tinymce.init({
+    selector: '#tiny',
+    plugins: [
+           'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker',
+           'searchreplace wordcount visualblocks visualchars fullscreen insertdatetime media nonbreaking',
+           'save table contextmenu directionality paste textcolor eqneditor image imagetools'
+         ],image_class_list: [
+    {title: 'Auto Resize', value: 'img-fluid'},
+],image_description: false,image_dimensions: false,
+         toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist | link | preview fullpage | image',
+         relative_urls: false,
+             file_browser_callback: function(field_name, url, type, win) {
+                 // trigger file upload form
+                 if (type == 'image') $('#formUpload input').click();
+             }
+  });
+  </script>
 
 <link href="{{asset('css/bootstrap-datepicker.css')}}" rel="stylesheet" />
 <script src="{{asset('js/bootstrap-datepicker.min.js')}}"></script>
@@ -93,128 +112,34 @@
           <div class="container">
             <div class="row">
               <div class="col-md-8 offset-md-2">
-                <form action="{{url('article/new')}}" method="post" class="card">
+                <form action="{{url('artikel/new')}}" method="post" class="card" enctype="multipart/form-data">
                 @csrf
                   <div class="card-header">
                     <h3 class="card-title">Artikel Baru</h3>
                   </div>
                   <div class="card-body">
                   <div class="form-group">
-                          <label class="form-label">NIK article</label>
-                          <input type="text" class="form-control" name="nik" placeholder="NOMOR INDUK KEPENDUDUKAN" required>
-                          <small>Nomor Induk Kependudukan yang tertera pada kartu tanda penduduk / kartu keluarga</small>
+                          <label class="form-label">Judul Artikel</label>
+                          <input type="text" class="form-control" name="judul" placeholder="Judul artikel" required>
+                        </div>
+                    
+                        <div class="form-group">
+                          <label class="form-label">Isi Artikel</label>
+                          <textarea id="tiny" name="isi" cols="40" rows="20" class="form-control"></textarea>
                         </div>
                         <div class="form-group">
-                          <label class="form-label">Nama article</label>
-                          <input type="text" class="form-control" name="nama_article" placeholder="Nama article" required>
-                        </div>
-                        <div class="form-group">
-                          <label class="form-label">Alamat article</label>
-                         
-                          <input type="text" class="form-control" name="alamat" placeholder="Alamat article" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label">Umur article</label>
-                            <div class="input-group date">
-      <input type="text" id="inputtanggal" class="form-control" name="tanggallahir" required ><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-    </div>
+                          <label class="control-label col-md-2" for="profile">Gambar Thumbnail </label>
+                          <div class="col-md-10">
+                          <img src="" id="blah" style="max-width:700px;max-height:300px;" />
                           
+                          <input type="file" id="inputprofilepic" name="thumb" class="validate" >
                           </div>
-                        <div class="form-group">
-                          <label class="form-label">Kecamatan article</label>
-  <select class="kecamatan form-control" name="kd_kec" required></select>
-<script>
-  $('.kecamatan').select2({
-    placeholder: 'Cari...',
-    ajax: {
-      url: '/api/getkec',
-      dataType: 'json',
-      delay: 250,
-      processResults: function (data) {
-        return {
-          results:  $.map(data, function (item) {
-            return {
-              text: item.nama_kecamatan,
-              id: item.kode_kecamatan
-            }
-          })
-        };
-      },
-      cache: true
-    }
-  });
+                          </div>
 
-</script>
-                        </div>
-                        <div class="form-group">
-                          <label class="form-label">Kelurahan Pasien</label>
-                          <div class="form-group">
-                        <select name="kd_kel" class="form-control" required="">
-                        </select>
-                   <script>
-                   
-  $(document).ready(function() {
-   
-       $('select[name="kd_kec"]').on('change', function() {
-   
-           var kode_kec = $('select[name="kd_kec"]').val();
-   
-           if(kode_kec) {
-   
-               $.ajax({
-   
-                   url: '/api/getkel/?kodekecamatan='+kode_kec,
-   
-                   type: "GET",
-   
-                   dataType: "json",
-   
-                   success:function(data) {
-   
-                       $('select[name="kd_kel"]').empty();
-   
-                       $.each(data, function(key, value) {
-   
-                           $('select[name="kd_kel"]').append('<option value="'+ key +'">'+ value +'</option>');
-   
-                       });
-   
-   
-                   }
-   
-               });
-   
-           }else{
-   
-              console.log("KSONK");
-           }
-   
-       });
-   
-   });
-   </script>
-                      </div>
-                        </div>
-                      
-
-                    
-                     
-                 
-
-                         <!-- <div class="form-group">
-                        <div class="form-label">Dokumen Hasil Lab (Jika Ada)</div>
-                        <div class="custom-file">
-                          <input type="file" class="custom-file-input" name="scan_lab">
-                          <label class="custom-file-label">File Scan/Foto Hasil Lab</label>
-                        </div>
-                      </div>
-                    
-                </div> -->
                 <div class="card-footer text-right">
                   <div class="d-flex">
-                    <a href="{{url('pasien/')}}" class="btn btn-link">Cancel</a>
-                    <button type="submit" class="btn btn-primary ml-auto">Tambah pasien</button>
+                 
+                    <button type="submit" class="btn btn-primary ml-auto">Terbitkan</button>
                   </div>
                 </div>
               </form>
@@ -224,10 +149,26 @@
         </div>
       </div>
     </div>
-   <script>
-    $('#inputtanggal').datepicker({
-        format: "yyyy/dd/mm"
-    });
-   </script>
- 
+  
+
+<script type="text/javascript">
+
+  function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+  
+        reader.onload = function (e) {
+            $('#blah').attr('src', e.target.result);
+        }
+  
+        reader.readAsDataURL(input.files[0]);
+    }
+  }
+  
+  $("#inputprofilepic").change(function () {
+    readURL(this);
+  });
+  
+  </script>
+          
 @endsection

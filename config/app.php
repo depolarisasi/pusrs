@@ -166,6 +166,7 @@ return [
         ConsoleTVs\Charts\ChartsServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
+        Petehouston\Tinymce\TinymceServiceProvider::class,
 
         /*
          * Package Service Providers...

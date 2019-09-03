@@ -1,8 +1,30 @@
 @extends('layouts.app')
 @section('css')
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
-<script src="{{asset('assets/js/up.js')}}"></script>
+<script src="{{asset('js/tinymce/jquery.tinymce.min.js')}}"></script>
+<script src="{{asset('js/tinymce/tinymce.min.js')}}"></script>
+ 
+@include('mceImageUpload::upload_form')
+<script>
+  tinymce.init({
+    selector: '#tiny',
+    plugins: [
+           'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker',
+           'searchreplace wordcount visualblocks visualchars fullscreen insertdatetime media nonbreaking',
+           'save table contextmenu directionality paste textcolor eqneditor image imagetools'
+         ],image_class_list: [
+    {title: 'Auto Resize', value: 'img-fluid'},
+],image_description: false,image_dimensions: false,
+         toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist | link | preview fullpage | image',
+         relative_urls: false,
+             file_browser_callback: function(field_name, url, type, win) {
+                 // trigger file upload form
+                 if (type == 'image') $('#formUpload input').click();
+             }
+  });
+  </script>
+
+<link href="{{asset('css/bootstrap-datepicker.css')}}" rel="stylesheet" />
+<script src="{{asset('js/bootstrap-datepicker.min.js')}}"></script>
 
 <style>
     .rqubtn {
@@ -90,311 +112,36 @@
           <div class="container">
             <div class="row">
               <div class="col-md-8 offset-md-2">
-                <form action="{{url('laporan/update')}}" method="post" class="card">
+                <form action="{{url('artikel/update')}}" method="post" class="card" enctype="multipart/form-data">
                 @csrf
                   <div class="card-header">
-                    <h3 class="card-title">Laporan Baru</h3>
+                    <h3 class="card-title">Artikel Baru</h3>
                   </div>
                   <div class="card-body">
                   <div class="form-group">
-                  <input type="hidden" value="{{$edit->idpasien}}" name="idpasien">
-                          <label class="form-label">NIK Pasien</label>
-                          <input type="text" class="form-control" name="nik" value="{{$edit->nik}}" required>
-                          <small>Nomor Induk Kependudukan yang tertera pada kartu tanda penduduk / kartu keluarga</small>
+                          <label class="form-label">Judul Artikel</label>
+                          <input type="text" class="form-control" name="judul" value="{{$detail->judul}}" required>
+                        </div>
+                    
+                        <div class="form-group">
+                          <label class="form-label">Isi Artikel</label>
+                          <textarea id="tiny" name="isi" cols="40" rows="20" class="form-control">
+                            {!! $detail->isi !!}
+                          </textarea>
                         </div>
                         <div class="form-group">
-                          <label class="form-label">Nama Pasien</label>
-                          <input type="text" class="form-control" name="nama_pasien" value="{{$edit->nama_pasien}}" required>
-                        </div>
-                        <div class="form-group">
-                          <label class="form-label">Alamat Pasien</label>
-                         
-                          <input type="text" class="form-control" name="alamat_pasien" value="{{$edit->alamat}}" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label">Umur Pasien</label>
-                            
-                          <input type="text" class="form-control" name="umur_pasien" value="{{$edit->umur}}" required>
+                          <label class="control-label col-md-2" for="profile">Gambar Thumbnail </label>
+                          <div class="col-md-10">
+                          <img src="{{asset($detail->foto)}}" id="blah" style="max-width:700px;max-height:300px;" />
+                          
+                          <input type="file" id="inputprofilepic" name="thumb" class="validate" >
                           </div>
-                        <div class="form-group">
-                          <label class="form-label">Kecamatan Pasien</label>
-  <select class="kecamatan form-control" name="kecamatan" required>
-  <option value="{{$edit->kd_kec}}" selected="">{{$edit->nama_kecamatan}}</option>
-  </select>
-<script>
-  $('.kecamatan').select2({
-    placeholder: 'Cari...',
-    ajax: {
-      url: '/api/getkec',
-      dataType: 'json',
-      delay: 250,
-      processResults: function (data) {
-        return {
-          results:  $.map(data, function (item) {
-            return {
-              text: item.nama_kecamatan,
-              id: item.kode_kecamatan
-            }
-          })
-        };
-      },
-      cache: true
-    }
-  });
+                          </div>
 
-</script>
-                        </div>
-                        <div class="form-group">
-                          <label class="form-label">Kelurahan Pasien</label>
-                          <div class="form-group">
-                        <select name="kelurahan" class="form-control" required="">
-                        
-  <option value="{{$edit->kd_kel}}" selected="">{{$edit->nama_kelurahan}}</option>
-                        </select>
-                   <script>
-                   
-  $(document).ready(function() {
-    var kode_kecx = $('select[name="kecamatan"]').val();
-   
-   if(kode_kecx) {
-
-       $.ajax({
-
-           url: '/api/getkel/?kodekecamatan='+kode_kecx,
-
-           type: "GET",
-
-           dataType: "json",
-
-           success:function(data) {
-
-               $('select[name="kelurahan"]').empty();
-
-               $.each(data, function(key, value) {
-
-                   $('select[name="kelurahan"]').append('<option value="'+ key +'">'+ value +'</option>');
-
-               });
-
-
-           }
-
-       });
-
-   }else{
-
-      console.log("KSONK");
-   }
-       $('select[name="kecamatan"]').on('change', function() {
-   
-           var kode_kec = $('select[name="kecamatan"]').val();
-   
-           if(kode_kec) {
-   
-               $.ajax({
-   
-                   url: '/api/getkel/?kodekecamatan='+kode_kec,
-   
-                   type: "GET",
-   
-                   dataType: "json",
-   
-                   success:function(data) {
-   
-                       $('select[name="kelurahan"]').empty();
-   
-                       $.each(data, function(key, value) {
-   
-                           $('select[name="kelurahan"]').append('<option value="'+ key +'">'+ value +'</option>');
-   
-                       });
-   
-   
-                   }
-   
-               });
-   
-           }else{
-   
-              console.log("KSONK");
-           }
-   
-       });
-   
-   });
-   </script>
-                      </div>
-                        </div>
-                        <div class="form-group">
-                        <label class="form-label">Hasil Pemeriksaan Lab yang Tersedia</label>
-                        <div class="selectgroup w-100">
-                          <label class="selectgroup-item">
-                            <input type="radio" id="ns1" name="pilihanlab" value="ns1" class="selectgroup-input" required>
-                            <span class="selectgroup-button">NS1</span>
-                          </label>
-                          <label class="selectgroup-item">
-                            <input type="radio" id="labdarah" name="pilihanlab" value="labdarah" class="selectgroup-input" required>
-                            <span class="selectgroup-button">Pemeriksaan Lab Darah</span>
-                          </label>
-                        
-                        </div>
-
-                        
-                        
-                      </div>
-
-                      <div class="form-group" id="pilihns1"> 
-                       <div class="selectgroup w-100">
-                          <label class="selectgroup-item">
-                            <input type="radio" name="hasilns1" value="true" class="selectgroup-input hasilns1">
-                            <span class="selectgroup-button">Positif</span>
-                          </label>
-                          <label class="selectgroup-item">
-                            <input type="radio" name="hasilns1" value="false" class="selectgroup-input hasilns1">
-                            <span class="selectgroup-button">Negatif</span>
-                          </label>
-                        
-                        </div>
-
-                      </div>
-                      <div class="form-group" id="pilihlabdarah">
-                      
-                      <label class="form-label">Jumlah Hemoglobin</label>
-                      <input type="text" class="form-control" id="hb" name="hemoglobin" placeholder="Jumlah Hemoglobin">
-                      
-                      <label class="form-label">Jumlah Leukosit</label>
-                      <input type="text" class="form-control" id="leukosit" name="leukosit" placeholder="Jumlah Leukosit">
-                      
-                      <label class="form-label">Jumlah Hematokrit</label>
-                      <input type="text" class="form-control" id="hematokrit" name="hematokrit" placeholder="Jumlah Hematokrit tanpa persen">
-
-                      <label class="form-label">Jumlah Trombosit</label>
-                      <input type="text" class="form-control" id="trombosit" name="trombosit" placeholder="Jumlah Trombosit">
-                      </div>
-                       
-                     
-                      <script>
-                      var ns1 = $('#ns1').prop('checked');
-                      var labdarah =  $('#labdarah').prop('checked');
-                            if(ns1 == true){
-                            $("#pilihns1").show();
-                            $("#pilihlabdarah").hide();
-                            }else if(labdarah == true) {
-                              $("#pilihlabdarah").show  ();
-                            $("#pilihns1").hide();
-                            }else {
-                              $("#pilihns1").hide();
-                            $("#pilihlabdarah").hide();
-                            }
-
-                            var pilihanlab = $('input[name="pilihanlab"]');
-
-pilihanlab.change(function() {
- var checked = pilihanlab.filter(function() {
-return $(this).prop('checked');
-});
-// Output the value of the checked radio
-if(checked.val() == "ns1"){
-$("#pilihlabdarah").hide();
-$("#pilihns1").show();
-$('.hasilns1').prop('required',true);
-
-$('#hb').prop('required',false);
-$('#leukosit').prop('required',false);
-$('#hematokrit').prop('required',false);
-$('#trombosit').prop('required',false);
-
-}else if(checked.val() == "labdarah"){
-$('.hasilns1').prop('checked',false);
-$("#pilihlabdarah").show();
-$('.hasilns1').prop('required',false);
-$('#hb').prop('required',true);
-$('#leukosit').prop('required',true);
-$('#hematokrit').prop('required',true);
-$('#trombosit').prop('required',true);
-$("#pilihns1").hide();
-
-}else {
-$("#pilihlabdarah").hide();
-$("#pilihns1").hide();
-}
-});
-                          </script>
-                    
-
-<div class="form-group" id="imgwrapperx" style="display:inline-block">
-<label class="form-label">Upload Scan / Foto Hasil Pemeriksaan Disini : </label>
-@if($edit->scan_lab != NULL)
-@foreach($unserial as $un)
-<div class="m-img-wrapper" id="{{$un}}"><img src="{{asset('hasillab/'.$un)}}" class="img-fluid" /> 
- <a style="cursor:pointer;" class="gux delup" data-id="{{$un}}">X</a> 
-<input type="hidden" value="{{$un}}" name="per_udah_ada[]" /> </div>
-@endforeach
-@endif
-
-           <div class="rqubtn">
-<img src="{{asset('img/loading.gif')}}" style="display:none; width: 100px; height: 100px;" id="loading_upload">
-<input class="btn btn-default" name="image_file" id="image_file" style="display:inline-block; margin-right:10px" accept="image/*" type="file">
- </div>
-
- </div>
- <script>
- 
- $('.delup').click(function(){
-        imgname = $(this).attr('data-id');
-        swal({
-  title: "Ingin Hapus Hasil Scan Lab?",
-  text: "Foto Scan Lab yang dihapus tidak dapat dikembalikan, tetap Hapus?",
-  icon: "warning",
-  buttons: true,
-  dangerMode: true,
-})
-.then((willDelete) => {
-  if (willDelete) {
-    swal("Hasil Scan Telah Dihapus", {
-      icon: "success",
-    });
-    document.getElementById(imgname).remove();
-		$.ajax({
-			url : '/api/delete-upload',
-			type : 'POST',
-			data : 
-			file_name=imgname,
-			_token:"{{csrf_token()}}",
-			processData: false,  // tell jQuery not to process the data
-			contentType: false,  // tell jQuery not to set contentType
-			success : function(data) {
-				if(data.status == 1 ){
-					console.log(data.status);
-
-				}
-			}  
-		});
-  } else {
-    swal("Hapus Hasil Scan Telah Dibatalkan", {
-      icon: "error",
-    });
-  }
-});
-
-
-                                });
- </script>
-
-                         <!-- <div class="form-group">
-                        <div class="form-label">Dokumen Hasil Lab (Jika Ada)</div>
-                        <div class="custom-file">
-                          <input type="file" class="custom-file-input" name="scan_lab">
-                          <label class="custom-file-label">File Scan/Foto Hasil Lab</label>
-                        </div>
-                      </div>
-                    
-                </div> -->
                 <div class="card-footer text-right">
                   <div class="d-flex">
-                    <a href="{{url('laporan/puskesmas')}}" class="btn btn-link">Cancel</a>
-                    <button type="submit" class="btn btn-primary ml-auto">Ubah Laporan</button>
+                 <input type="hidden" name="id" value="{{$detail->id}}">
+                    <button type="submit" class="btn btn-primary ml-auto">Ubah</button>
                   </div>
                 </div>
               </form>
@@ -404,6 +151,26 @@ $("#pilihns1").hide();
         </div>
       </div>
     </div>
- 
- 
+  
+
+<script type="text/javascript">
+
+  function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+  
+        reader.onload = function (e) {
+            $('#blah').attr('src', e.target.result);
+        }
+  
+        reader.readAsDataURL(input.files[0]);
+    }
+  }
+  
+  $("#inputprofilepic").change(function () {
+    readURL(this);
+  });
+  
+  </script>
+          
 @endsection
