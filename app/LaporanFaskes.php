@@ -48,11 +48,12 @@ class LaporanFaskes extends Model
        'created_at',
         'updated_at'];
 
-        public static function getData (){
+        public static function getData ($kodefaskes){
             $data = LaporanFaskes::join('puskesmas','puskesmas.kode_puskesmas','=','laporanfaskes.kode_faskes')
             ->join('kecamatan','kecamatan.kode_kecamatan','=','laporanfaskes.kd_kec')
             ->join('kelurahan','kelurahan.kode_kelurahan','=','laporanfaskes.kd_kel')
             ->select('puskesmas.nama_puskesmas','laporanfaskes.*', 'kecamatan.nama_kecamatan','kelurahan.nama_kelurahan')
+            ->where('laporanfaskes.kode_faskes' ,$kodefaskes)
             ->get();
             return $data;
         }

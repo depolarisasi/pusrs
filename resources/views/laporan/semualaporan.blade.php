@@ -36,6 +36,8 @@
                   <div class="card-header">
                     <h3 class="card-title">Semua Laporan</h3>
                   </div>
+                  @if(Auth::user()->role == 1 )
+
                     <div class="row mt-5 ml-3 mr-3">
                       <div class="col-md-3 align-center" id="searchkec">
                       <p>Berdasarkan Kecamatan</p>
@@ -57,8 +59,23 @@
       <input type="text" id="max-date" class="form-control date-range-filter" data-date-format="dd M yyyy" placeholder="Sampai Tanggal :">
 
     </div>
+ 
+                      </div>
+                      @else
+                      <div class="row mt-5 ml-3 mr-3">
+
+                      <div class="col-md-6" >
+                      
+<p>Berdasarkan Tanggal</p>
+                      <div class="input-group input-daterange">
+      <input type="text" id="min-date" class="form-control date-range-filter" data-date-format="dd M yyyy" placeholder="Dari Tanggal : ">
+      <input type="text" id="max-date" class="form-control date-range-filter" data-date-format="dd M yyyy" placeholder="Sampai Tanggal :">
+
+    </div>
+ 
                       </div>
                     </div>
+                    @endif
                   <div class="card-body">
                   <div class="text-right">
                  <a href="{{url('laporan/new')}}" class="btn btn-md btn-primary">Tambah Laporan</a>

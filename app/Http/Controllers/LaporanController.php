@@ -53,12 +53,20 @@ public function addToLog($idlaporan, $namapasien, $action){
     //PUSKESMAS
     public function SemuaLaporan(){
           $kecamatan = Kecamatan::get();
+          $data = [];
+          if(Auth::user()->role == 1){
           $data = LaporanFaskes::join('puskesmas','puskesmas.kode_puskesmas','=','laporanfaskes.kode_faskes')
          ->join('kecamatan','kecamatan.kode_kecamatan','=','laporanfaskes.kd_kec')
          ->join('kelurahan','kelurahan.kode_kelurahan','=','laporanfaskes.kd_kel')
          ->select('puskesmas.nama_puskesmas','laporanfaskes.*', 'kecamatan.nama_kecamatan','kelurahan.nama_kelurahan')
          ->get();
-         return view('laporan.semualaporan',compact('data','kecamatan'));
+          }
+          else if (Auth::user()->role == 2 | Auth::user()->role == 3 ) {
+              $kodefas = Auth::user()->kode_faskes;
+              $data = Laporanfaskes::getData($kodefas);
+            
+          }
+          return view('laporan.semualaporan',compact('data','kecamatan'));
     }
 
     public function LaporanBaru(){
