@@ -108,3 +108,6 @@ Route::get('artikel/delete/{id}','ArticleController@destroy')->middleware('auth'
 
 Route::get('artikel/upload','ArticleController@UploadPasienBaru')->middleware('auth'); //upload Pasien
 Route::post('artikel/upload','ArticleController@SaveUploadPasienBaru')->middleware('auth'); //proses Pasien
+
+//Download as PDF 
+Route::get('/laporan/cetak_pdf', 'LaporanController@cetak_pdf');

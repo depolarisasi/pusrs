@@ -167,7 +167,7 @@ return [
         Laravel\Passport\PassportServiceProvider::class,
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
         Petehouston\Tinymce\TinymceServiceProvider::class,
-
+        Barryvdh\DomPDF\ServiceProvider::class,
         /*
          * Package Service Providers...
          */
@@ -234,7 +234,8 @@ return [
         'Notify' => Codecourse\Notify\Facades\Notify::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class, 
-        'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class
+        'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class
     ],
 
 ];
