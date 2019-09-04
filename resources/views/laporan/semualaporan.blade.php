@@ -1,6 +1,24 @@
 @extends('layouts.app')
 @section('css')
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js
+"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js
+"></script>
+
+<script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.flash.min.js
+"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js
+"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js
+"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js
+"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js
+"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js
+"></script>
 
 <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
@@ -47,6 +65,7 @@
                  @if(Auth::user()->role == 1 || Auth::user()->role == 2)
                  <a href="#" class="btn btn-md btn-primary">Upload Laporan</a>
                  @endif
+
                  </div>
                  <br>
                       <div class="table-responsive">
@@ -93,11 +112,17 @@
         </tbody>
       
     </table>
+   
     </div>
                         <script>
 
                         $(document).ready(function() {
-    var table = $('#semualaporan').DataTable();
+                       var table =   $('#semualaporan').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+    } );
     table.columns( '.kecamatan' ).every( function () {
     var that = this;
  
@@ -197,6 +222,7 @@ $('.date-range-filter').change(function() {
 $('#my-table_filter').hide();
                     
 } );
+
                         </script>
                     
                  

@@ -47,4 +47,13 @@ class LaporanFaskes extends Model
       'scan_lab', // berisi array tempat foto hasil lab disimpan
        'created_at',
         'updated_at'];
+
+        public static function getData (){
+            $data = LaporanFaskes::join('puskesmas','puskesmas.kode_puskesmas','=','laporanfaskes.kode_faskes')
+            ->join('kecamatan','kecamatan.kode_kecamatan','=','laporanfaskes.kd_kec')
+            ->join('kelurahan','kelurahan.kode_kelurahan','=','laporanfaskes.kd_kel')
+            ->select('puskesmas.nama_puskesmas','laporanfaskes.*', 'kecamatan.nama_kecamatan','kelurahan.nama_kelurahan')
+            ->get();
+            return $data;
+        }
 }

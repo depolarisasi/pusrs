@@ -12,7 +12,7 @@ use File;
 use Illuminate\Database\QueryException as QE;
 use Auth;
 use App\Log;
-
+use PDF;
 class LaporanController extends Controller
 {
 
