@@ -1,4 +1,13 @@
+/*
+ * Created on Thu Sep 12 2019
+ *
+ * Copyright (c) 2019 Justin
+ */
+
 import { StyleSheet } from 'react-native';
+import colors from './../../styles/colors';
+
+let headingTextSize = 30;
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -16,7 +25,16 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   scrollView: {
-
+    paddingLeft: 30,
+    paddingRight: 30,
+    paddingTop: 20,
+    flex: 1,
+  },
+  loginHeader: {
+    fontSize: headingTextSize,
+    color: colors.white,
+    fontWeight: '300',
+    marginBottom: 40,
   }
 });
 

@@ -1,3 +1,9 @@
+/*
+ * Created on Thu Sep 12 2019
+ *
+ * Copyright (c) 2019 Justin
+ */
+
 const createReducer = (initialState, handlers) => {
   const reducer = (state = initialState, action) => {
     if (Object.prototype.hasOwnProperty.call(handlers, action.type)) {
