@@ -116,7 +116,7 @@ public function getkel(Request $request){
     
     return $data->all();
     }
-
+ 
     public function apitabel(Request $request){ //untuk tabel dibawah peta
     $data2 = LaporanFaskes::where('laporanfaskes.kd_kec',$request->kode_kec)
     ->join('kecamatan','kecamatan.kode_kecamatan','=','laporanfaskes.kd_kec')

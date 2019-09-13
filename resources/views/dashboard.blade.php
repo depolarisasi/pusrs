@@ -106,7 +106,7 @@ $.post({url : 'api/apitabel',data: {kode_kec: code, _token : "{{csrf_token()}}"}
     success : function(response) {
 $(function() {
     for(var i=0;i<response.length;i++) {
-        var td1="<tr class='kelurahan'><td><a href='/laporan/detail/"+response[i]["idpasien"]+"'>"+response[i]["nama_pasien"]+"</a></td>";
+        var td1="<tr class='kelurahan'><td><a href='/laporan/detail/"+response[i]["idlaporan"]+"'>"+response[i]["nama_pasien"]+"</a></td>";
         var td2 = "<td>"+response[i]["alamat"]+"</br>"+response[i]["nama_kecamatan"]+", "+response[i]["nama_kelurahan"]+"</td>";
         if(response[i]["kd_icd"] == "A90"){
             var nama_penyakit = "DD";

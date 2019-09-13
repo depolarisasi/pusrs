@@ -11,12 +11,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-         $this->call(userseeder::class);
-         $this->call(article::class);
         Model::unguard();
-
-//   $this->call(SeederPasien::class);
-
+        $this->call(SeederPasien::class);
   Model::reguard();
     }
 }
