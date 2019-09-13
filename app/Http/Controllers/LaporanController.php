@@ -22,7 +22,7 @@ class LaporanController extends Controller
 * Apakah NIK sudah terdaftar ?
 */
 public function checkNIK($nik){
-    $pasien = LaporanFaskes::where('nik',$nik)->first(); 
+    $pasien = LaporanFaskes::where('nik_pasien',$nik)->first(); 
     if($pasien){
             return true;
     }else {
@@ -84,9 +84,9 @@ public function addToLog($idlaporan, $namapasien, $action){
 
     public function SaveLaporanBaru(Request $request){
           if($this->checkNIK($request->nik) == false){
-            $insert = new Pasien;
+            $insert = new LaporanFaskes;
             $insert->kd_pasien = Auth::user()->kode_faskes.$request->nik;
-            $insert->nik = $request->nik;
+            $insert->nik_pasien = $request->nik;
             $insert->nama_pasien = $request->nama_pasien;
             $insert->alamat = $request->alamat_pasien;
             $insert->umur = $request->umur_pasien;
@@ -159,7 +159,7 @@ public function addToLog($idlaporan, $namapasien, $action){
     public function UpdateLaporan(Request $request){
         $insert = LaporanFaskes::where('idlaporan',$request->idlaporan)->first();
         $insert->kd_pasien = Auth::user()->kode_faskes.$request->nik;
-        $insert->nik = $request->nik;
+        $insert->nik_pasien = $request->nik;
         $insert->nama_pasien = $request->nama_pasien;
         $insert->alamat = $request->alamat_pasien;
         $insert->umur = $request->umur_pasien;

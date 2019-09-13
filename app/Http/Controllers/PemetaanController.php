@@ -15,7 +15,7 @@ class PemetaanController extends Controller
     }
 
     public function kecamatan(){
-        $data = Pasien::join('kecamatan','kecamatan.kode_kecamatan','=','pasien2.kd_kec')
+        $data = Pasien::join('kecamatan','kecamatan.kode_kecamatan','=','pasien.kd_kec')
         ->selectRaw('kecamatan.nama_kecamatan, count(*) as jumlah, kecamatan.kode_kecamatan')
         ->groupby('kecamatan.nama_kecamatan','kecamatan.kode_kecamatan')
         ->get();
@@ -29,7 +29,7 @@ class PemetaanController extends Controller
     }
 
     public function faskes(){
-        $data = Pasien::join('puskesmas','puskesmas.kode_puskesmas','=','pasien2.kode_faskes')
+        $data = Pasien::join('puskesmas','puskesmas.kode_puskesmas','=','pasien.kode_faskes')
         ->selectRaw('puskesmas.nama_puskesmas, count(*) as jumlah, puskesmas.kode_puskesmas')
         ->groupby('puskesmas.nama_puskesmas','puskesmas.kode_puskesmas')
         ->get();
