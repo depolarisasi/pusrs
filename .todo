@@ -46,4 +46,8 @@ role puskesmas & rs cuma bisa download laporan dari faskes mereka aja
 di page semua laporan, udh gua siapin sort dari tanggal & lokasi, cuman blom gua bikin
 kalo bisa sih di garap aja
  
+ - API untuk laporan FASKES
+api samain dengan yg laporan pasien tapi bedanya ini faskes, ambil log & lat dari fasilitas kesehatan yg input
 
+- Buat seed
+coba buat seed untuk menuhin semua data, termasuk faskes dll dll
