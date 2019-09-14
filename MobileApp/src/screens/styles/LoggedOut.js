@@ -4,12 +4,12 @@
  * Copyright (c) 2019 Justin
  */
 
- import { StyleSheet } from 'react-native';
- import colors from './../../styles/colors';
+import { StyleSheet } from 'react-native';
+import colors from './../../styles/colors';
 
- let headingTextSize = 30;
+let headingTextSize = 30;
 
- const styles = StyleSheet.create({
+const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     display: 'flex',
@@ -32,7 +32,13 @@
     color: colors.white,
     fontWeight: '300',
     marginBottom: 40,
+  },
+  facebookButtonIcon: {
+    color: colors.green01,
+    position: 'relative',
+    left: 20,
+    zIndex: 8,
   }
- });
+});
 
- export default styles;
+export default styles;

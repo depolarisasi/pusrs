@@ -17,6 +17,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import colors from './../styles/colors';
 import transparentHeaderStyle from './../styles/navigation';
 import NavBarButton from './../components/buttons/NavBarButton';
+import RoundedButton from './../components/buttons/RoundedButton';
 import styles from './styles/LoggedOut';
 
 const unpadLogo = require('./../img/unpad-logo.png');
@@ -34,6 +35,14 @@ export default class LoggedOut extends Component {
     headerTintColor: colors.white,
   });
 
+  static onFacebookPress() {
+    alert('Facebook button pressed');
+  }
+
+  static onCreateAccountPress() {
+    alert('Create Account button pressed');
+  }
+
   render() {
     return (
       <ScrollView style={styles.wrapper}>
@@ -46,6 +55,18 @@ export default class LoggedOut extends Component {
           <Text style={styles.welcomeText}>
             Welcome to PUSRS.
           </Text>
+          <RoundedButton
+            text="Continue with Facebook"
+            textColor={colors.green01}
+            background={colors.white}
+            icon={<Icon name="facebook" size={20} style={styles.facebookButtonIcon} />}
+            handleOnPress={this.onFacebookPress}
+          />
+          <RoundedButton
+            text="Create Account"
+            textColor={colors.white}
+            handleOnPress={this.onCreateAccountPress}
+          />
         </View>
       </ScrollView>
     );
