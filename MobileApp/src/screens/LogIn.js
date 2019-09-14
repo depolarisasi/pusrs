@@ -8,6 +8,7 @@ import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {
+  StatusBar,
   View,
   Text,
   ScrollView,
@@ -21,6 +22,7 @@ import styles from './styles/LogIn';
 import colors from './../styles/colors';
 import transparentHeaderStyle from './../styles/navigation';
 import InputField from './../components/form/InputField';
+import NextArrowButton from './../components/buttons/NextArrowButton';
 
 class LogIn extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -31,7 +33,7 @@ class LogIn extends Component {
       text="Forgot Password"
     />,
     headerLeft: <NavBarButton
-      handleButtonPress={() => {}}
+      handleButtonPress={() => navigation.goBack()}
       location="left"
       icon={<Icon name="angle-left" color={colors.white} size={30} />}
     />,
@@ -49,6 +51,19 @@ class LogIn extends Component {
       password: '',
       validPassword: false,
     };
+
+    this.handleNextButton = this.handleNextButton.bind(this);
+  }
+
+  handleNextButton() {
+    const { navigation } = this.props;
+    const { navigate } = navigation;
+
+    navigate('Home');
+  }
+
+  toggleNextButtonState() {
+    return false;
   }
 
   render() {
@@ -63,6 +78,7 @@ class LogIn extends Component {
         style={[{ backgroundColor: background }, styles.wrapper]}
         behavior="padding"
       >
+        <StatusBar backgroundColor={colors.green01} barStyle="light-content" />
         <View style={styles.scrollViewWrapper}>
           <ScrollView style={styles.scrollView}>
             <Text style={styles.loginHeader}>
@@ -93,6 +109,10 @@ class LogIn extends Component {
               autoFocus
             />
           </ScrollView>
+          <NextArrowButton
+            handleNextButton={this.handleNextButton}
+            disabled={this.toggleNextButtonState()}
+          />
         </View>
       </KeyboardAvoidingView>
     );
@@ -106,7 +126,11 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 LogIn.propTypes = {
-
+  logIn: PropTypes.func.isRequired,
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+    goBack: PropTypes.func,
+  }).isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LogIn);

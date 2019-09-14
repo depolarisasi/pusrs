@@ -13,6 +13,14 @@ const setLoggedInState = loggedInState => (
   }
 );
 
+const logIn = (email, password) => {
+  const action = (dispatch) => {
+    return true;
+  };
+  return action;
+};
+
 export {
+  logIn,
   setLoggedInState,
 };

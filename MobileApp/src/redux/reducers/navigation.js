@@ -4,7 +4,6 @@
  * Copyright (c) 2019 Justin
  */
 
-import { StatusBar } from 'react-native';
 import createReducer from './../helpers/createReducer';
 import AppRouteConfigs from './../../navigators/AppRouteConfigs';
 
