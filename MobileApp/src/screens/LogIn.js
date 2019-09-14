@@ -20,6 +20,7 @@ import NavBarButton from './../components/buttons/NavBarButton';
 import styles from './styles/LogIn';
 import colors from './../styles/colors';
 import transparentHeaderStyle from './../styles/navigation';
+import InputField from './../components/form/InputField';
 
 class LogIn extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -41,9 +42,21 @@ class LogIn extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      formValid: true,
+      validEmail: false,
+      emailAddress: '',
+      password: '',
+      validPassword: false,
+    };
   }
 
   render() {
+    const {
+      formValid,
+      validEmail,
+      validPassword
+    } = this.state;
     const background = colors.green01;
     return (
       <KeyboardAvoidingView
@@ -55,6 +68,30 @@ class LogIn extends Component {
             <Text style={styles.loginHeader}>
               Log In
             </Text>
+            <InputField
+              labelText="EMAIL ADDRESS"
+              labelTextSize={14}
+              labelColor={colors.white}
+              textColor={colors.white}
+              borderBottomColor={colors.white}
+              inputType="email"
+              customStyle={{ marginBottom: 30 }}
+              onChangeText={() => {}}
+              showCheckmark={validEmail}
+              autoFocus
+            />
+            <InputField
+              labelText="PASSWORD"
+              labelTextSize={14}
+              labelColor={colors.white}
+              textColor={colors.white}
+              borderBottomColor={colors.white}
+              inputType="password"
+              customStyle={{ marginBottom: 30 }}
+              onChangeText={() => {}}
+              showCheckmark={validPassword}
+              autoFocus
+            />
           </ScrollView>
         </View>
       </KeyboardAvoidingView>
@@ -67,5 +104,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
+
+LogIn.propTypes = {
+
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(LogIn);
