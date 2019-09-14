@@ -60,13 +60,45 @@ export default class LoggedOut extends Component {
             textColor={colors.green01}
             background={colors.white}
             icon={<Icon name="facebook" size={20} style={styles.facebookButtonIcon} />}
-            handleOnPress={this.onFacebookPress}
+            handleOnPress={LoggedOut.onFacebookPress}
           />
           <RoundedButton
             text="Create Account"
             textColor={colors.white}
-            handleOnPress={this.onCreateAccountPress}
+            handleOnPress={LoggedOut.onCreateAccountPress}
           />
+          <View style={styles.termsAndConditions}>
+            <Text style={styles.termsText}>
+              By tapping Continue or Create Account,
+            </Text>
+            <Text style={styles.termsText}>
+              {" I agree to PUSRS' "}
+            </Text>
+            <TouchableHighlight style={styles.linkButton}>
+              <Text style={styles.termsText}>
+                Terms of Service
+              </Text>
+            </TouchableHighlight>
+            <Text style={styles.termsText}>
+              ,{" "}
+            </Text>
+            <TouchableHighlight style={styles.linkButton}>
+              <Text style={styles.termsText}>
+                Privacy Policy
+              </Text>
+            </TouchableHighlight>
+            <Text style={styles.termsText}>
+              , and{" "}
+            </Text>
+            <TouchableHighlight style={styles.linkButton}>
+              <Text style={styles.termsText}>
+                Nondiscrimination Policy
+              </Text>
+            </TouchableHighlight>
+            <Text style={styles.termsText}>
+              .
+            </Text>
+          </View>
         </View>
       </ScrollView>
     );

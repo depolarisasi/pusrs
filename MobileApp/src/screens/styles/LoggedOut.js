@@ -7,6 +7,7 @@
 import { StyleSheet } from 'react-native';
 import colors from './../../styles/colors';
 
+let termsTextSize = 11;
 let headingTextSize = 30;
 
 const styles = StyleSheet.create({
@@ -38,7 +39,22 @@ const styles = StyleSheet.create({
     position: 'relative',
     left: 20,
     zIndex: 8,
-  }
+  },
+  termsAndConditions: {
+    flexWrap: 'wrap',
+    alignItems: 'flex-start',
+    flexDirection: 'row',
+    marginTop: 30,
+  },
+  termsText: {
+    color: colors.white,
+    fontSize: termsTextSize,
+    fontWeight: '600',
+  },
+  linkButton: {
+    borderBottomWidth: 1,
+    borderBottomColor: colors.white,
+  },
 });
 
 export default styles;
