@@ -53,7 +53,7 @@ export default class LoggedOut extends Component {
             style={styles.logo}
           />
           <Text style={styles.welcomeText}>
-            Welcome to PUSRS.
+            Welcome to DESUMO.
           </Text>
           <RoundedButton
             text="Continue with Facebook"
@@ -72,7 +72,7 @@ export default class LoggedOut extends Component {
               By tapping Continue or Create Account,
             </Text>
             <Text style={styles.termsText}>
-              {" I agree to PUSRS' "}
+              {" I agree to DESUMO's "}
             </Text>
             <TouchableHighlight style={styles.linkButton}>
               <Text style={styles.termsText}>

@@ -106,7 +106,6 @@ class LogIn extends Component {
               customStyle={{ marginBottom: 30 }}
               onChangeText={() => {}}
               showCheckmark={validPassword}
-              autoFocus
             />
           </ScrollView>
           <NextArrowButton
