@@ -84,7 +84,7 @@
                   <li class="nav-item">
                     <a href="{{url('/')}}" class="nav-link"><i class="fe fe-home"></i> Dashboard</a>
                   </li>
-                  @if(Auth::user()->role == 1)
+                <!--    @if(Auth::user()->role == 1)
                   <li class="nav-item">
                   <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown"><i class="fe fe-box"></i>Fasilitas Kesehatan</a>
                     <div class="dropdown-menu dropdown-menu-arrow">
@@ -92,7 +92,7 @@
                       <a href="{{url('faskes/')}}" class="dropdown-item ">Semua Faskes</a>
                     </div>
                   </li>
-                  @endif
+                  @endif -->
                   <li class="nav-item">
                   <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown"><i class="fe fe-box"></i>Pasien</a>
                     <div class="dropdown-menu dropdown-menu-arrow">
@@ -105,7 +105,7 @@
                   <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown"><i class="fe fe-box"></i>Pelaporan</a>
                     <div class="dropdown-menu dropdown-menu-arrow">
                     <a href="{{url('laporan/new')}}" class="dropdown-item ">Pelaporan Baru</a>
-                      <a href="{{url('laporan/upload')}}" class="dropdown-item ">Upload Pelaporan Baru</a>
+                    <!--   <a href="{{url('laporan/upload')}}" class="dropdown-item ">Upload Pelaporan Baru</a> -->
                       <a href="{{url('laporan/')}}" class="dropdown-item ">Semua Laporan</a>
                     </div>
                   </li>
