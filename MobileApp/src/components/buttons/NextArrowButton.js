@@ -30,7 +30,7 @@ export default class NextArrowButton extends Component {
         >
           <Icon
             name="angle-right"
-            color={colors.green01}
+            color={colors.gray01}
             size={32}
             style={styles.icon}
           />
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     width: buttonSize,
     height: buttonSize,
-    backgroundColor: colors.white,
+    backgroundColor: colors.gray02,
   },
   icon: {
     marginRight: -2,

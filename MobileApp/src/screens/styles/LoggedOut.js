@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     display: 'flex',
-    backgroundColor: colors.green01,
+    backgroundColor: colors.white,
   },
   welcomeWrapper: {
     flex: 1,
@@ -30,12 +30,12 @@ const styles = StyleSheet.create({
   },
   welcomeText: {
     fontSize: headingTextSize,
-    color: colors.white,
+    color: colors.gray01,
     fontWeight: '300',
     marginBottom: 40,
   },
   facebookButtonIcon: {
-    color: colors.green01,
+    color: colors.gray01,
     position: 'relative',
     left: 20,
     zIndex: 8,
@@ -47,13 +47,13 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   termsText: {
-    color: colors.white,
+    color: colors.gray01,
     fontSize: termsTextSize,
     fontWeight: '600',
   },
   linkButton: {
     borderBottomWidth: 1,
-    borderBottomColor: colors.white,
+    borderBottomColor: colors.gray02,
   },
 });
 

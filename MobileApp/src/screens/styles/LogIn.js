@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   },
   loginHeader: {
     fontSize: headingTextSize,
-    color: colors.white,
+    color: colors.gray01,
     fontWeight: '300',
     marginBottom: 40,
   }

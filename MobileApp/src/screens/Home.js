@@ -21,7 +21,7 @@ export default class Home extends Component {
     headerLeft: <NavBarButton
       handleButtonPress={() => navigation.goBack()}
       location="left"
-      icon={<Icon name="angle-left" color={colors.white} size={30} />}
+      icon={<Icon name="angle-left" color={colors.gray01} size={30} />}
     />,
     headerStyle: transparentHeaderStyle,
     headerTransparent: true,
@@ -30,8 +30,8 @@ export default class Home extends Component {
 
   render() {
     return (
-      <View style={{ flex: 1, backgroundColor: colors.green01 }}>
-        <StatusBar backgroundColor={colors.green01} barStyle="light-content" />
+      <View style={{ flex: 1, backgroundColor: colors.white }}>
+        <StatusBar backgroundColor={colors.white} barStyle="dark-content" />
         <View style={{
           flex: 1,
           display: 'flex',
@@ -40,7 +40,7 @@ export default class Home extends Component {
         }}>
           <Text style={{
             fontSize: 30,
-            color: colors.white,
+            color: colors.gray01,
             fontWeight: '300',
             marginBottom: 40,
           }}>

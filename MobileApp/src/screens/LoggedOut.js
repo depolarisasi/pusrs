@@ -27,7 +27,7 @@ export default class LoggedOut extends Component {
     headerRight: <NavBarButton
       handleButtonPress={() => navigation.navigate('LogIn')}
       location="right"
-      color={colors.white}
+      color={colors.gray01}
       text="Log In"
     />,
     headerStyle: transparentHeaderStyle,
@@ -35,18 +35,23 @@ export default class LoggedOut extends Component {
     headerTintColor: colors.white,
   });
 
+  constructor(props) {
+    super(props);
+    this.onCreateAccountPress = this.onCreateAccountPress.bind(this);
+  }
+
   static onFacebookPress() {
     alert('Facebook button pressed');
   }
 
-  static onCreateAccountPress() {
-    alert('Create Account button pressed');
+  onCreateAccountPress() {
+    this.props.navigation.navigate('SignUp');
   }
 
   render() {
     return (
       <ScrollView style={styles.wrapper}>
-        <StatusBar backgroundColor={colors.green01} barStyle="light-content" />
+        <StatusBar backgroundColor={colors.white} barStyle="dark-content" />
         <View style={styles.welcomeWrapper}>
           <Image
             source={unpadLogo}
@@ -57,15 +62,16 @@ export default class LoggedOut extends Component {
           </Text>
           <RoundedButton
             text="Continue with Facebook"
-            textColor={colors.green01}
-            background={colors.white}
+            textColor={colors.gray01}
+            background={colors.gray02}
             icon={<Icon name="facebook" size={20} style={styles.facebookButtonIcon} />}
             handleOnPress={LoggedOut.onFacebookPress}
           />
           <RoundedButton
             text="Create Account"
-            textColor={colors.white}
-            handleOnPress={LoggedOut.onCreateAccountPress}
+            textColor={colors.gray01}
+            borderColor={colors.gray02}
+            handleOnPress={this.onCreateAccountPress}
           />
           <View style={styles.termsAndConditions}>
             <Text style={styles.termsText}>

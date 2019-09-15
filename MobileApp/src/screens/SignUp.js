@@ -1,5 +1,5 @@
 /*
- * Created on Thu Sep 12 2019
+ * Created on Sun Sep 15 2019
  *
  * Copyright (c) 2019 Justin
  */
@@ -24,14 +24,8 @@ import transparentHeaderStyle from './../styles/navigation';
 import InputField from './../components/form/InputField';
 import NextArrowButton from './../components/buttons/NextArrowButton';
 
-class LogIn extends Component {
+class SignUp extends Component {
   static navigationOptions = ({ navigation }) => ({
-    headerRight: <NavBarButton
-      handleButtonPress={() => {}}
-      location="right"
-      color={colors.gray01}
-      text="Forgot Password"
-    />,
     headerLeft: <NavBarButton
       handleButtonPress={() => navigation.goBack()}
       location="left"
@@ -46,7 +40,9 @@ class LogIn extends Component {
     super(props);
     this.state = {
       formValid: true,
+      validUsername: false,
       validEmail: false,
+      username: '',
       emailAddress: '',
       password: '',
       validPassword: false,
@@ -69,6 +65,7 @@ class LogIn extends Component {
   render() {
     const {
       formValid,
+      validUsername,
       validEmail,
       validPassword
     } = this.state;
@@ -82,8 +79,20 @@ class LogIn extends Component {
         <View style={styles.scrollViewWrapper}>
           <ScrollView style={styles.scrollView}>
             <Text style={styles.loginHeader}>
-              Log In
+              Create Account
             </Text>
+            <InputField
+              labelText="USERNAME"
+              labelTextSize={14}
+              labelColor={colors.gray01}
+              textColor={colors.gray01}
+              borderBottomColor={colors.gray02}
+              inputType="text"
+              customStyle={{ marginBottom: 30 }}
+              onChangeText={() => {}}
+              showCheckmark={validUsername}
+              autoFocus
+            />
             <InputField
               labelText="EMAIL ADDRESS"
               labelTextSize={14}
@@ -94,7 +103,6 @@ class LogIn extends Component {
               customStyle={{ marginBottom: 30 }}
               onChangeText={() => {}}
               showCheckmark={validEmail}
-              autoFocus
             />
             <InputField
               labelText="PASSWORD"
@@ -124,12 +132,11 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
-LogIn.propTypes = {
-  logIn: PropTypes.func.isRequired,
+SignUp.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func,
     goBack: PropTypes.func,
   }).isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LogIn);
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
