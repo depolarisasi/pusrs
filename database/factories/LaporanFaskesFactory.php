@@ -20,6 +20,6 @@ $factory->define(LaporanFaskes::class, function (Faker $faker) {
         'ns1' => 1,
         'kategori_pasien_wabah' => $faker->streetname,
         'status_layanan' => $faker->numberBetween($min = 1, $max = 3),
-        'tgl_pelaynan' => $faker->date($format = 'Y-m-d', $max = 'now') 
+        'tgl_pelaynan' => $faker->dateTimeBetween($startDate = '-8 months', $endDate = 'now', $timezone = null, $format = 'Y-m-d') 
     ];
 });

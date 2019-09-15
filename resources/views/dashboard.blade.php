@@ -4,36 +4,64 @@
 <link rel="stylesheet" href="{{asset('assets/plugins/jvectormap/jqvmap.min.css')}}" type="text/css" media="screen"/>
 <script src="{{asset('assets/plugins/jvectormap/jquery.vmap.js')}}"></script>
 <script src="{{asset('assets/plugins/jvectormap/bandung.js')}}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script>
+
 @endsection
 @section('content')
+<div class="row mb-5">
+
+<div class="col-md-4">
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Jumlah Kasus Tahun Ini</h5>
+    <center><h1>{{$datathisyear}}</h1></center>
+  </div>
+</div>
+</div>
+<div class="col-md-4">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Jumlah Kasus Bulan Ini</h5>
+        <center><h1>{{$datathismonth}}</h1></center>
+      </div>
+    </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Jumlah Kasus Hari Ini</h5>
+            <center><h1>{{$datathisday}}</h1></center>
+          </div>
+        </div>
+        </div>
+</div>
 <div class="row">
-
-              <div class="col-md-8 col-lg-8">
-                    <div id="vmap" style="width: 720px; height: 570px;"></div>
-              </div>
-
-
-              <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="dimmer">
-                            <div class="loader"></div>
-                            <div class="dimmer-content">
-                            <p>Pilih kecamatan di peta untuk informasi lengkap</p>
-                            <table class="table card-table" id="infoside">
-                            <thead>
-                            <th>Nama Kelurahan</th>
-                            <th>Jumlah Kasus</th> 
-                            </thead>
-                            <tbody id="info_kelurahan">
-                    
-                            <tbody></table>
-                            </div>
+        <div class="col-md-8 col-lg-8">
+                <div id="vmap" style="width: 720px; height: 570px;"></div>
+          </div>
+        
+        
+          <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="dimmer">
+                        <div class="loader"></div>
+                        <div class="dimmer-content">
+                        <p>Pilih kecamatan di peta untuk informasi lengkap</p>
+                        <table class="table card-table" id="infoside">
+                        <thead>
+                        <th>Nama Kelurahan</th>
+                        <th>Jumlah Kasus</th> 
+                        </thead>
+                        <tbody id="info_kelurahan">
+                
+                        <tbody></table>
                         </div>
                     </div>
                 </div>
-              </div>
-              
+            </div>
+          </div>
+          
               <div class="col-md-12 mt-5">
                
               <div class="card">
@@ -58,6 +86,11 @@
                     </div>
                 </div>
               </div>
+</div>
+
+<div class="row mt-5">
+
+ 
              
  </div>
 
