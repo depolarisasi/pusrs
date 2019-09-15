@@ -58,9 +58,9 @@
                       <i class="dropdown-icon fe fe-settings"></i> Setting Profil
                     </a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="{{url('docs')}}">
+                   <!-- <a class="dropdown-item" href="{{url('docs')}}">
                       <i class="dropdown-icon fe fe-help-circle"></i> Dokumentasi Penggunaan
-                    </a>
+                    </a> commented for presentation purposes -->
                     <a class="dropdown-item" href="{{url('logout')}}">
                       <i class="dropdown-icon fe fe-log-out"></i> Keluar
                     </a>
@@ -109,12 +109,12 @@
                       <a href="{{url('laporan/')}}" class="dropdown-item ">Semua Laporan</a>
                     </div>
                   </li>
-                  <li class="nav-item">
+                 <!--  <li class="nav-item">
                     <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown"><i class="fe fe-map"></i> Pemetaan</a>
                     <div class="dropdown-menu dropdown-menu-arrow">
                       <a href="{{url('pemetaan/domisili')}}" class="dropdown-item ">Berdasarkan Domisili Pasien</a>
                       <a href="{{url('pemetaan/faskes')}}" class="dropdown-item ">Berdasarkan Faskes</a>
-                    </div>
+                    </div>  -->
                   </li>
                   <li class="nav-item">
                   <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown"><i class="fe fe-box"></i>Artikel</a>
