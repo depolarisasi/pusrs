@@ -11,7 +11,7 @@ class SeederPasien extends Seeder
      */
     public function run()
     {
-        factory(App\LaporanFaskes::class,10)->create()->each(function($u) {
+        factory(App\LaporanFaskes::class,1182)->create()->each(function($u) {
             $u->save(factory(App\LaporanFaskes::class)->make());
           });
     }

@@ -105,8 +105,15 @@
         <tbody>
         @foreach($data as $pasien)
             <tr>
-                <td>{{$pasien->nama_pasien}} ({{$pasien->umur}} tahun)
-                <br>NIK : {{$pasien->nik}} </td>
+              @php
+              $userDob = $pasien->tanggal_lahir;
+              $dob = new DateTime($userDob);
+              $now = new DateTime();
+              $difference = $now->diff($dob);
+              $age = $difference->y;
+              @endphp
+                <td>{{$pasien->nama_pasien}} ({{$age}} tahun)
+                <br>NIK : {{$pasien->nik_pasien}} </td>
 
                 <td>{{$pasien->alamat}}</td>
                 <td> {{$pasien->nama_kecamatan}}</td>
@@ -121,9 +128,9 @@
                 <td>{{$pasien->nama_puskesmas}}</td>
                 <td>{{date('d M Y', strtotime($pasien->created_at))}}</td>
                 
-                <td><a href="{{url('laporan/detail/'.$pasien->idpasien)}}" class="btn btn-info btn-sm"><i class="fe fe-info"></i></a>
-                <a href="{{url('laporan/edit/'.$pasien->idpasien)}}" class="btn btn-warning btn-sm"><i class="fe fe-edit"></i></a>
-                <a href="{{url('laporan/delete/'.$pasien->idpasien)}}" class="btn btn-danger btn-sm"><i class="fe fe-trash-2"></i></a></td>
+                <td><a href="{{url('laporan/detail/'.$pasien->idlaporan)}}" class="btn btn-info btn-sm"><i class="fe fe-info"></i></a>
+                <a href="{{url('laporan/edit/'.$pasien->idlaporan)}}" class="btn btn-warning btn-sm"><i class="fe fe-edit"></i></a>
+                <a href="{{url('laporan/delete/'.$pasien->idlaporan)}}" class="btn btn-danger btn-sm"><i class="fe fe-trash-2"></i></a></td>
             </tr>
          @endforeach   
         </tbody>

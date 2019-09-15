@@ -12,6 +12,7 @@ use File;
 use Illuminate\Database\QueryException as QE;
 use Auth;
 use App\Log;
+use App\Pasien;
 use PDF;
 class LaporanController extends Controller
 {
@@ -22,7 +23,7 @@ class LaporanController extends Controller
 * Apakah NIK sudah terdaftar ?
 */
 public function checkNIK($nik){
-    $pasien = LaporanFaskes::where('nik_pasien',$nik)->first(); 
+    $pasien = Pasien::where('nik',$nik)->first(); 
     if($pasien){
             return true;
     }else {
@@ -49,6 +50,28 @@ public function addToLog($idlaporan, $namapasien, $action){
     $log->save();
 }
 
+public function addToLogUser($idlaporan, $namapasien, $action){
+    $log = new Log;
+    $log->log_event = "Pasien ".$idlaporan." (".$namapasien.")".$action;
+    $log->log_user = Auth::user()->id;
+    $log->save();
+}
+
+public function addToPasien($nik, $namapasien, $alamat, $kd_kec, $kd_kel, $tanggallahir ){
+    $newpasien = new Pasien;
+    $newpasien->nik = $nik;
+    $newpasien->nama_pasien = $namapasien;
+    $newpasien->alamat = $alamat;
+    $newpasien->kd_kel = $kd_kel;
+    $newpasien->kd_kec = $kd_kec;
+    $newpasien->tanggallahir = $tanggallahir;
+    try{
+        $this->addToLog($newpasien->idpasien,$newpasien->nama_pasien," Ditambahkan"); //add to log
+        
+    $newpasien->save();
+    }catch(QE $e){  return $e; } //show db error message
+
+}
 
     //PUSKESMAS
     public function SemuaLaporan(){
@@ -83,13 +106,22 @@ public function addToLog($idlaporan, $namapasien, $action){
     }
 
     public function SaveLaporanBaru(Request $request){
-          if($this->checkNIK($request->nik) == false){
+        if($this->checkNIK($request->nik) == false){
+            $this->AddToPasien($request->nik,$request->nama_pasien, $request->alamat_pasien, $request->kecamatan, $request->kelurahan, $request->umur_pasien);
+  
+        }
+        $checkmonth = LaporanFaskes::where('nik_pasien',$request->nik)->whereMonth('created_at','=',date("d",strtotime(date("Y-m-d"))))->first();
+        if($checkmonth){
+        
+        $msg = notify()->flash('Kasus Pasien Tersebut Sudah Ada Bulan Ini', 'error');
+        return redirect('laporan')->with(compact('msg'));
+    }else {
             $insert = new LaporanFaskes;
             $insert->kd_pasien = Auth::user()->kode_faskes.$request->nik;
             $insert->nik_pasien = $request->nik;
             $insert->nama_pasien = $request->nama_pasien;
             $insert->alamat = $request->alamat_pasien;
-            $insert->umur = $request->umur_pasien;
+            $insert->tanggal_lahir = $request->umur_pasien;
             $insert->kd_kec = $request->kecamatan;
             $insert->kd_kel = $request->kelurahan;
             $insert->kode_faskes = Auth::user()->kode_faskes;
@@ -133,10 +165,7 @@ public function addToLog($idlaporan, $namapasien, $action){
 
             $msg = notify()->flash('Berhasil ! Laporan berhasil dimasukkan', 'success');
                 return redirect('laporan')->with(compact('msg'));
-        } else {
-        $msg = notify()->flash('Pasien tersebut sudah pernah di input !', 'error');
-            return redirect()->back()->with(compact('msg'));
-        }
+            }
 
     }
 
@@ -162,7 +191,7 @@ public function addToLog($idlaporan, $namapasien, $action){
         $insert->nik_pasien = $request->nik;
         $insert->nama_pasien = $request->nama_pasien;
         $insert->alamat = $request->alamat_pasien;
-        $insert->umur = $request->umur_pasien;
+        $insert->tanggal_lahir = $request->umur_pasien;
         $insert->kd_kec = $request->kecamatan;
         $insert->kd_kel = $request->kelurahan;
         $insert->kode_faskes = Auth::user()->kode_faskes;

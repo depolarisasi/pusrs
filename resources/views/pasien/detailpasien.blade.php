@@ -69,7 +69,14 @@
                 <tr>
                 <tr>
                 <td><b>Nama Pasien, umur</b></td>
-                <td>{{$pasien->nama_pasien}} ({{$pasien->umur}} tahun) </td>
+                @php
+              $userDob = $pasien->tanggallahir;
+              $dob = new DateTime($userDob);
+              $now = new DateTime();
+              $difference = $now->diff($dob);
+              $age = $difference->y;
+              @endphp
+                <td>{{$pasien->nama_pasien}} ({{$age}} tahun) </td>
                 </tr>
                 <tr>
                 <td><b>Alamat Pasien</b></td>
@@ -88,16 +95,20 @@
 
 @if(count($riwayat) > 0)
     @foreach($riwayat as $r)
-    <td><b>Laporan #{{$r->idlaporan}}</b></td>
-    
-    <td>@if($pasien->kd_icd == "A90")
-                DD
-                @elseif($pasien->kd_icd == "A91")
-               DHF
-                @endif</td>
-
-                <td>{{$pasien->nama_puskesmas}}</td>
-                <td>{{date('d M Y', strtotime($pasien->created_at))}}</td>
+    <td><div class="card" style="width: 18rem;">
+  <div class="card-body">
+  <a href="{{url('laporan/detail/'.$r->idlaporan)}}"><b>Laporan #{{$r->idlaporan}}</b></a>
+  <br>
+  @if($r->kd_icd == "A90")
+  PENYAKIT DD
+  @elseif($r->kd_icd == "A91")
+ PENYAKIT DHF
+                @endif
+                {{$r->nama_puskesmas}} <br>
+                {{date('d M Y', strtotime($r->created_at))}}
+  </div>
+</div></td>
+ 
     @endforeach
     @else
     Tidak ada laporan penyakit untuk pasien ini

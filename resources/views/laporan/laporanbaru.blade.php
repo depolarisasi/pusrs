@@ -4,6 +4,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 <script src="{{asset('assets/js/up.js')}}"></script>
 
+<link href="{{asset('css/bootstrap-datepicker.css')}}" rel="stylesheet" />
+<script src="{{asset('js/bootstrap-datepicker.min.js')}}"></script>
 <style>
     .rqubtn {
     background: #f1f1f1;
@@ -112,9 +114,16 @@
                         </div>
                         
                         <div class="form-group">
-                            <label class="form-label">Umur Pasien</label>
+                            <label class="form-label">Tanggal Lahir Pasien</label>
                             
-                          <input type="text" class="form-control" name="umur_pasien" placeholder="Umur Pasien" required>
+                             
+                            <input type="text" id="tgllahir" class="form-control" name="umur_pasien" placeholder="Umur Pasien" required>
+                          <script>
+                          $('#tgllahir').datepicker({
+        format: "yyyy-mm-dd",
+        maxViewMode: 3,
+        todayHighlight: true
+    });</script>
                           </div>
                         <div class="form-group">
                           <label class="form-label">Kecamatan Pasien</label>

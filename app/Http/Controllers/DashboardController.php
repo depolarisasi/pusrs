@@ -29,7 +29,7 @@ $datasample[$d->kd_kec] =  "$d->jumlah";
 $dat = json_encode($datasample);
 
 $date = date("Y-m-d");
-$thisday= date("d",strtotime($date));
+$thisday= date("d",strtotime(date("Y-m-d")));
 
 $datathisyear = count(LaporanFaskes::whereYear('tgl_pelaynan', '=', '2019')->get());
 $datathismonth = count(LaporanFaskes::whereMonth('tgl_pelaynan', '=', '9')->whereYear('tgl_pelaynan', '=', '2019')->get());

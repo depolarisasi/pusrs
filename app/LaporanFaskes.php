@@ -32,7 +32,7 @@ class LaporanFaskes extends Model
    'nama_kelurahan', //nama kelurahan pasien
    'kd_kec', //kode kecamatan pasien
    'nama_kecamatan', //nama kelurahan pasien
-    'umur', //umur pasien, isinya angka
+    'tanggal_lahir', //umur pasien, isinya angka **UPDATED, JADI TANGGALLAHIR *
     'kd_icd', //kode ICD 10 berdasarkan penyakit pasien
     'nama_penyakit', //nama penyakit berdasarkan kode ICD10
     'kode_faskes', //kode fasilitas kesehatan yang menangani pasien
