@@ -10,103 +10,84 @@ import {
   Text,
   View,
   Image,
+  ImageBackground,
   TouchableHighlight,
   ScrollView,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import colors from './../styles/colors';
-import transparentHeaderStyle from './../styles/navigation';
-import NavBarButton from './../components/buttons/NavBarButton';
 import RoundedButton from './../components/buttons/RoundedButton';
 import styles from './styles/LoggedOut';
 
-const unpadLogo = require('./../img/unpad-logo.png');
+const imgBg = require('./../img/bg.jpg');
+const appIcon = require('./../img/app-icon.jpg');
 
 export default class LoggedOut extends Component {
   static navigationOptions = ({ navigation }) => ({
-    headerRight: <NavBarButton
-      handleButtonPress={() => navigation.navigate('LogIn')}
-      location="right"
-      color={colors.gray01}
-      text="Log In"
-    />,
-    headerStyle: transparentHeaderStyle,
-    headerTransparent: true,
-    headerTintColor: colors.white,
+    header: null,
   });
 
   constructor(props) {
     super(props);
-    this.onCreateAccountPress = this.onCreateAccountPress.bind(this);
+    this.onLoginPress = this.onLoginPress.bind(this);
+    this.onSignUpPress = this.onSignUpPress.bind(this);
   }
 
-  static onFacebookPress() {
-    alert('Facebook button pressed');
+  onLoginPress() {
+    setTimeout(() => this.props.navigation.navigate('LogIn'), 500);
   }
 
-  onCreateAccountPress() {
-    this.props.navigation.navigate('SignUp');
+  onSignUpPress() {
+    setTimeout(() => this.props.navigation.navigate('SignUp'), 500);
   }
 
   render() {
     return (
-      <ScrollView style={styles.wrapper}>
-        <StatusBar backgroundColor={colors.white} barStyle="dark-content" />
-        <View style={styles.welcomeWrapper}>
-          <Image
-            source={unpadLogo}
-            style={styles.logo}
-          />
-          <Text style={styles.welcomeText}>
-            Welcome to DESUMO.
-          </Text>
-          <RoundedButton
-            text="Continue with Facebook"
-            textColor={colors.gray01}
-            background={colors.gray02}
-            icon={<Icon name="facebook" size={20} style={styles.facebookButtonIcon} />}
-            handleOnPress={LoggedOut.onFacebookPress}
-          />
-          <RoundedButton
-            text="Create Account"
-            textColor={colors.gray01}
-            borderColor={colors.gray02}
-            handleOnPress={this.onCreateAccountPress}
-          />
-          <View style={styles.termsAndConditions}>
-            <Text style={styles.termsText}>
-              By tapping Continue or Create Account,
-            </Text>
-            <Text style={styles.termsText}>
-              {" I agree to DESUMO's "}
-            </Text>
-            <TouchableHighlight style={styles.linkButton}>
+      <ImageBackground source={imgBg} style={styles.bg}>
+        <ScrollView style={styles.wrapper}>
+          <StatusBar translucent backgroundColor={colors.transparent} barStyle="dark-content" />
+          <View style={styles.wrapperInner}>
+            <Image
+              source={appIcon}
+              style={styles.appIcon}
+            />
+            <Text style={styles.appName}>Mozzify</Text>
+            <View style={[styles.termsAndConditions, { marginTop: 50, marginBottom: 5 }]}>
               <Text style={styles.termsText}>
-                Terms of Service
+                By Signing up, you are agreeing to our
               </Text>
-            </TouchableHighlight>
-            <Text style={styles.termsText}>
-              ,{" "}
-            </Text>
-            <TouchableHighlight style={styles.linkButton}>
+            </View>
+            <View style={[styles.termsAndConditions, { marginBottom: 50 }]}>
+              <TouchableHighlight>
+                <Text style={[styles.termsText, styles.linkText]}>
+                  Privacy Policy
+                </Text>
+              </TouchableHighlight>
               <Text style={styles.termsText}>
-                Privacy Policy
+                {" and "}
               </Text>
-            </TouchableHighlight>
-            <Text style={styles.termsText}>
-              , and{" "}
-            </Text>
-            <TouchableHighlight style={styles.linkButton}>
-              <Text style={styles.termsText}>
-                Nondiscrimination Policy
-              </Text>
-            </TouchableHighlight>
-            <Text style={styles.termsText}>
-              .
-            </Text>
+              <TouchableHighlight>
+                <Text style={[styles.termsText, styles.linkText]}>
+                  Terms & Conditions
+                </Text>
+              </TouchableHighlight>
+            </View>
+            <RoundedButton
+              text="Log In"
+              textColor={colors.white}
+              background={colors.transparent}
+              borderColor={colors.white}
+              handleOnPress={this.onLoginPress}
+            />
+            <RoundedButton
+              text="Sign Up"
+              textColor={colors.white}
+              background={colors.transparent}
+              borderColor={colors.white}
+              handleOnPress={this.onSignUpPress}
+            />
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </ImageBackground>
     );
   }
 }

@@ -109,15 +109,15 @@ const styles = StyleSheet.create({
   androidWrapper: {
     overflow: 'hidden',
     borderRadius: 40,
-    borderWidth: 1,
+    borderWidth: 2,
     marginBottom: 15,
   },
   androidButtonText: {
     display: 'flex',
     paddingLeft: 20,
     paddingRight: 20,
-    padding: 12,
-    paddingBottom: 12,
+    padding: 14,
+    paddingBottom: 14,
     alignItems: 'center',
   },
   buttonTextWrapper: {
@@ -126,6 +126,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     width: '100%',
+    fontWeight: 'bold',
   },
   loaderContainer: {
     width: 90,
