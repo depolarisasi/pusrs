@@ -11,6 +11,7 @@ import {
   StatusBar,
   View,
   Text,
+  ImageBackground,
   ScrollView,
   KeyboardAvoidingView
 } from 'react-native';
@@ -18,24 +19,20 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import ActionCreators from './../redux/actions';
 import NavBarButton from './../components/buttons/NavBarButton';
-import styles from './styles/LogIn';
+import styles from './styles/Authentication';
 import colors from './../styles/colors';
 import transparentHeaderStyle from './../styles/navigation';
 import InputField from './../components/form/InputField';
-import NextArrowButton from './../components/buttons/NextArrowButton';
+import RoundedButton from './../components/buttons/RoundedButton';
+
+const imgBg = require('./../img/bg.jpg');
 
 class LogIn extends Component {
   static navigationOptions = ({ navigation }) => ({
-    headerRight: <NavBarButton
-      handleButtonPress={() => {}}
-      location="right"
-      color={colors.gray01}
-      text="Forgot Password"
-    />,
     headerLeft: <NavBarButton
       handleButtonPress={() => navigation.goBack()}
       location="left"
-      icon={<Icon name="angle-left" color={colors.gray01} size={30} />}
+      icon={<Icon name="angle-left" color={colors.white} size={30} />}
     />,
     headerStyle: transparentHeaderStyle,
     headerTransparent: true,
@@ -52,18 +49,11 @@ class LogIn extends Component {
       validPassword: false,
     };
 
-    this.handleNextButton = this.handleNextButton.bind(this);
+    this.onContinuePress = this.onContinuePress.bind(this);
   }
 
-  handleNextButton() {
-    const { navigation } = this.props;
-    const { navigate } = navigation;
-
-    navigate('Home');
-  }
-
-  toggleNextButtonState() {
-    return false;
+  onContinuePress() {
+    //
   }
 
   render() {
@@ -72,48 +62,55 @@ class LogIn extends Component {
       validEmail,
       validPassword
     } = this.state;
-    const background = colors.white;
     return (
-      <KeyboardAvoidingView
-        style={[{ backgroundColor: background }, styles.wrapper]}
-        behavior="padding"
-      >
-        <StatusBar backgroundColor={colors.white} barStyle="dark-content" />
-        <View style={styles.scrollViewWrapper}>
-          <ScrollView style={styles.scrollView}>
-            <Text style={styles.loginHeader}>
-              Log In
-            </Text>
-            <InputField
-              labelText="EMAIL ADDRESS"
-              labelTextSize={14}
-              labelColor={colors.gray01}
-              textColor={colors.gray01}
-              borderBottomColor={colors.gray02}
-              inputType="email"
-              customStyle={{ marginBottom: 30 }}
-              onChangeText={() => {}}
-              showCheckmark={validEmail}
-              autoFocus
-            />
-            <InputField
-              labelText="PASSWORD"
-              labelTextSize={14}
-              labelColor={colors.gray01}
-              textColor={colors.gray01}
-              borderBottomColor={colors.gray02}
-              inputType="password"
-              customStyle={{ marginBottom: 30 }}
-              onChangeText={() => {}}
-              showCheckmark={validPassword}
-            />
-          </ScrollView>
-          <NextArrowButton
-            handleNextButton={this.handleNextButton}
-            disabled={this.toggleNextButtonState()}
-          />
-        </View>
-      </KeyboardAvoidingView>
+      <ImageBackground source={imgBg} style={styles.bg}>
+        <KeyboardAvoidingView
+          style={styles.wrapper}
+          behavior="padding"
+        >
+          <StatusBar translucent backgroundColor={colors.transparent} barStyle="dark-content" />
+          <View style={styles.scrollViewWrapper}>
+            <ScrollView style={styles.scrollView}>
+              <View style={styles.topWrapper}>
+                <Text style={styles.titleText}>
+                  Log In
+                </Text>
+              </View>
+              <InputField
+                labelText="EMAIL ADDRESS"
+                labelTextSize={12}
+                labelColor={colors.white}
+                textColor={colors.white}
+                borderBottomColor={colors.white}
+                inputType="email"
+                customStyle={{ marginBottom: 30 }}
+                onChangeText={() => {}}
+                showCheckmark={validEmail}
+              />
+              <InputField
+                labelText="PASSWORD"
+                labelTextSize={12}
+                labelColor={colors.white}
+                textColor={colors.white}
+                borderBottomColor={colors.white}
+                inputType="password"
+                customStyle={{ marginBottom: 30 }}
+                onChangeText={() => {}}
+                showCheckmark={validPassword}
+              />
+              <View style={styles.bottomWrapper}>
+                <RoundedButton
+                  text="Continue"
+                  textColor={colors.blue01}
+                  background={colors.gray03}
+                  borderColor={colors.transparent}
+                  handleOnPress={this.onContinuePress}
+                />
+              </View>
+            </ScrollView>
+          </View>
+        </KeyboardAvoidingView>
+      </ImageBackground>
     );
   }
 }

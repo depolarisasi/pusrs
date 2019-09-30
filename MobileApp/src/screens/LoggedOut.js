@@ -7,6 +7,7 @@
 import React, { Component } from 'react';
 import {
   StatusBar,
+  Alert,
   Text,
   View,
   Image,
@@ -37,7 +38,14 @@ export default class LoggedOut extends Component {
   }
 
   onSignUpPress() {
-    setTimeout(() => this.props.navigation.navigate('SignUp'), 500);
+    setTimeout(() => Alert.alert(
+      'Privacy Policy and Terms & Conditions',
+      'Do you agree with our Privacy Policy and Terms & Conditions?',
+      [
+        {text: 'No', style: 'cancel'},
+        {text: 'Yes, I Agree', onPress: () => this.props.navigation.navigate('SignUp')},
+      ]
+    ), 500);
   }
 
   render() {
