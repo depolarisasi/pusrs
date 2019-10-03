@@ -53,7 +53,7 @@ class LogIn extends Component {
   }
 
   onContinuePress() {
-    //
+    this.props.navigation.navigate('LoggedIn');
   }
 
   render() {
