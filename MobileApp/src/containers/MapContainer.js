@@ -50,7 +50,7 @@ class MapContainer extends Component {
       <View style={styles.wrapper}>
         <StatusBar backgroundColor={colors.green01} barStyle="dark-content" />
         <DrawerLayout
-          drawerBackgroundColor={colors.green01}
+          drawerBackgroundColor={colors.white}
           drawerWidth={300}
           ref={drawer => {
             return (this.drawer = drawer);

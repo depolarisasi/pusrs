@@ -93,7 +93,7 @@ const LoggedInTabNavigator = createBottomTabNavigator({
       backgroundColor: colors.green01,
     },
     activeTintColor: colors.white,
-    inactiveTintColor: colors.gray04,
+    inactiveTintColor: colors.gray03,
   },
   tabBarPosition: 'bottom',
 });
