@@ -14,6 +14,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import colors from './../styles/colors';
+import DrawerLayout from 'react-native-drawer-layout';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
 const { width, height } = Dimensions.get('window');
@@ -39,14 +40,29 @@ class MapContainer extends Component {
   }
 
   render() {
+    const navigationView = (
+      <View>
+        <Text>Hello there!</Text>
+      </View>
+    );
+
     return (
       <View style={styles.wrapper}>
         <StatusBar backgroundColor={colors.green01} barStyle="dark-content" />
-        <MapView
-          provider={PROVIDER_GOOGLE}
-          style={styles.map}
-          initialRegion={this.state.region}
-        />
+        <DrawerLayout
+          drawerBackgroundColor={colors.green01}
+          drawerWidth={300}
+          ref={drawer => {
+            return (this.drawer = drawer);
+          }}
+          renderNavigationView={() => navigationView}
+        >
+          <MapView
+            provider={PROVIDER_GOOGLE}
+            style={styles.map}
+            initialRegion={this.state.region}
+          />
+        </DrawerLayout>
       </View>
     );
   }
