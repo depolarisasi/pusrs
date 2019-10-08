@@ -19,15 +19,10 @@ import NewsContainer from './../containers/NewsContainer';
 import VideoContainer from './../containers/VideoContainer';
 import ToDoContainer from './../containers/ToDoContainer';
 import colors from './../styles/colors';
-import HeaderMap from './../components/headers/HeaderMap';
 
 const MapTab = createStackNavigator({
   MapContainer: {
     screen: MapContainer,
-    navigationOptions: {
-      header: props => 
-        <HeaderMap openDrawer={props.navigation.getParam('openDrawer')} />,
-    },
   },
 });
 
