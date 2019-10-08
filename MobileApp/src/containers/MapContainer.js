@@ -39,6 +39,10 @@ class MapContainer extends Component {
     };
   }
 
+  componentDidMount() {
+    this.props.navigation.setParams({ openDrawer: this.drawer.openDrawer.bind(this) });
+  }
+
   render() {
     const navigationView = (
       <View>

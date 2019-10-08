@@ -26,7 +26,7 @@ const MapTab = createStackNavigator({
     screen: MapContainer,
     navigationOptions: {
       header: props => 
-        <HeaderMap />,
+        <HeaderMap openDrawer={props.navigation.getParam('openDrawer')} />,
     },
   },
 });

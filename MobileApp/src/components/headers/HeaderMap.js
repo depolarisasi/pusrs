@@ -20,7 +20,7 @@ export default class HeaderMap extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.col}>
-          <TouchableOpacity onPress={() => {}}>
+          <TouchableOpacity onPress={() => this.props.openDrawer()}>
             <Icon name="ios-menu" color={colors.white} size={30} />
           </TouchableOpacity>
           <Text style={styles.text}>Log-out</Text>
