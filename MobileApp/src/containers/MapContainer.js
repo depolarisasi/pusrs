@@ -6,6 +6,8 @@
 
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
+import Icon from 'react-native-vector-icons/Ionicons';
+import Icon2 from 'react-native-vector-icons/Feather';
 import {
   StatusBar,
   View,
@@ -66,8 +68,48 @@ class MapContainer extends Component {
 
   render() {
     const navigationView = (
-      <View>
-        <Text>Hello there!</Text>
+      <View style={styles.wrapper}>
+        <View style={styles.drawerTop}>
+          <Text style={styles.drawerTopText}>Log in</Text>
+        </View>
+        <View style={styles.drawerBottom}>
+          <View style={[styles.drawerBottomRow, styles.drawerBottomFirstRow]}>
+            <View style={styles.drawerBottomCol1}>
+              <Icon2 name="cloud" color={colors.gray01} size={25} />
+            </View>
+            <View style={styles.drawerBottomCol2}>
+              <Text style={styles.drawerBottomText}>Work Online</Text>
+            </View>
+          </View>
+          <View style={[styles.drawerBottomRow, styles.drawerBottomYellow]}>
+            <View style={styles.drawerBottomCol1}>
+              <Icon2 name="cloud-off" color={colors.white} size={25} />
+            </View>
+            <View style={styles.drawerBottomCol2}>
+              <Text style={[styles.drawerBottomText, { color: colors.white }]}>Working Offline</Text>
+            </View>
+          </View>
+          <View style={styles.drawerBottomRow}>
+            <View style={styles.drawerBottomCol1}>
+              <Icon name="ios-sync" color={colors.gray01} size={25} />
+            </View>
+            <View style={styles.drawerBottomCol2}>
+              <Text style={styles.drawerBottomText}>Synchronize Offline Map</Text>
+              <Text style={[styles.drawerBottomText, { fontSize: 10 }]}>last sync 2019/07/05 14:27</Text>
+            </View>
+          </View>
+          <View style={styles.drawerBottomRow}>
+            <View style={styles.drawerBottomCol1}>
+              <Icon name="ios-trash" color={colors.gray01} size={25} />
+            </View>
+            <View style={styles.drawerBottomCol2}>
+              <Text style={styles.drawerBottomText}>Delete Offline Map</Text>
+            </View>
+          </View>
+          <View style={styles.drawerFooter}>
+            <Text style={styles.drawerFooterText}>Desumo 1.0 (8)</Text>
+          </View>
+        </View>
       </View>
     );
 
@@ -102,6 +144,63 @@ const styles = StyleSheet.create({
   },
   map: {
     ...StyleSheet.absoluteFillObject,
+  },
+  drawerTop: {
+    height: 80,
+    padding: 20,
+    backgroundColor: colors.gray01,
+    justifyContent: 'center',
+  },
+  drawerTopText: {
+    color: colors.white,
+    fontSize: 14,
+  },
+  drawerBottom: {
+    padding: 10,
+    display: 'flex',
+    flex: 1,
+  },
+  drawerBottomRow: {
+    height: 50,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  drawerBottomFirstRow: {
+    borderBottomWidth: 2,
+    borderBottomColor: colors.gray02,
+  },
+  drawerBottomCol1: {
+    alignItems: 'center',
+    width: 40,
+    marginRight: 10,
+  },
+  drawerBottomCol2: {
+    width: '100%',
+  },
+  drawerBottomText: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: colors.gray01,
+  },
+  drawerBottomYellow: {
+    marginTop: 15,
+    marginBottom: 10,
+    height: 40,
+    borderRadius: 3,
+    backgroundColor: colors.yellow01,
+  },
+  drawerFooter: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    alignItems: 'center',
+    padding: 10,
+  },
+  drawerFooterText: {
+    color: colors.gray02,
+    fontSize: 11,
+    fontWeight: 'bold',
   },
 });
 
