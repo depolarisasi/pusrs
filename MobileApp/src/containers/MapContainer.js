@@ -17,16 +17,23 @@ import {
 } from 'react-native';
 import colors from './../styles/colors';
 import DrawerLayout from 'react-native-drawer-layout';
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import HeaderMap from './../components/headers/HeaderMap';
 
 const { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / height;
-const LATITUDE = 37.78825;
-const LONGITUDE = -122.4324;
+const LATITUDE = -6.2103603;
+const LONGITUDE = 106.7978743;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+let id = 0;
+
+function randomColor() {
+  return `#${Math.floor(Math.random() * 16777215)
+    .toString(16)
+    .padStart(6, 0)}`;
+}
 
 class MapContainer extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -47,6 +54,7 @@ class MapContainer extends Component {
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA,
       },
+      markers: [],
     };
 
     this.toggleDrawer = this.toggleDrawer.bind(this);
@@ -54,6 +62,19 @@ class MapContainer extends Component {
 
   componentDidMount() {
     this.props.navigation.setParams({ toggleDrawer: this.toggleDrawer });
+  }
+
+  onMapPress(e) {
+    this.setState({
+      markers: [
+        ...this.state.markers,
+        {
+          coordinate: e.nativeEvent.coordinate,
+          key: id++,
+          color: randomColor(),
+        }
+      ]
+    })
   }
 
   toggleDrawer() {
@@ -130,7 +151,16 @@ class MapContainer extends Component {
             provider={PROVIDER_GOOGLE}
             style={styles.map}
             initialRegion={this.state.region}
-          />
+            onPress={e => this.onMapPress(e)}
+          >
+            {this.state.markers.map(marker => (
+              <Marker
+                key={marker.key}
+                coordinate={marker.coordinate}
+                pinColor={marker.color}
+              />
+            ))}
+          </MapView>
         </DrawerLayout>
       </View>
     );
