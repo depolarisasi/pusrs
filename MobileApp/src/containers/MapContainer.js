@@ -18,6 +18,7 @@ import {
 import colors from './../styles/colors';
 import DrawerLayout from 'react-native-drawer-layout';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
+import ArcGISMapView from 'react-native-arcgis-mapview';
 import HeaderMap from './../components/headers/HeaderMap';
 
 const { width, height } = Dimensions.get('window');
@@ -147,7 +148,7 @@ class MapContainer extends Component {
           onDrawerOpen={() => this.setState({ drawerActive: true })}
           onDrawerClose={() => this.setState({ drawerActive: false })}
         >
-          <MapView
+          {/* <MapView
             provider={PROVIDER_GOOGLE}
             style={styles.map}
             initialRegion={this.state.region}
@@ -160,7 +161,11 @@ class MapContainer extends Component {
                 pinColor={marker.color}
               />
             ))}
-          </MapView>
+          </MapView> */}
+          <ArcGISMapView
+            ref={mapView => this.mapView = mapView}
+            style={styles.map}
+          />
         </DrawerLayout>
       </View>
     );
