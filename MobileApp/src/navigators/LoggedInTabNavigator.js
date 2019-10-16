@@ -18,11 +18,26 @@ import ProfileContainer from './../containers/ProfileContainer';
 import NewsContainer from './../containers/NewsContainer';
 import VideoContainer from './../containers/VideoContainer';
 import ToDoContainer from './../containers/ToDoContainer';
+import Legend from './../screens/Legend';
 import colors from './../styles/colors';
 
 const MapTab = createStackNavigator({
   MapContainer: {
     screen: MapContainer,
+  },
+  Legend: {
+    screen: Legend,
+    navigationOptions: {
+      title: 'Legend',
+      headerStyle: {
+        marginTop: 20,
+        backgroundColor: colors.green01,
+      },
+      headerTintColor: colors.white,
+      headerTitleStyle: {
+        fontWeight: '500',
+      },
+    }
   },
 });
 

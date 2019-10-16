@@ -17,10 +17,11 @@ import colors from './../../styles/colors';
 
 export default class HeaderMap extends Component {
   render() {
+    const { navigation } = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.col}>
-          <TouchableOpacity onPress={this.props.toggleDrawer}>
+          <TouchableOpacity onPress={navigation.getParam('toggleDrawer')}>
             <Icon name="ios-menu" color={colors.white} size={30} />
           </TouchableOpacity>
           <Text style={styles.text}>Log-out</Text>
@@ -35,7 +36,9 @@ export default class HeaderMap extends Component {
           <TouchableOpacity onPress={() => {}}>
             <Icon name="ios-add" color={colors.gray03} size={30} />
           </TouchableOpacity>
-          <Text style={styles.text}>Legend</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Legend')}>
+            <Text style={styles.text}>Legend</Text>
+          </TouchableOpacity>
         </View>
       </View>
     );

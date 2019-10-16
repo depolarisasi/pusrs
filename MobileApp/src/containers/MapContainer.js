@@ -40,7 +40,7 @@ class MapContainer extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
       header: () => 
-        <HeaderMap toggleDrawer={navigation.getParam('toggleDrawer')} />,
+        <HeaderMap navigation={navigation} />,
     }
   };
 
@@ -165,6 +165,10 @@ class MapContainer extends Component {
           <ArcGISMapView
             ref={mapView => this.mapView = mapView}
             style={styles.map}
+            initialMapCenter={[{
+              latitude: LATITUDE,
+              longitude: LONGITUDE,
+            }]}
           />
         </DrawerLayout>
       </View>
