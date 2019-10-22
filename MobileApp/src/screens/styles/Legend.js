@@ -32,6 +32,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: colors.black,
   },
+  pin: {
+    width: 12,
+    height: 12,
+    borderRadius: 12 / 2,
+    marginTop: 30,
+    marginLeft: 20,
+    elevation: 4,
+  },
 });
 
 export default styles;

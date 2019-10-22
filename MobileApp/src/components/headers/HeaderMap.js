@@ -24,7 +24,9 @@ export default class HeaderMap extends Component {
           <TouchableOpacity onPress={navigation.getParam('toggleDrawer')}>
             <Icon name="ios-menu" color={colors.white} size={30} />
           </TouchableOpacity>
-          <Text style={styles.text}>Log-out</Text>
+          <TouchableOpacity onPress={navigation.getParam('onLogOutPress')}>
+            <Text style={styles.text}>Log-out</Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.col}>
           <Text style={[styles.text, styles.bold]}>Map</Text>

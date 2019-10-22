@@ -12,6 +12,7 @@ import {
   StatusBar,
   View,
   Text,
+  Alert,
   Dimensions,
   StyleSheet,
 } from 'react-native';
@@ -59,10 +60,14 @@ class MapContainer extends Component {
     };
 
     this.toggleDrawer = this.toggleDrawer.bind(this);
+    this.onLogOutPress = this.onLogOutPress.bind(this);
   }
 
   componentDidMount() {
-    this.props.navigation.setParams({ toggleDrawer: this.toggleDrawer });
+    this.props.navigation.setParams({
+      toggleDrawer: this.toggleDrawer,
+      onLogOutPress: this.onLogOutPress,
+    });
   }
 
   onMapPress(e) {
@@ -76,6 +81,21 @@ class MapContainer extends Component {
         }
       ]
     })
+  }
+
+  onLogOutPress() {
+    Alert.alert(
+      'Log out',
+      'Are you sure you want to log out?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {text: 'OK', onPress: () => this.props.navigation.goBack(null)},
+      ],
+    );
   }
 
   toggleDrawer() {

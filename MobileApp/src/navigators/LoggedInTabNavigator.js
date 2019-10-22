@@ -106,6 +106,7 @@ const LoggedInTabNavigator = createBottomTabNavigator({
     inactiveTintColor: colors.gray03,
   },
   tabBarPosition: 'bottom',
+  backBehavior: 'none',
 });
 
 export default LoggedInTabNavigator;
