@@ -15,9 +15,7 @@ import {
   ScrollView,
   KeyboardAvoidingView
 } from 'react-native';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import ActionCreators from './../redux/actions';
+import { Field, reduxForm } from 'redux-form';
 import NavBarButton from './../components/buttons/NavBarButton';
 import styles from './styles/Authentication';
 import colors from './../styles/colors';
@@ -56,6 +54,32 @@ class LogIn extends Component {
     this.props.navigation.navigate('LoggedIn');
   }
 
+  renderInput({
+    input,
+    label,
+    type,
+    showCheckmark,
+    meta: {
+      touched,
+      error,
+      warning
+    }
+  }) {
+    const hasError = error === undefined;
+    return <InputField
+      {...input}
+      labelText={label}
+      labelTextSize={12}
+      labelColor={colors.white}
+      textColor={colors.white}
+      borderBottomColor={colors.white}
+      inputType={type}
+      customStyle={{ marginBottom: 30 }}
+      onChangeText={() => {}}
+      showCheckmark={showCheckmark}
+    />;
+  }
+
   render() {
     const {
       formValid,
@@ -73,34 +97,26 @@ class LogIn extends Component {
             <ScrollView style={styles.scrollView}>
               <View style={styles.topWrapper}>
                 <Text style={styles.titleText}>
-                  Log In
+                  Masuk
                 </Text>
               </View>
-              <InputField
-                labelText="EMAIL ADDRESS"
-                labelTextSize={12}
-                labelColor={colors.white}
-                textColor={colors.white}
-                borderBottomColor={colors.white}
-                inputType="email"
-                customStyle={{ marginBottom: 30 }}
-                onChangeText={() => {}}
+              <Field
+                name="email"
+                label="ALAMAT EMAIL"
+                type="text"
                 showCheckmark={validEmail}
+                component={this.renderInput}
               />
-              <InputField
-                labelText="PASSWORD"
-                labelTextSize={12}
-                labelColor={colors.white}
-                textColor={colors.white}
-                borderBottomColor={colors.white}
-                inputType="password"
-                customStyle={{ marginBottom: 30 }}
-                onChangeText={() => {}}
+              <Field
+                name="password"
+                label="PASSWORD"
+                type="password"
                 showCheckmark={validPassword}
+                component={this.renderInput}
               />
               <View style={styles.bottomWrapper}>
                 <RoundedButton
-                  text="Continue"
+                  text="Masuk"
                   textColor={colors.blue01}
                   background={colors.gray03}
                   borderColor={colors.transparent}
@@ -115,12 +131,6 @@ class LogIn extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  
-});
-
-const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
-
 LogIn.propTypes = {
   logIn: PropTypes.func.isRequired,
   navigation: PropTypes.shape({
@@ -129,4 +139,6 @@ LogIn.propTypes = {
   }).isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LogIn);
+export default reduxForm({
+  form: 'loginForm'
+})(LogIn);

@@ -98,7 +98,7 @@ export default class InputField extends Component {
               onPress={this.toggleShowPassword}
             >
               <Text style={styles.showButtonText}>
-                {secureInput ? 'Show' : 'Hide'}
+                {secureInput ? 'Tampilkan' : 'Sembunyikan'}
               </Text>
             </TouchableOpacity>
           )

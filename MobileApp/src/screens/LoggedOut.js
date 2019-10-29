@@ -180,11 +180,11 @@ export default class LoggedOut extends Component {
 
   onSignUpPress() {
     setTimeout(() => Alert.alert(
-      'Privacy Policy and Terms & Conditions',
-      'Do you agree with our Privacy Policy and Terms & Conditions?',
+      'Privasi Polisi dan Syarat & Ketentuan',
+      'Apakah Anda setuju dengan Privasi Polisi dan Syarat & Ketentuan kami?',
       [
-        {text: 'No', style: 'cancel'},
-        {text: 'Yes, I Agree', onPress: () => this.props.navigation.navigate('SignUp')},
+        {text: 'Tidak', style: 'cancel'},
+        {text: 'Ya, Saya Setuju', onPress: () => this.props.navigation.navigate('SignUp')},
       ]
     ), 500);
   }
@@ -202,33 +202,36 @@ export default class LoggedOut extends Component {
             <Text style={styles.appName}>Mozzify</Text>
             <View style={[styles.termsAndConditions, { marginTop: 50, marginBottom: 5 }]}>
               <Text style={styles.termsText}>
-                By Signing up, you are agreeing to our
+                Dengan mendaftar, Anda setuju dengan 
               </Text>
             </View>
             <View style={[styles.termsAndConditions, { marginBottom: 50 }]}>
               <TouchableHighlight onPress={this.onPrivacyPolicyPress}>
                 <Text style={[styles.termsText, styles.linkText]}>
-                  Privacy Policy
+                  Privasi Polisi
                 </Text>
               </TouchableHighlight>
               <Text style={styles.termsText}>
-                {" and "}
+                {" dan "}
               </Text>
               <TouchableHighlight onPress={this.onTermsConditionsPress}>
                 <Text style={[styles.termsText, styles.linkText]}>
-                  Terms & Conditions
+                  Syarat & Ketentuan
                 </Text>
               </TouchableHighlight>
+              <Text style={styles.termsText}>
+                {" kami "}
+              </Text>
             </View>
             <RoundedButton
-              text="Log In"
+              text="Masuk"
               textColor={colors.white}
               background={colors.transparent}
               borderColor={colors.white}
               handleOnPress={this.onLoginPress}
             />
             <RoundedButton
-              text="Sign Up"
+              text="Daftar"
               textColor={colors.white}
               background={colors.transparent}
               borderColor={colors.white}

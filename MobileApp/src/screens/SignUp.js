@@ -78,14 +78,14 @@ class SignUp extends Component {
             <ScrollView style={styles.scrollView}>
               <View style={styles.topWrapper}>
                 <Text style={styles.titleText}>
-                  Sign Up
+                  Daftar
                 </Text>
                 <Image
                   source={imgUser}
                   style={styles.imgUser}
                 />
                 <Text style={styles.changeImgText}>
-                  Tap to Change
+                  Tekan untuk Mengubah
                 </Text>
               </View>
               <InputField
@@ -100,7 +100,7 @@ class SignUp extends Component {
                 showCheckmark={validUsername}
               />
               <InputField
-                labelText="EMAIL ADDRESS"
+                labelText="ALAMAT EMAIL"
                 labelTextSize={12}
                 labelColor={colors.white}
                 textColor={colors.white}
@@ -122,7 +122,7 @@ class SignUp extends Component {
                 showCheckmark={validPassword}
               />
               <RoundedButton
-                text="Continue"
+                text="Daftar"
                 textColor={colors.blue01}
                 background={colors.gray03}
                 borderColor={colors.transparent}

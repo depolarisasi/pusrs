@@ -6,7 +6,11 @@
 
 import { combineReducers } from 'redux';
 import * as Navigation from './navigation';
+import { reducer as formReducer } from 'redux-form';
 
 export default combineReducers(Object.assign(
   Navigation,
+  {
+    form: formReducer,
+  }
 ));
