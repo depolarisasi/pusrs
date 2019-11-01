@@ -7,12 +7,10 @@ export default function submitLogin(values, dispatch, props) {
 
   if (!reg.test(email)) {
     error.email = 'Format email salah';
-  } else {
-    if (!email) {
-      error.email = 'Email harus diisi';
-    } else if (!password) {
-      error.password = 'Password harus diisi';
-    }
+  } else if (!email) {
+    error.email = 'Email harus diisi';
+  } else if (!password) {
+    error.password = 'Password harus diisi';
   }
 
   if (Object.keys(error).length) {
