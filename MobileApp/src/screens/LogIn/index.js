@@ -5,7 +5,6 @@
  */
 
 import React, { Component } from 'react';
-import { PropTypes } from 'prop-types';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {
   StatusBar,
@@ -16,14 +15,15 @@ import {
   KeyboardAvoidingView
 } from 'react-native';
 import { Field, reduxForm } from 'redux-form';
-import NavBarButton from './../components/buttons/NavBarButton';
-import styles from './styles/Authentication';
-import colors from './../styles/colors';
-import transparentHeaderStyle from './../styles/navigation';
-import InputField from './../components/form/InputField';
-import RoundedButton from './../components/buttons/RoundedButton';
+import NavBarButton from './../../components/buttons/NavBarButton';
+import styles from './../styles/Authentication';
+import colors from './../../styles/colors';
+import transparentHeaderStyle from './../../styles/navigation';
+import InputField from './../../components/form/InputField';
+import RoundedButton from './../../components/buttons/RoundedButton';
+import submitLogin from './submitLogIn';
 
-const imgBg = require('./../img/bg.jpg');
+const imgBg = require('./../../img/bg.jpg');
 
 class LogIn extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -40,52 +40,35 @@ class LogIn extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      formValid: true,
-      validEmail: false,
-      emailAddress: '',
-      password: '',
-      validPassword: false,
+      //
     };
-
-    this.onContinuePress = this.onContinuePress.bind(this);
-  }
-
-  onContinuePress() {
-    this.props.navigation.navigate('LoggedIn');
   }
 
   renderInput({
     input,
     label,
     type,
-    showCheckmark,
     meta: {
-      touched,
       error,
-      warning
     }
   }) {
-    const hasError = error === undefined;
-    return <InputField
-      {...input}
-      labelText={label}
-      labelTextSize={12}
-      labelColor={colors.white}
-      textColor={colors.white}
-      borderBottomColor={colors.white}
-      inputType={type}
-      customStyle={{ marginBottom: 30 }}
-      onChangeText={() => {}}
-      showCheckmark={showCheckmark}
-    />;
+    return <View>
+      <InputField
+        input={input}
+        labelText={label}
+        labelTextSize={12}
+        labelColor={colors.white}
+        textColor={colors.white}
+        borderBottomColor={colors.white}
+        inputType={type}
+        customStyle={{ marginBottom: 30 }}
+        error={error}
+      />
+    </View>;
   }
 
   render() {
-    const {
-      formValid,
-      validEmail,
-      validPassword
-    } = this.state;
+    const { handleSubmit } = this.props;
     return (
       <ImageBackground source={imgBg} style={styles.bg}>
         <KeyboardAvoidingView
@@ -104,14 +87,12 @@ class LogIn extends Component {
                 name="email"
                 label="ALAMAT EMAIL"
                 type="text"
-                showCheckmark={validEmail}
                 component={this.renderInput}
               />
               <Field
                 name="password"
                 label="PASSWORD"
                 type="password"
-                showCheckmark={validPassword}
                 component={this.renderInput}
               />
               <View style={styles.bottomWrapper}>
@@ -120,7 +101,7 @@ class LogIn extends Component {
                   textColor={colors.blue01}
                   background={colors.gray03}
                   borderColor={colors.transparent}
-                  handleOnPress={this.onContinuePress}
+                  handleOnPress={handleSubmit(submitLogin)}
                 />
               </View>
             </ScrollView>
@@ -130,14 +111,6 @@ class LogIn extends Component {
     );
   }
 }
-
-LogIn.propTypes = {
-  logIn: PropTypes.func.isRequired,
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func,
-    goBack: PropTypes.func,
-  }).isRequired,
-};
 
 export default reduxForm({
   form: 'loginForm'

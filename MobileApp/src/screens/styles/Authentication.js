@@ -7,7 +7,7 @@
 import { StyleSheet } from 'react-native';
 import colors from './../../styles/colors';
 
-let titleTextSuze = 16;
+let titleTextSize = 16;
 let changeImgTextSize = 12;
 
 const styles = StyleSheet.create({
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   titleText: {
-    fontSize: titleTextSuze,
+    fontSize: titleTextSize,
     color: colors.white,
     fontWeight: 'bold',
   },
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   },
   bottomWrapper: {
     marginTop: 100,
-  }
+  },
 });
 
 export default styles;
