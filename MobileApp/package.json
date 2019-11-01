@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@react-native-firebase/app": "^6.0.3",
+    "@react-native-firebase/auth": "^6.0.3",
     "react": "16.8.6",
     "react-native": "0.60.5",
     "react-native-arcgis-mapview": "^1.0.11",

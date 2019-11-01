@@ -5,9 +5,9 @@
  */
 
 import { SubmissionError, reset } from 'redux-form';
-import firebase from 'react-native-firebase';
+import auth from '@react-native-firebase/auth';
 
-export default function submitSignUp(values, dispatch, props) {
+export default async function submitSignUp(values, dispatch, props) {
   let error = {};
   const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
   const { username, email, password } = values;
@@ -25,10 +25,10 @@ export default function submitSignUp(values, dispatch, props) {
   if (Object.keys(error).length) {
     throw new SubmissionError(error);
   } else {
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(() => alert('Sign up berhasil'))
-      .catch(error => console.log('Error while signing user up: ' + error.message));
+    try {
+      await auth().createUserWithEmailAndPassword(email, password);
+    } catch (e) {
+      console.error(e.message);
+    }
   }
 }
