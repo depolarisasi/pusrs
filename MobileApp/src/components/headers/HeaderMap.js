@@ -53,7 +53,7 @@ HeaderMap.propTypes = {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 20,
+    marginTop: 0,
     height: 50,
     backgroundColor: colors.green01,
     display: 'flex',

@@ -9,20 +9,20 @@ import { SubmissionError, reset } from 'redux-form';
 import auth from '@react-native-firebase/auth';
 
 export default async function submitLogin(values, dispatch, props) {
-  let error = {};
+  const errors = {};
   const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
   const { email, password } = values;
 
   if (!reg.test(email)) {
-    error.email = 'Format email salah';
+    errors.email = 'Format email salah';
   } else if (!email) {
-    error.email = 'Email harus diisi';
+    errors.email = 'Email harus diisi';
   } else if (!password) {
-    error.password = 'Password harus diisi';
+    errors.password = 'Password harus diisi';
   }
 
-  if (Object.keys(error).length) {
-    throw new SubmissionError(error);
+  if (Object.keys(errors).length) {
+    throw new SubmissionError(errors);
   } else {
     try {
       await auth().signInWithEmailAndPassword(email, password);
