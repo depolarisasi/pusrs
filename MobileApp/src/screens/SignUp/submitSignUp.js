@@ -4,6 +4,7 @@
  * Copyright (c) 2019 Justin
  */
 
+import { ToastAndroid } from 'react-native';
 import { SubmissionError, reset } from 'redux-form';
 import auth from '@react-native-firebase/auth';
 
@@ -27,8 +28,18 @@ export default async function submitSignUp(values, dispatch, props) {
   } else {
     try {
       await auth().createUserWithEmailAndPassword(email, password);
+      dispatch(reset('signUpForm'));
+      props.navigation.navigate('LogIn');
+      ToastAndroid.show('Registrasi berhasil', ToastAndroid.SHORT);
     } catch (e) {
-      console.error(e.message);
+      switch (e,code) {
+        case 'auth/email-already-in-use':
+          ToastAndroid.show('Alamat email sudah terdaftar', ToastAndroid.SHORT);
+          break;
+        case 'auth/weak-password':
+          ToastAndroid.show('Password harus minimal 6 karakter', ToastAndroid.SHORT);
+          break;
+      }
     }
   }
 }
