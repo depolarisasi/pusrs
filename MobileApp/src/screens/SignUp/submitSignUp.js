@@ -6,12 +6,13 @@
 
 import { ToastAndroid } from 'react-native';
 import { SubmissionError, reset } from 'redux-form';
-import auth from '@react-native-firebase/auth';
+import auth, { firebase } from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 
 export default async function submitSignUp(values, dispatch, props) {
   let error = {};
   const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-  const { username, email, password } = values;
+  let { username, email, password } = values;
 
   if (!username) {
     error.username = 'Username harus diisi';
@@ -27,10 +28,24 @@ export default async function submitSignUp(values, dispatch, props) {
     throw new SubmissionError(error);
   } else {
     try {
-      await auth().createUserWithEmailAndPassword(email, password);
-      dispatch(reset('signUpForm'));
-      props.navigation.navigate('LogIn');
-      ToastAndroid.show('Registrasi berhasil', ToastAndroid.SHORT);
+      email = email.toLowerCase();
+      await auth().createUserWithEmailAndPassword(email, password)
+        .then(async (authData) => {
+          let account = {};
+          account.email = email;
+          account.uid = authData.user.uid;
+          account.username = username;
+          const ref = database().ref(`/users/profile/${account.uid}`);
+          await ref.set({ account })
+            .then(() => {
+              dispatch(reset('signUpForm'));
+              props.navigation.navigate('LogIn');
+              ToastAndroid.show('Registrasi berhasil', ToastAndroid.SHORT);
+            })
+            .catch(error => {
+              console.log(error.message);
+            });
+        });
     } catch (e) {
       switch (e,code) {
         case 'auth/email-already-in-use':

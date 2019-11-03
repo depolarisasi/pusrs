@@ -20,6 +20,7 @@ import colors from './../styles/colors';
 import DrawerLayout from 'react-native-drawer-layout';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import ArcGISMapView from 'react-native-arcgis-mapview';
+import auth from '@react-native-firebase/auth';
 import HeaderMap from './../components/headers/HeaderMap';
 
 const { width, height } = Dimensions.get('window');
@@ -93,7 +94,14 @@ class MapContainer extends Component {
           onPress: () => console.log('Cancel Pressed'),
           style: 'cancel',
         },
-        {text: 'OK', onPress: () => this.props.navigation.goBack(null)},
+        {text: 'OK', onPress: async () => {
+          try {
+            await auth().signOut();
+            this.props.navigation.reset('LoggedOut');
+          } catch (e) {
+            console.log(e);
+          }
+        }},
       ],
     );
   }

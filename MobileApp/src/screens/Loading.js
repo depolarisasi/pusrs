@@ -25,7 +25,7 @@ export default class Loading extends Component {
   componentDidMount() {
     setTimeout(() => {
       auth().onAuthStateChanged(user => {
-        this.props.navigation.navigate(user ? 'LoggedIn' : 'LogIn');
+        this.props.navigation.navigate(user ? 'LoggedIn' : 'LoggedOut');
       });
     }, 2000);
   }
