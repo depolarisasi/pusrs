@@ -12,10 +12,12 @@ import {
   Text,
   Image,
   ImageBackground,
+  TouchableOpacity,
   ScrollView,
   KeyboardAvoidingView
 } from 'react-native';
 import { Field, reduxForm } from 'redux-form';
+import ImagePicker from 'react-native-image-crop-picker';
 import NavBarButton from './../../components/buttons/NavBarButton';
 import styles from './../styles/Authentication';
 import colors from './../../styles/colors';
@@ -25,7 +27,7 @@ import RoundedButton from './../../components/buttons/RoundedButton';
 import submitSignUp from './submitSignUp';
 
 const imgBg = require('./../../img/bg.jpg');
-const imgUser = require('./../../img/user.png');
+const defaultPic = require('./../../img/user.png');
 
 class SignUp extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -42,8 +44,10 @@ class SignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      //
+      profilePic: null,
     };
+
+    this.changeProfilePic = this.changeProfilePic.bind(this);
   }
 
   renderInput({
@@ -69,8 +73,32 @@ class SignUp extends Component {
     </View>;
   }
 
+  changeProfilePic() {
+    ImagePicker.openPicker({
+      width: 100,
+      height: 100,
+      cropping: true,
+    })
+      .then(image => {
+        this.setState({
+          profilePic: {
+            uri: image.path,
+            width: image.width,
+            height: image.height,
+            type: 'image/jpeg',
+            name: 'user.jpg',
+            mime: image.mime,
+          },
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
   render() {
     const { handleSubmit } = this.props;
+    const { profilePic } = this.state;
     return (
       <ImageBackground source={imgBg} style={styles.bg}>
         <KeyboardAvoidingView
@@ -84,10 +112,12 @@ class SignUp extends Component {
                 <Text style={styles.titleText}>
                   Daftar
                 </Text>
-                <Image
-                  source={imgUser}
-                  style={styles.imgUser}
-                />
+                <TouchableOpacity onPress={this.changeProfilePic}>
+                  <Image
+                    source={profilePic || defaultPic}
+                    style={styles.imgUser}
+                  />
+                </TouchableOpacity>
                 <Text style={styles.changeImgText}>
                   Tekan untuk Mengubah
                 </Text>
