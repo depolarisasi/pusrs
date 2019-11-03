@@ -6,7 +6,7 @@
 
 import { ToastAndroid } from 'react-native';
 import { SubmissionError, reset } from 'redux-form';
-import auth, { firebase } from '@react-native-firebase/auth';
+import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 
 export default async function submitSignUp(values, dispatch, props) {
@@ -39,7 +39,6 @@ export default async function submitSignUp(values, dispatch, props) {
           await ref.set({ account })
             .then(() => {
               dispatch(reset('signUpForm'));
-              props.navigation.navigate('LogIn');
               ToastAndroid.show('Registrasi berhasil', ToastAndroid.SHORT);
             })
             .catch(error => {
