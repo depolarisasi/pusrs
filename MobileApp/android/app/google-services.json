@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "438226534972",
+    "firebase_url": "https://mozzify-2b660.firebaseio.com",
+    "project_id": "mozzify-2b660",
+    "storage_bucket": "mozzify-2b660.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:438226534972:android:7ce42b440ed07b92817939",
+        "android_client_info": {
+          "package_name": "com.mobileapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "438226534972-b8hsd3gqg2qcee66guhg845quh8qkdrv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBF9zQGjctjaxB5FFD1fE3gV9R1AWH8wxs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "438226534972-b8hsd3gqg2qcee66guhg845quh8qkdrv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "438226534972-ng5kas9vv1754690jan6krpgc6qjvneo.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.von"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
