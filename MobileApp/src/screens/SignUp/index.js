@@ -44,7 +44,7 @@ class SignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      profilePic: null,
+      //
     };
 
     this.changeProfilePic = this.changeProfilePic.bind(this);
@@ -54,9 +54,7 @@ class SignUp extends Component {
     input,
     label,
     type,
-    meta: {
-      error,
-    }
+    meta: { error }
   }) {
     return <View>
       <InputField
@@ -73,22 +71,29 @@ class SignUp extends Component {
     </View>;
   }
 
-  changeProfilePic() {
+  renderProfilePic = field => (
+    <TouchableOpacity onPress={() => this.changeProfilePic(field.input.onChange)}>
+      <Image
+        source={field.input.value || defaultPic}
+        style={styles.imgUser}
+      />
+    </TouchableOpacity>
+  );
+
+  changeProfilePic(onChange) {
     ImagePicker.openPicker({
       width: 100,
       height: 100,
       cropping: true,
     })
       .then(image => {
-        this.setState({
-          profilePic: {
-            uri: image.path,
-            width: image.width,
-            height: image.height,
-            type: 'image/jpeg',
-            name: 'user.jpg',
-            mime: image.mime,
-          },
+        onChange({
+          uri: image.path,
+          width: image.width,
+          height: image.height,
+          type: 'image/jpeg',
+          name: 'user.jpg',
+          mime: image.mime,
         });
       })
       .catch(error => {
@@ -98,7 +103,6 @@ class SignUp extends Component {
 
   render() {
     const { handleSubmit } = this.props;
-    const { profilePic } = this.state;
     return (
       <ImageBackground source={imgBg} style={styles.bg}>
         <KeyboardAvoidingView
@@ -112,12 +116,7 @@ class SignUp extends Component {
                 <Text style={styles.titleText}>
                   Daftar
                 </Text>
-                <TouchableOpacity onPress={this.changeProfilePic}>
-                  <Image
-                    source={profilePic || defaultPic}
-                    style={styles.imgUser}
-                  />
-                </TouchableOpacity>
+                <Field name="profilePic" component={this.renderProfilePic} />
                 <Text style={styles.changeImgText}>
                   Tekan untuk Mengubah
                 </Text>
