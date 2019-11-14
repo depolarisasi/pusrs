@@ -47,7 +47,7 @@ class ToDoContainer extends Component {
         style={{
           height: 1,
           width: '100%',
-          backgroundColor: colors.gray03,
+          backgroundColor: colors.gray04,
         }}
       />
     );
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   listButton: {
-    fontSize: 10,
+    fontSize: 11,
     fontWeight: 'bold',
     color: colors.green01,
   },
