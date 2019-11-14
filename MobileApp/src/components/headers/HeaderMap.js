@@ -9,8 +9,6 @@ import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {
   View,
-  Platform,
-  StatusBar,
   Text,
   TouchableOpacity,
   StyleSheet
@@ -55,15 +53,7 @@ HeaderMap.propTypes = {
 
 const styles = StyleSheet.create({
   container: {
-    ...Platform.select({
-      ios: {
-        height: 50
-      },
-      android: {
-        paddingTop: StatusBar.currentHeight,
-        height: StatusBar.currentHeight + 50
-      },
-    }),
+    height: 50,
     backgroundColor: colors.green01,
     display: 'flex',
     flexDirection: 'row',

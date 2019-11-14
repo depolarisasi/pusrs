@@ -23,14 +23,13 @@ import colors from './../styles/colors';
 
 const MapTab = createStackNavigator({
   MapContainer: {
-    screen: MapContainer,
+    screen: MapContainer
   },
   Legend: {
     screen: Legend,
     navigationOptions: {
       title: 'Legend',
       headerStyle: {
-        marginTop: 20,
         backgroundColor: colors.green01,
       },
       headerTintColor: colors.white,
@@ -38,6 +37,12 @@ const MapTab = createStackNavigator({
         fontWeight: '500',
       },
     }
+  },
+});
+
+const ToDoTab = createStackNavigator({
+  ToDoContainer: {
+    screen: ToDoContainer
   },
 });
 
@@ -87,7 +92,7 @@ const LoggedInTabNavigator = createBottomTabNavigator({
     },
   },
   ToDo: {
-    screen: ToDoContainer,
+    screen: ToDoTab,
     navigationOptions: {
       tabBarLabel: 'To-Do',
       tabBarIcon: CustomTabBarIcon('ios-list', 22),

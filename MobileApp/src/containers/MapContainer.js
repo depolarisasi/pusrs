@@ -40,8 +40,7 @@ function randomColor() {
 class MapContainer extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
-      header: () => 
-        <HeaderMap navigation={navigation} />,
+      header: () => <HeaderMap navigation={navigation} />,
     }
   };
 

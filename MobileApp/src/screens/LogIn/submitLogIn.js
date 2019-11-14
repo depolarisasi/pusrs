@@ -5,6 +5,7 @@
  */
 
 import { ToastAndroid } from 'react-native';
+import { NavigationActions, StackActions } from 'react-navigation';
 import { SubmissionError, reset } from 'redux-form';
 import auth from '@react-native-firebase/auth';
 
@@ -27,7 +28,11 @@ export default async function submitLogin(values, dispatch, props) {
     try {
       await auth().signInWithEmailAndPassword(email, password);
       dispatch(reset('logInForm'));
-      props.navigation.navigate('LoggedIn');
+      const resetAction = StackActions.reset({
+        index: 0,
+        actions: [NavigationActions.navigate({ routeName: 'LoggedIn' })],
+      });
+      props.navigation.dispatch(resetAction);
       ToastAndroid.show('Log in berhasil', ToastAndroid.SHORT);
     } catch (e) {
       switch (e.code) {
