@@ -10,6 +10,7 @@ import {
   StatusBar,
   View,
   Text,
+  Modal,
   StyleSheet,
   FlatList,
   TouchableOpacity,
@@ -39,6 +40,10 @@ class ToDoContainer extends Component {
 
   constructor(props) {
     super(props);
+
+    this.state = {
+      modalAddToDoVisible: false,
+    };
   }
 
   renderListItemSeparator = () => {
@@ -51,6 +56,10 @@ class ToDoContainer extends Component {
         }}
       />
     );
+  }
+
+  renderModalAddToDo() {
+
   }
 
   render() {
