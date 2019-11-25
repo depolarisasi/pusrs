@@ -20,7 +20,7 @@ export default class HeaderToDo extends Component {
       <View style={styles.container}>
         <Text style={[styles.text, styles.bold]}>To-Do!</Text>
         <View style={styles.right}>
-          <TouchableOpacity onPress={() => {}}>
+          <TouchableOpacity onPress={() => this.props.navigation.state.params.toggleModalAddToDo(true)}>
             <Text style={styles.text}>Add</Text>
           </TouchableOpacity>
         </View>

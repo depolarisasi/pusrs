@@ -10,10 +10,12 @@ import {
   StatusBar,
   View,
   Text,
+  TextInput,
   Modal,
   StyleSheet,
   FlatList,
   TouchableOpacity,
+  TouchableHighlight,
 } from 'react-native';
 import colors from './../styles/colors';
 import HeaderToDo from './../components/headers/HeaderToDo';
@@ -42,8 +44,15 @@ class ToDoContainer extends Component {
     super(props);
 
     this.state = {
+      newToDoName: '',
       modalAddToDoVisible: false,
     };
+  }
+
+  componentDidMount() {
+    this.props.navigation.setParams({
+      toggleModalAddToDo: this.toggleModalAddToDo.bind(this),
+    });
   }
 
   renderListItemSeparator = () => {
@@ -59,8 +68,43 @@ class ToDoContainer extends Component {
   }
 
   renderModalAddToDo() {
-
+    return (
+      <Modal
+        transparent={true}
+        animationType="fade"
+        visible={this.state.modalAddToDoVisible}
+        onRequestClose={() => {}}
+      >
+        <TouchableHighlight
+          style={styles.modalBackground}
+          onPress={() => this.toggleModalAddToDo(false)}
+          underlayColor={'transparent'}
+        >
+          <View />
+        </TouchableHighlight>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalAddToDo}>
+            <Text style={styles.fieldLabel}>Name</Text>
+            <TextInput
+              value={this.state.newToDoName}
+              style={styles.fieldInput}
+              underlineColorAndroid="transparent"
+              onChangeText={newToDoName => this.setState({ newToDoName })}
+            />
+            <TouchableOpacity
+              style={styles.buttonAddToDo}
+              activeOpacity={0.7}
+              onPress={() => {}}
+            >
+              <Text style={styles.buttonAddToDoText}>Add</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+    );
   }
+
+  toggleModalAddToDo = (state) => this.setState({ modalAddToDoVisible: state });
 
   render() {
     return (
@@ -85,6 +129,7 @@ class ToDoContainer extends Component {
           ItemSeparatorComponent={this.renderListItemSeparator}
           keyExtractor={item => `${item.id}`}
         />
+        {this.renderModalAddToDo()}
       </View>
     );
   }
@@ -114,10 +159,57 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   listButton: {
-    fontSize: 11,
+    fontSize: 12,
     fontWeight: 'bold',
     color: colors.green01,
   },
+  modalBackground: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.3)'
+  },
+  modalContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 10
+  },
+  modalAddToDo: {
+    width: 300,
+    height: 150,
+    padding: 10,
+    flexDirection: 'column',
+    backgroundColor: '#FFF'
+  },
+  fieldLabel: {
+    paddingVertical: 4,
+    fontSize: 12,
+    color: '#424242'
+  },
+  fieldInput: {
+    backgroundColor: '#F5F5F5',
+    paddingVertical: 3,
+    paddingHorizontal: 10,
+    color: '#212121',
+    fontSize: 12
+  },
+  buttonAddToDo: {
+    backgroundColor: colors.green01,
+    marginVertical: 8,
+    paddingVertical: 14,
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 1
+  },
+  buttonAddToDoText: {
+    color: '#FFF',
+    fontSize: 16,
+    fontWeight: '400'
+  }
 });
 
 export default ToDoContainer;
