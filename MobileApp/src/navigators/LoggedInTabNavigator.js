@@ -40,6 +40,12 @@ const MapTab = createStackNavigator({
   },
 });
 
+const ProfileTab = createStackNavigator({
+  ProfileContainer: {
+    screen: ProfileContainer
+  },
+});
+
 const ToDoTab = createStackNavigator({
   ToDoContainer: {
     screen: ToDoContainer
@@ -71,7 +77,7 @@ const LoggedInTabNavigator = createBottomTabNavigator({
     },
   },
   Profile: {
-    screen: ProfileContainer,
+    screen: ProfileTab,
     navigationOptions: {
       tabBarLabel: 'Profile',
       tabBarIcon: CustomTabBarIcon('ios-person', 22),
