@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import {
-  StatusBar,
   View,
-  Dimensions,
   StyleSheet,
 } from 'react-native';
 

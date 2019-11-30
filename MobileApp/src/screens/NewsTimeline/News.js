@@ -53,7 +53,7 @@ class News extends Component {
             <View style={styles.listRow}>
               <View style={styles.listLeft} />
               <View style={styles.listRight}>
-                <Text>{item.name}</Text>
+                <Text style={styles.listRightText}>{item.name}</Text>
               </View>
             </View>
           )}
@@ -112,6 +112,9 @@ const styles = StyleSheet.create({
   },
   listRight: {
     padding: 10,
+  },
+  listRightText: {
+    fontSize: 12,
   },
 });
 
