@@ -46,6 +46,12 @@ const ProfileTab = createStackNavigator({
   },
 });
 
+const NewsTab = createStackNavigator({
+  NewsContainer: {
+    screen: NewsContainer
+  },
+});
+
 const ToDoTab = createStackNavigator({
   ToDoContainer: {
     screen: ToDoContainer
@@ -84,7 +90,7 @@ const LoggedInTabNavigator = createBottomTabNavigator({
     },
   },
   News: {
-    screen: NewsContainer,
+    screen: NewsTab,
     navigationOptions: {
       tabBarLabel: 'News',
       tabBarIcon: CustomTabBarIcon('ios-paper', 22),

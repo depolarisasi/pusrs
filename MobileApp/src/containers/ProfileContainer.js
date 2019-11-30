@@ -15,7 +15,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import colors from './../styles/colors';
-import HeaderProfile from './../components/headers/HeaderProfile';
+import HeaderTitleOnly from './../components/headers/HeaderTitleOnly';
 import Carousel from 'react-native-snap-carousel';
 
 function wp(percentage) {
@@ -31,9 +31,9 @@ const itemWidth = slideWidth + itemHorizontalMargin * 2;
 const entryBorderRadius = 8;
 
 class ProfileContainer extends Component {
-  static navigationOptions = ({ navigation }) => {
+  static navigationOptions = () => {
     return {
-      header: () => <HeaderProfile navigation={navigation} />,
+      header: () => <HeaderTitleOnly title="Profile" />,
     }
   };
 

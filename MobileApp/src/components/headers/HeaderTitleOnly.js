@@ -9,22 +9,21 @@ import PropTypes from 'prop-types';
 import {
   View,
   Text,
-  TouchableOpacity,
   StyleSheet
 } from 'react-native';
-import colors from './../../styles/colors';
+import colors from '../../styles/colors';
 
-export default class HeaderProfile extends Component {
+export default class HeaderTitleOnly extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={[styles.text, styles.bold]}>Profile</Text>
+        <Text style={[styles.text, styles.bold]}>{this.props.title}</Text>
       </View>
     );
   }
 }
 
-HeaderProfile.propTypes = {
+HeaderTitleOnly.propTypes = {
   //
 };
 
