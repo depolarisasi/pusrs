@@ -42,9 +42,10 @@ class ProfileContainer extends Component {
 
     this.state = {
       entries: [
-        require('./../img/carousels/1.jpg'),
-        require('./../img/carousels/2.jpg'),
-        require('./../img/carousels/3.jpg'),
+        {img: require('./../img/carousels/1.jpg'), title: 'Profile'},
+        {img: require('./../img/carousels/2.jpg'), title: 'Sign and Symptoms'},
+        {img: require('./../img/carousels/3.jpg'), title: 'Clinical Date'},
+        {img: require('./../img/carousels/4.jpg'), title: 'PDF Collection'},
       ]
     };
   }
@@ -53,10 +54,10 @@ class ProfileContainer extends Component {
     return (
       <View style={styles.sliderInnerContainer}>
         <View style={styles.imageContainer}>
-          <Image source={item} style={styles.image} />
+          <Image source={item.img} style={styles.image} />
         </View>
         <View style={styles.textContainer}>
-          <Text style={styles.title}>Carousel title goes here...</Text>
+          <Text style={styles.title}>{item.title}</Text>
         </View>
       </View>
     );
@@ -117,8 +118,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: colors.black,
-    fontSize: 13,
-    fontWeight: 'bold',
+    fontSize: 14,
     letterSpacing: 0.5
   },
 });
