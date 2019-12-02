@@ -1,65 +1,72 @@
 import React, { Component } from 'react';
 import {
+  StyleSheet,
+  ScrollView,
   View,
   Text,
-  StyleSheet,
-  TouchableOpacity,
-  FlatList,
+  Image,
 } from 'react-native';
 import colors from '../../styles/colors';
 
-const POSTS = [
-  {id: 1, name: '1 month ago'},
-  {id: 2, name: '2 months ago'},
-  {id: 3, name: '2 months ago'},
-  {id: 4, name: '2 months ago'},
-  {id: 5, name: '2 months ago'},
-  {id: 6, name: '2 months ago'},
-  {id: 7, name: '2 months ago'},
-  {id: 8, name: '2 months ago'},
-  {id: 9, name: '2 months ago'},
-  {id: 10, name: '2 months ago'},
+const WEBSITES = [
+  {id: 1, img: require('./../../img/who.png')},
+  {id: 1, img: require('./../../img/dept_of_health_logo.png')},
+];
+
+const NEWS = [
+  {id: 1, img: require('./../../img/relief_web.png'), title: 'Dengue cases slightly up in Pengasinan - Philippines - ReliefWeb'},
+  {id: 2, img: require('./../../img/relief_web.png'), title: 'Dengue cases slightly up in Pengasinan - Philippines - ReliefWeb'},
+  {id: 3, img: require('./../../img/relief_web.png'), title: 'Dengue cases slightly up in Pengasinan - Philippines - ReliefWeb'},
 ];
 
 class News extends Component {
-  renderListItemSeparator = () => {
+  renderWebsites() {
     return (
-      <View
-        style={{
-          height: 1,
-          width: '100%',
-          backgroundColor: colors.gray04,
-        }}
-      />
+      <View>
+        {WEBSITES.map((website, index) => (
+          <View key={`website-${index}`} style={styles.websiteContainer}>
+            <Image source={website.img} style={styles.image} />
+          </View>
+        ))}
+      </View>
     );
   }
-  
+
+  renderNews() {
+    return (
+      <View>
+        {NEWS.map((news, index) => (
+          <View key={`news-${index}`} style={styles.newsContainer}>
+            <View style={styles.imageContainer}>
+              <Image source={news.img} style={styles.image} />
+            </View>
+            <View style={styles.newsTextContainer}>
+              <Text style={styles.title}>{news.title}</Text>
+            </View>
+          </View>
+        ))}
+      </View>
+    );
+  }
+
   render() {
     return (
-      <View style={styles.container}>
+      <View style={{flex: 1}}>
         <View style={styles.header}>
-          <Text style={[styles.text, styles.bold]}>Timeline</Text>
-          <View style={styles.right}>
-            <TouchableOpacity onPress={() => {}}>
-              <Text style={styles.text}>Add post</Text>
-            </TouchableOpacity>
-          </View>
+          <Text style={[styles.text, styles.bold]}>Web & News</Text>
         </View>
-        <FlatList
-          contentContainerStyle={styles.listContainer}
-          data={POSTS}
-          showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => (
-            <View style={styles.listRow}>
-              <View style={styles.listLeft} />
-              <View style={styles.listRight}>
-                <Text style={styles.listRightText}>{item.name}</Text>
-              </View>
+        <ScrollView>
+          <View style={styles.container}>
+            <View style={styles.sectionTitle}>
+              <Text style={[styles.text, styles.bold]}>Websites</Text>
             </View>
-          )}
-          ItemSeparatorComponent={this.renderListItemSeparator}
-          keyExtractor={item => `${item.id}`}
-        />
+            {this.renderWebsites()}
+            <View style={styles.sectionTitle}>
+              <Text style={[styles.text, styles.bold]}>News</Text>
+            </View>
+            {this.renderNews()}
+          </View>
+        </ScrollView>
       </View>
     );
   }
@@ -67,22 +74,10 @@ class News extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: colors.green01,
   },
   header: {
     height: 50,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  right: {
-    width: 100,
-    height: 50,
-    position: 'absolute',
-    right: 0,
-    top: 0,
-    bottom: 0,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -95,26 +90,47 @@ const styles = StyleSheet.create({
   bold: {
     fontWeight: 'bold',
   },
-  listContainer: {
-    padding: 10,
+  sectionTitle: {
+    backgroundColor: colors.black,
+    paddingVertical: 5,
+  },
+  sectionTitleText: {
+    fontWeight: '500',
+    color: colors.white,
+    marginHorizontal: 15,
+  },
+  websiteContainer: {
     backgroundColor: colors.white,
+    width: '100%',
+    height: 150,
   },
-  listRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 10,
+  imageContainer: {
+    display: 'flex',
+    flex: 1,
+    backgroundColor: colors.gray05,
   },
-  listLeft: {
-    width: 50,
-    height: 50,
-    borderRadius: 50 / 2,
-    backgroundColor: colors.gray02,
+  image: {
+    flex: 1,
+    width: undefined,
+    height: undefined,
+    resizeMode: 'contain',
   },
-  listRight: {
-    padding: 10,
+  newsContainer: {
+    width: '100%',
+    height: 200,
+    paddingBottom: 10,
   },
-  listRightText: {
-    fontSize: 12,
+  newsTextContainer: {
+    justifyContent: 'center',
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingHorizontal: 16,
+    backgroundColor: 'white',
+  },
+  title: {
+    color: colors.black,
+    fontSize: 14,
+    letterSpacing: 0.5
   },
 });
 

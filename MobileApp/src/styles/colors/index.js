@@ -14,6 +14,7 @@ export default {
   gray02: 'rgba(0,0,0,0.1)',
   gray03: 'rgba(255,255,255,0.7)',
   gray04: '#c1c1c1',
+  gray05: '#2e2e2e',
   green01: '#138059',
   yellow01: '#e59f03',
 };
