@@ -52,6 +52,12 @@ const NewsTab = createStackNavigator({
   },
 });
 
+const VideosTab = createStackNavigator({
+  VideoContainer: {
+    screen: VideoContainer
+  },
+});
+
 const ToDoTab = createStackNavigator({
   ToDoContainer: {
     screen: ToDoContainer
@@ -97,9 +103,9 @@ const LoggedInTabNavigator = createBottomTabNavigator({
     },
   },
   Video: {
-    screen: VideoContainer,
+    screen: VideosTab,
     navigationOptions: {
-      tabBarLabel: 'Video',
+      tabBarLabel: 'Videos',
       tabBarIcon: CustomTabBarIcon('ios-videocam', 22),
     },
   },
