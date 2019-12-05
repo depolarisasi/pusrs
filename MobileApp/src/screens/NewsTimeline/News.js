@@ -1,3 +1,9 @@
+/*
+ * Created on Thu Dec 05 2019
+ *
+ * Copyright (c) 2019 Justin
+ */
+
 import React, { Component } from 'react';
 import {
   StyleSheet,
@@ -10,7 +16,7 @@ import colors from '../../styles/colors';
 
 const WEBSITES = [
   {id: 1, img: require('./../../img/who.png')},
-  {id: 1, img: require('./../../img/dept_of_health_logo.png')},
+  {id: 2, img: require('./../../img/dept_of_health_logo.png')},
 ];
 
 const NEWS = [

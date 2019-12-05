@@ -21,6 +21,8 @@ import ToDoContainer from './../containers/ToDoContainer';
 import Legend from './../screens/Legend';
 import colors from './../styles/colors';
 
+import PDFCollectionScreen from './../screens/Profile/PDFCollection';
+
 const MapTab = createStackNavigator({
   MapContainer: {
     screen: MapContainer
@@ -44,7 +46,21 @@ const ProfileTab = createStackNavigator({
   ProfileContainer: {
     screen: ProfileContainer
   },
+  PDFCollection: {
+    screen: PDFCollectionScreen
+  },
 });
+
+ProfileTab.navigationOptions = ({ navigation }) => {
+  let tabBarVisible = true;
+  if (navigation.state.index > 0) {
+    tabBarVisible = false;
+  }
+
+  return {
+    tabBarVisible,
+  };
+};
 
 const NewsTab = createStackNavigator({
   NewsContainer: {

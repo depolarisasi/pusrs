@@ -12,6 +12,7 @@ import {
   View,
   Text,
   Image,
+  TouchableWithoutFeedback,
   StyleSheet,
 } from 'react-native';
 import colors from './../styles/colors';
@@ -42,24 +43,26 @@ class ProfileContainer extends Component {
 
     this.state = {
       entries: [
-        {img: require('./../img/carousels/1.jpg'), title: 'Profile'},
-        {img: require('./../img/carousels/2.jpg'), title: 'Sign and Symptoms'},
-        {img: require('./../img/carousels/3.jpg'), title: 'Clinical Date'},
-        {img: require('./../img/carousels/4.jpg'), title: 'PDF Collection'},
+        {img: require('./../img/carousels/1.jpg'), title: 'Profile', onPress: () => {}},
+        {img: require('./../img/carousels/2.jpg'), title: 'Sign and Symptoms', onPress: () => {}},
+        {img: require('./../img/carousels/3.jpg'), title: 'Clinical Date', onPress: () => {}},
+        {img: require('./../img/carousels/4.jpg'), title: 'PDF Collection', onPress: () => this.props.navigation.navigate('PDFCollection')},
       ]
     };
   }
 
   renderItem({item, index}) {
     return (
-      <View style={styles.sliderInnerContainer}>
-        <View style={styles.imageContainer}>
-          <Image source={item.img} style={styles.image} />
+      <TouchableWithoutFeedback onPress={item.onPress}>
+        <View style={styles.sliderInnerContainer}>
+          <View style={styles.imageContainer}>
+            <Image source={item.img} style={styles.image} />
+          </View>
+          <View style={styles.textContainer}>
+            <Text style={styles.title}>{item.title}</Text>
+          </View>
         </View>
-        <View style={styles.textContainer}>
-          <Text style={styles.title}>{item.title}</Text>
-        </View>
-      </View>
+      </TouchableWithoutFeedback>
     );
   }
 
