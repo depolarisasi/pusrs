@@ -35,7 +35,7 @@ export default class HeaderMap extends Component {
           </TouchableOpacity>
         </View>
         <View style={styles.col}>
-          <TouchableOpacity onPress={() => {}}>
+          <TouchableOpacity onPress={() => navigation.navigate('ProbableCases')}>
             <Icon name="ios-add" color={colors.gray03} size={30} />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('Legend')}>

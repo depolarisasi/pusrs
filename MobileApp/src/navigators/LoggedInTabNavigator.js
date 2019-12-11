@@ -18,6 +18,7 @@ import ProfileContainer from './../containers/ProfileContainer';
 import NewsContainer from './../containers/NewsContainer';
 import VideoContainer from './../containers/VideoContainer';
 import ToDoContainer from './../containers/ToDoContainer';
+import ProbableCases from './../screens/ProbableCases';
 import Legend from './../screens/Legend';
 import colors from './../styles/colors';
 
@@ -26,6 +27,9 @@ import PDFCollectionScreen from './../screens/Profile/PDFCollection';
 const MapTab = createStackNavigator({
   MapContainer: {
     screen: MapContainer
+  },
+  ProbableCases: {
+    screen: ProbableCases
   },
   Legend: {
     screen: Legend,
@@ -41,6 +45,17 @@ const MapTab = createStackNavigator({
     }
   },
 });
+
+MapTab.navigationOptions = ({ navigation }) => {
+  let tabBarVisible = true;
+  if (navigation.state.index > 0) {
+    tabBarVisible = false;
+  }
+
+  return {
+    tabBarVisible,
+  };
+};
 
 const ProfileTab = createStackNavigator({
   ProfileContainer: {
@@ -133,6 +148,7 @@ const LoggedInTabNavigator = createBottomTabNavigator({
     },
   },
 }, {
+  backBehavior: 'none',
   tabBarOptions: {
     labelStyle: {
       fontWeight: '600',
@@ -145,7 +161,6 @@ const LoggedInTabNavigator = createBottomTabNavigator({
     inactiveTintColor: colors.gray03,
   },
   tabBarPosition: 'bottom',
-  backBehavior: 'none',
 });
 
 export default LoggedInTabNavigator;
