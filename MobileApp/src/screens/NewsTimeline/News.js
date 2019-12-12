@@ -12,7 +12,7 @@ import {
   Text,
   Image,
 } from 'react-native';
-import colors from '../../styles/colors';
+import colors from './../../styles/colors';
 
 const WEBSITES = [
   {id: 1, img: require('./../../img/who.png')},

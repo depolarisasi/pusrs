@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   FlatList,
 } from 'react-native';
-import colors from '../../styles/colors';
+import colors from './../../styles/colors';
 
 const POSTS = [
   {id: 1, name: '1 month ago'},
