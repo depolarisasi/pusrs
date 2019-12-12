@@ -23,6 +23,7 @@ import Legend from './../screens/Legend';
 import colors from './../styles/colors';
 
 import PDFCollectionScreen from './../screens/Profile/PDFCollection';
+import ClinicalDataScreen from './../screens/Profile/ClinicalData';
 
 const MapTab = createStackNavigator({
   MapContainer: {
@@ -63,6 +64,9 @@ const ProfileTab = createStackNavigator({
   },
   PDFCollection: {
     screen: PDFCollectionScreen
+  },
+  ClinicalData: {
+    screen: ClinicalDataScreen
   },
 });
 
