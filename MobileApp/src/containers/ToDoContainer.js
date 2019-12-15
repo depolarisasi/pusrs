@@ -8,6 +8,7 @@ import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import {
   StatusBar,
+  BackHandler,
   View,
   Text,
   TextInput,
@@ -73,7 +74,7 @@ class ToDoContainer extends Component {
         transparent={true}
         animationType="fade"
         visible={this.state.modalAddToDoVisible}
-        onRequestClose={() => {}}
+        onRequestClose={() => this.toggleModalAddToDo(false)}
       >
         <TouchableHighlight
           style={styles.modalBackground}

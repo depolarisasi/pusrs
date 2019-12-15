@@ -1,3 +1,9 @@
+/*
+ * Created on Thu Oct 03 2019
+ *
+ * Copyright (c) 2019 Justin
+ */
+
 import React, { PureComponent } from 'react';
 import { BackHandler } from 'react-native';
 import { compose, createStore, applyMiddleware } from 'redux';

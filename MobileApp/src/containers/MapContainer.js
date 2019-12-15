@@ -10,6 +10,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Icon2 from 'react-native-vector-icons/Feather';
 import {
   StatusBar,
+  BackHandler,
   View,
   Text,
   Alert,
@@ -67,7 +68,21 @@ class MapContainer extends Component {
       toggleDrawer: this.toggleDrawer,
       onLogOutPress: this.onLogOutPress,
     });
+
+    BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
   }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
+  }
+
+  onBackPress = () => {
+    if (this.state.drawerActive) {
+      this.drawer.closeDrawer();
+      return true;
+    }
+    return false;
+  };
 
   onMapPress(e) {
     this.setState({
