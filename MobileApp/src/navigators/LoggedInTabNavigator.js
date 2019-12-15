@@ -152,7 +152,6 @@ const LoggedInTabNavigator = createBottomTabNavigator({
     },
   },
 }, {
-  backBehavior: 'none',
   tabBarOptions: {
     labelStyle: {
       fontWeight: '600',

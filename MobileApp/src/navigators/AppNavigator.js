@@ -27,13 +27,23 @@ class ReduxNavigation extends PureComponent {
     BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
   }
 
-  onBackPress = () => {
-    const { navigation, dispatch } = this.props;
-    if (navigation.index === 0) {
-      return false;
+  shouldCloseApp = nav => {
+    if (nav.index > 0) return false;
+
+    if (nav.routes) {
+      return nav.routes.every(this.shouldCloseApp);
     }
 
-    dispatch(NavigationActions.back());
+    return true;
+  };
+
+  goBack = () => this.props.dispatch(NavigationActions.back());
+
+  onBackPress = () => {
+    if (this.shouldCloseApp(this.props.navigation)) {
+      return false;
+    }
+    this.goBack();
     return true;
   };
 
