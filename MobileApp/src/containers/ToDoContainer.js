@@ -85,20 +85,31 @@ class ToDoContainer extends Component {
         </TouchableHighlight>
         <View style={styles.modalContainer}>
           <View style={styles.modalAddToDo}>
-            <Text style={styles.fieldLabel}>Name</Text>
+            <View style={styles.fieldLabelContainer}>
+              <Text style={styles.fieldLabel}>Add a new to-do item:</Text>
+            </View>
             <TextInput
               value={this.state.newToDoName}
               style={styles.fieldInput}
               underlineColorAndroid="transparent"
               onChangeText={newToDoName => this.setState({ newToDoName })}
             />
-            <TouchableOpacity
-              style={styles.buttonAddToDo}
-              activeOpacity={0.7}
-              onPress={() => {}}
-            >
-              <Text style={styles.buttonAddToDoText}>Add</Text>
-            </TouchableOpacity>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={styles.buttonDismiss}
+                activeOpacity={0.7}
+                onPress={() => this.toggleModalAddToDo(false)}
+              >
+                <Text style={styles.buttonDismissText}>Dismiss</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.buttonAddToDo}
+                activeOpacity={0.7}
+                onPress={() => {}}
+              >
+                <Text style={styles.buttonAddToDoText}>Add</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </Modal>
@@ -183,11 +194,19 @@ const styles = StyleSheet.create({
     height: 150,
     padding: 10,
     flexDirection: 'column',
+    justifyContent: 'center',
     backgroundColor: '#FFF'
+  },
+  fieldLabelContainer: {
+    marginBottom: 8,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   fieldLabel: {
     paddingVertical: 4,
-    fontSize: 12,
+    fontSize: 16,
+    fontWeight: 'bold',
     color: '#424242'
   },
   fieldInput: {
@@ -197,11 +216,32 @@ const styles = StyleSheet.create({
     color: '#212121',
     fontSize: 12
   },
+  buttonContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  buttonDismiss: {
+    display: 'flex',
+    flex: 1,
+    backgroundColor: colors.gray05,
+    marginTop: 8,
+    marginRight: 8,
+    paddingVertical: 6,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 1
+  },
+  buttonDismissText: {
+    color: '#FFF',
+    fontSize: 16,
+    fontWeight: '400'
+  },
   buttonAddToDo: {
+    display: 'flex',
+    flex: 1,
     backgroundColor: colors.green01,
-    marginVertical: 8,
-    paddingVertical: 14,
-    borderRadius: 5,
+    marginTop: 8,
+    paddingVertical: 6,
     alignItems: 'center',
     justifyContent: 'center',
     elevation: 1
