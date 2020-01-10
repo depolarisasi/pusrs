@@ -10,6 +10,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Icon2 from 'react-native-vector-icons/Feather';
 import {
   StatusBar,
+  BackHandler,
   View,
   Text,
   Alert,
@@ -19,7 +20,6 @@ import {
 import colors from './../styles/colors';
 import DrawerLayout from 'react-native-drawer-layout';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
-import ArcGISMapView from 'react-native-arcgis-mapview';
 import auth from '@react-native-firebase/auth';
 import HeaderMap from './../components/headers/HeaderMap';
 
@@ -41,8 +41,7 @@ function randomColor() {
 class MapContainer extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
-      header: () => 
-        <HeaderMap navigation={navigation} />,
+      header: () => <HeaderMap navigation={navigation} />,
     }
   };
 
@@ -69,7 +68,21 @@ class MapContainer extends Component {
       toggleDrawer: this.toggleDrawer,
       onLogOutPress: this.onLogOutPress,
     });
+
+    BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
   }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
+  }
+
+  onBackPress = () => {
+    if (this.state.drawerActive) {
+      this.drawer.closeDrawer();
+      return true;
+    }
+    return false;
+  };
 
   onMapPress(e) {
     this.setState({
@@ -176,7 +189,7 @@ class MapContainer extends Component {
           onDrawerOpen={() => this.setState({ drawerActive: true })}
           onDrawerClose={() => this.setState({ drawerActive: false })}
         >
-          {/* <MapView
+          <MapView
             provider={PROVIDER_GOOGLE}
             style={styles.map}
             initialRegion={this.state.region}
@@ -189,15 +202,7 @@ class MapContainer extends Component {
                 pinColor={marker.color}
               />
             ))}
-          </MapView> */}
-          <ArcGISMapView
-            ref={mapView => this.mapView = mapView}
-            style={styles.map}
-            initialMapCenter={[{
-              latitude: LATITUDE,
-              longitude: LONGITUDE,
-            }]}
-          />
+          </MapView>
         </DrawerLayout>
       </View>
     );

@@ -18,19 +18,25 @@ import ProfileContainer from './../containers/ProfileContainer';
 import NewsContainer from './../containers/NewsContainer';
 import VideoContainer from './../containers/VideoContainer';
 import ToDoContainer from './../containers/ToDoContainer';
+import ProbableCases from './../screens/ProbableCases';
 import Legend from './../screens/Legend';
 import colors from './../styles/colors';
 
+import PDFCollectionScreen from './../screens/Profile/PDFCollection';
+import ClinicalDataScreen from './../screens/Profile/ClinicalData';
+
 const MapTab = createStackNavigator({
   MapContainer: {
-    screen: MapContainer,
+    screen: MapContainer
+  },
+  ProbableCases: {
+    screen: ProbableCases
   },
   Legend: {
     screen: Legend,
     navigationOptions: {
       title: 'Legend',
       headerStyle: {
-        marginTop: 20,
         backgroundColor: colors.green01,
       },
       headerTintColor: colors.white,
@@ -38,6 +44,58 @@ const MapTab = createStackNavigator({
         fontWeight: '500',
       },
     }
+  },
+});
+
+MapTab.navigationOptions = ({ navigation }) => {
+  let tabBarVisible = true;
+  if (navigation.state.index > 0) {
+    tabBarVisible = false;
+  }
+
+  return {
+    tabBarVisible,
+  };
+};
+
+const ProfileTab = createStackNavigator({
+  ProfileContainer: {
+    screen: ProfileContainer
+  },
+  PDFCollection: {
+    screen: PDFCollectionScreen
+  },
+  ClinicalData: {
+    screen: ClinicalDataScreen
+  },
+});
+
+ProfileTab.navigationOptions = ({ navigation }) => {
+  let tabBarVisible = true;
+  if (navigation.state.index > 0) {
+    tabBarVisible = false;
+  }
+
+  return {
+    tabBarVisible,
+  };
+};
+
+const NewsTab = createStackNavigator({
+  NewsContainer: {
+    screen: NewsContainer
+  },
+});
+
+const VideosTab = createStackNavigator({
+  VideoContainer: {
+    screen: VideoContainer
+  },
+});
+
+const ToDoTab = createStackNavigator({
+  ToDoContainer: {
+    screen: ToDoContainer
   },
 });
 
@@ -66,28 +124,28 @@ const LoggedInTabNavigator = createBottomTabNavigator({
     },
   },
   Profile: {
-    screen: ProfileContainer,
+    screen: ProfileTab,
     navigationOptions: {
       tabBarLabel: 'Profile',
       tabBarIcon: CustomTabBarIcon('ios-person', 22),
     },
   },
   News: {
-    screen: NewsContainer,
+    screen: NewsTab,
     navigationOptions: {
       tabBarLabel: 'News',
       tabBarIcon: CustomTabBarIcon('ios-paper', 22),
     },
   },
   Video: {
-    screen: VideoContainer,
+    screen: VideosTab,
     navigationOptions: {
-      tabBarLabel: 'Video',
+      tabBarLabel: 'Videos',
       tabBarIcon: CustomTabBarIcon('ios-videocam', 22),
     },
   },
   ToDo: {
-    screen: ToDoContainer,
+    screen: ToDoTab,
     navigationOptions: {
       tabBarLabel: 'To-Do',
       tabBarIcon: CustomTabBarIcon('ios-list', 22),
@@ -106,7 +164,6 @@ const LoggedInTabNavigator = createBottomTabNavigator({
     inactiveTintColor: colors.gray03,
   },
   tabBarPosition: 'bottom',
-  backBehavior: 'none',
 });
 
 export default LoggedInTabNavigator;

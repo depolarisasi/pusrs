@@ -35,7 +35,7 @@ export default class HeaderMap extends Component {
           </TouchableOpacity>
         </View>
         <View style={styles.col}>
-          <TouchableOpacity onPress={() => {}}>
+          <TouchableOpacity onPress={() => navigation.navigate('ProbableCases')}>
             <Icon name="ios-add" color={colors.gray03} size={30} />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('Legend')}>
@@ -53,7 +53,6 @@ HeaderMap.propTypes = {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 0,
     height: 50,
     backgroundColor: colors.green01,
     display: 'flex',

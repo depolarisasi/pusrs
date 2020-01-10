@@ -12,6 +12,7 @@ import {
   ActivityIndicator,
   StyleSheet
 } from 'react-native';
+import { NavigationActions, StackActions } from 'react-navigation';
 import auth from '@react-native-firebase/auth';
 import colors from './../styles/colors';
 
@@ -25,7 +26,11 @@ export default class Loading extends Component {
   componentDidMount() {
     setTimeout(() => {
       auth().onAuthStateChanged(user => {
-        this.props.navigation.navigate(user ? 'LoggedIn' : 'LoggedOut');
+        const resetAction = StackActions.reset({
+          index: 0,
+          actions: [NavigationActions.navigate({ routeName: user ? 'LoggedIn' : 'LoggedOut' })],
+        });
+        this.props.navigation.dispatch(resetAction); 
       });
     }, 2000);
   }

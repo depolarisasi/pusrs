@@ -37,29 +37,35 @@ export default async function submitSignUp(values, dispatch, props) {
     try {
       email = email.toLowerCase();
       await auth().createUserWithEmailAndPassword(email, password)
-        .then(async (authData) => {
+        .then(async(authData) => {
           const ext = profilePic.uri.split('.').pop();
           const filename = `${uuid.v4()}.${ext}`;
           const refStorage = storage().ref(`/user/${filename}`);
           await refStorage.putFile(profilePic.uri)
-            .then(async () => {
-              console.log('url', refStorage.getDownloadURL());
-              let account = {};
-              account.email = email;
-              account.uid = authData.user.uid;
-              account.username = username;
-              const refDb = database().ref(`/users/profile/${account.uid}`);
-              await refDb.set({ account })
-                .then(() => {
-                  dispatch(reset('signUpForm'));
-                  ToastAndroid.show('Registrasi berhasil', ToastAndroid.SHORT);
+            .then(async() => {
+              await refStorage.getDownloadURL()
+                .then(async(url) => {
+                  let account = {};
+                  account.email = email;
+                  account.uid = authData.user.uid;
+                  account.username = username;
+                  account.photoURL = url;
+                  const refDb = database().ref(`/users/profile/${account.uid}`);
+                  await refDb.set({ account })
+                    .then(() => {
+                      dispatch(reset('signUpForm'));
+                      ToastAndroid.show('Registrasi berhasil', ToastAndroid.SHORT);
+                    })
+                    .catch(error => {
+                      console.log(`Gagal menyimpan ke realtime database: ${error.message}`);
+                    });
                 })
                 .catch(error => {
-                  console.log(error.message);
+                  console.log(`Gagal mendapatkan storage download URL: ${error.message}`);
                 });
             })
             .catch(error => {
-              console.log(error.message);
+              console.log(`Gagal menyimpan file ke storage: ${error.message}`);
             });
         });
     } catch (error) {
