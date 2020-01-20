@@ -22,16 +22,15 @@ import colors from './../styles/colors';
 import HeaderToDo from './../components/headers/HeaderToDo';
 
 const TODOS = [
-    {id: 1, name: 'TASK 1'},
-    {id: 2, name: 'TASK 2'},
-    {id: 3, name: 'TASK 3'},
-    {id: 4, name: 'TASK 4'},
-    {id: 5, name: 'TASK 5'},
-    {id: 6, name: 'TASK 6'},
-    {id: 7, name: 'TASK 7'},
-    {id: 8, name: 'TASK 8'},
-    {id: 9, name: 'TASK 9'},
-    {id: 10, name: 'TASK 10'},
+    {id: 1, name: 'Throw burnable garbage'},
+    {id: 2, name: 'Throw plastic garbage'},
+    {id: 3, name: 'Clean and cover water containers'},
+    {id: 4, name: 'Replace water in flower vases'},
+    {id: 5, name: 'Clean ditches around the house'},
+    {id: 6, name: 'Barangay fogging'},
+    {id: 7, name: 'Spray insecticides'},
+    {id: 8, name: 'Cut bushes around the house'},
+    {id: 9, name: 'Apply repllent lotion'},
 ];
 
 class ToDoContainer extends Component {

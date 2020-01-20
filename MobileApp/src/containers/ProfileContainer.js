@@ -46,12 +46,14 @@ class ProfileContainer extends Component {
                 {
                     img: require('./../img/carousels/1.jpg'),
                     title: 'Profile',
-                    onPress: () => {},
+                    onPress: () =>
+                        this.props.navigation.navigate('UpdateProfile'),
                 },
                 {
                     img: require('./../img/carousels/2.jpg'),
                     title: 'Sign and Symptoms',
-                    onPress: () => {},
+                    onPress: () =>
+                        this.props.navigation.navigate('SignAndSymptoms'),
                 },
                 {
                     img: require('./../img/carousels/3.jpg'),

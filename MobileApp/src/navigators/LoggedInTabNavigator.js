@@ -20,6 +20,8 @@ import colors from './../styles/colors';
 
 import PDFCollectionScreen from './../screens/Profile/PDFCollection';
 import ClinicalDataScreen from './../screens/Profile/ClinicalData';
+import UpdateProfileScreen from './../screens/Profile/UpdateProfile';
+import SignAndSymptoms from '../screens/Profile/SignAndSymptoms';
 
 const MapTab = createStackNavigator({
     MapContainer: {
@@ -63,6 +65,12 @@ const ProfileTab = createStackNavigator({
     },
     ClinicalData: {
         screen: ClinicalDataScreen,
+    },
+    UpdateProfile: {
+        screen: UpdateProfileScreen,
+    },
+    SignAndSymptoms: {
+        screen: SignAndSymptoms,
     },
 });
 

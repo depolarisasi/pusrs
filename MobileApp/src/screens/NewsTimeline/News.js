@@ -6,6 +6,8 @@
 
 import React, {Component} from 'react';
 import {StyleSheet, ScrollView, View, Text, Image} from 'react-native';
+import {Linking} from 'react-native';
+import {TouchableHighlight} from 'react-native';
 import colors from './../../styles/colors';
 
 const WEBSITES = [
@@ -42,7 +44,13 @@ class News extends Component {
                     <View
                         key={`website-${index}`}
                         style={styles.websiteContainer}>
-                        <Image source={website.img} style={styles.image} />
+                        <TouchableHighlight
+                            style={styles.image}
+                            onPress={() =>
+                                Linking.openURL('https://www.google.com')
+                            }>
+                            <Image source={website.img} />n
+                        </TouchableHighlight>
                     </View>
                 ))}
             </View>
@@ -130,14 +138,19 @@ const styles = StyleSheet.create({
     },
     image: {
         flex: 1,
-        width: undefined,
-        height: undefined,
-        resizeMode: 'contain',
+        height: 150,
+        alignSelf: 'center',
+        marginTop: '2%',
+        marginBottom: '5%',
+
     },
-    newsContainer: {
-        width: '100%',
-        height: 200,
-        paddingBottom: 10,
+    imageStyle: {
+        flex: 1,
+        height: 150,
+        alignSelf: 'center',
+        marginTop: '2%',
+        marginBottom: '5%',
+        resizeMode: 'contain',
     },
     newsTextContainer: {
         justifyContent: 'center',
