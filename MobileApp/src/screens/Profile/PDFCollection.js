@@ -11,7 +11,11 @@ import colors from './../../styles/colors';
 import HeaderTitleBackable from './../../components/headers/HeaderTitleBackable';
 
 const PDF = [
-    {id: 1, img: require('./../../img/pdf/1.jpg')},
+    {
+        id: 1,
+        img: require('./../../img/pdf/1.jpg'),
+        pdf: require('./../../img/pdf/pdf.pdf'),
+    },
     {id: 2, img: require('./../../img/pdf/2.jpg')},
     {id: 3, img: require('./../../img/pdf/3.jpg')},
     {id: 4, img: require('./../../img/pdf/4.jpg')},

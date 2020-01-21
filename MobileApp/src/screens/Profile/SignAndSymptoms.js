@@ -19,7 +19,13 @@ import Slider from '@react-native-community/slider';
 import HeaderTitleBackable from '../../components/headers/HeaderTitleBackable';
 import colors from '../../styles/colors';
 
-const imagePath = require('./../../img/relief_web.png');
+const imagePath01 = require('./../../img/profil/fever.jpeg');
+const imagePath02 = require('./../../img/profil/headache.jpeg');
+const imagePath03 = require('./../../img/profil/vomiting.jpeg');
+const imagePath04 = require('./../../img/profil/bleeding.jpeg');
+const imagePath05 = require('./../../img/profil/diarrhea.jpeg');
+const imagePath06 = require('./../../img/profil/body_pain.jpeg');
+const imagePath07 = require('./../../img/profil/Rashes.jpeg');
 
 class SignAndSymptoms extends Component {
     static navigationOptions = ({navigation}) => {
@@ -42,7 +48,7 @@ class SignAndSymptoms extends Component {
             <View style={styles.containerForm}>
                 <View>
                     <View style={styles.imageContainer}>
-                        <Image source={imagePath} style={styles.image} />
+                        <Image source={imagePath01} style={styles.image} />
                     </View>
                 </View>
                 <View style={styles.formGroup}>
@@ -105,7 +111,7 @@ class SignAndSymptoms extends Component {
             <View style={styles.containerForm}>
                 <View>
                     <View style={styles.imageContainer}>
-                        <Image source={imagePath} style={styles.image} />
+                        <Image source={imagePath02} style={styles.image} />
                     </View>
                 </View>
                 <View style={styles.formGroup}>
@@ -168,7 +174,7 @@ class SignAndSymptoms extends Component {
             <View style={styles.containerForm}>
                 <View>
                     <View style={styles.imageContainer}>
-                        <Image source={imagePath} style={styles.image} />
+                        <Image source={imagePath03} style={styles.image} />
                     </View>
                 </View>
                 <View style={styles.formGroup}>
@@ -222,7 +228,7 @@ class SignAndSymptoms extends Component {
             <View style={styles.containerForm}>
                 <View>
                     <View style={styles.imageContainer}>
-                        <Image source={imagePath} style={styles.image} />
+                        <Image source={imagePath04} style={styles.image} />
                     </View>
                 </View>
                 <View style={styles.rowGroup}>
@@ -288,12 +294,13 @@ class SignAndSymptoms extends Component {
             </View>
         );
     }
+
     renderDiarrhea() {
         return (
             <View style={styles.containerForm}>
                 <View>
                     <View style={styles.imageContainer}>
-                        <Image source={imagePath} style={styles.image} />
+                        <Image source={imagePath05} style={styles.image} />
                     </View>
                 </View>
                 <View style={styles.formGroup}>
@@ -407,7 +414,7 @@ class SignAndSymptoms extends Component {
             <View style={styles.containerForm}>
                 <View>
                     <View style={styles.imageContainer}>
-                        <Image source={imagePath} style={styles.image} />
+                        <Image source={imagePath06} style={styles.image} />
                     </View>
                 </View>
                 <View style={styles.formGroup}>
@@ -500,7 +507,7 @@ class SignAndSymptoms extends Component {
             <View style={styles.containerForm}>
                 <View>
                     <View style={styles.imageContainer}>
-                        <Image source={imagePath} style={styles.image} />
+                        <Image source={imagePath07} style={styles.image} />
                     </View>
                 </View>
                 <View style={styles.formGroup}>

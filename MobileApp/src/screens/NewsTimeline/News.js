@@ -49,7 +49,7 @@ class News extends Component {
                             onPress={() =>
                                 Linking.openURL('https://www.google.com')
                             }>
-                            <Image source={website.img} />n
+                            <Image source={website.img} />
                         </TouchableHighlight>
                     </View>
                 ))}
