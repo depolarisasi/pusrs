@@ -13,9 +13,12 @@ import {
     TouchableOpacity,
     ScrollView,
     StyleSheet,
+    ToastAndroid,
 } from 'react-native';
 import colors from './../../styles/colors';
 import HeaderTitleBackable from './../../components/headers/HeaderTitleBackable';
+import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 
 class ClinicalData extends Component {
     static navigationOptions = ({navigation}) => {
@@ -44,6 +47,77 @@ class ClinicalData extends Component {
             attendingPhysician: '',
             numberOfDays: '',
         };
+        this.readClinicalData();
+    }
+
+    async readClinicalData() {
+        let userId = auth().currentUser.uid;
+        const refDb = database().ref(`/posts/${userId}`);
+        refDb
+            .once('value')
+            .then(snapshot => {
+                this.setState({
+                    diagnosis: snapshot.val().diagnosis,
+                    dengueTest: snapshot.val().dengueTest,
+                    ns1ag: snapshot.val().ns1ag,
+                    igg: snapshot.val().igg,
+                    igm: snapshot.val().igm,
+                    address: snapshot.val().address,
+                    hospitalName: snapshot.val().hospitalName,
+                    dateAdmitted: snapshot.val().dateAdmitted,
+                    roomNumber: snapshot.val().roomNumber,
+                    attendingPhysician: snapshot.val().attendingPhysician,
+                    numberOfDays: snapshot.val().numberOfDays,
+                });
+            })
+            .catch(error => {
+                this.setState({
+                    diagnosis: '',
+                    dengueTest: '',
+                    ns1ag: '',
+                    igg: '',
+                    igm: '',
+                    hospitalName: '',
+                    address: '',
+                    dateAdmitted: '',
+                    roomNumber: '',
+                    attendingPhysician: '',
+                    numberOfDays: '',
+                });
+            });
+    }
+
+    async submitClinicalData() {
+        let isBoolean = false;
+        let clinicData = {};
+        clinicData.diagnosis = this.state.diagnosis;
+        clinicData.dengueTest = this.state.dengueTest;
+        clinicData.ns1ag = this.state.ns1ag;
+        clinicData.igg = this.state.igg;
+        clinicData.igm = this.state.igm;
+        clinicData.hospitalName = this.state.hospitalName;
+        clinicData.address = this.state.address;
+        clinicData.dateAdmitted = this.state.dateAdmitted;
+        clinicData.roomNumber = this.state.roomNumber;
+        clinicData.attendingPhysician = this.state.attendingPhysician;
+        clinicData.numberOfDays = this.state.numberOfDays;
+
+        let userId = auth().currentUser.uid;
+        const refDb = database().ref(`/posts/${userId}`);
+        await refDb
+            .update(clinicData)
+            .then(() => {
+                ToastAndroid.show(
+                    'Update Data Clinic berhasil',
+                    ToastAndroid.SHORT,
+                );
+                this.props.navigation.goBack();
+            })
+            .catch(error => {
+                console.log(
+                    `Gagal menyimpan ke realtime database: ${error.message}`,
+                );
+            });
     }
 
     render() {
@@ -208,7 +282,9 @@ class ClinicalData extends Component {
                             />
                         </View>
                         <TouchableOpacity
-                            onPress={() => {}}
+                            onPress={() => {
+                                this.submitClinicalData();
+                            }}
                             style={styles.saveButton}>
                             <Text style={styles.saveButtonText}>Save</Text>
                         </TouchableOpacity>

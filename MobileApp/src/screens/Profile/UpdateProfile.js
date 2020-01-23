@@ -12,7 +12,10 @@ import {
     TouchableOpacity,
     ScrollView,
     StyleSheet,
+    ToastAndroid,
 } from 'react-native';
+import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 import HeaderTitleBackable from '../../components/headers/HeaderTitleBackable';
 import colors from '../../styles/colors';
 
@@ -27,20 +30,149 @@ class UpdateProfile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: '',
+            fullName: '',
             age: '',
-            gender: '',
-            birthday: '',
-            address: '',
-            work: '',
+            Gender: '',
+            Birthday: '',
+            Address: '',
+            Work: '',
             schoolCompany: '',
-            addressSchoolCompany: '',
-            familyMonthlyIncome: '',
-            contactNumnber: '',
-            question01: '',
-            question02: '',
+            schoolCompanyAddress: '',
+            income: '',
+            contactNumbers: '',
+            DengueText: '',
+            DengvaxiaText: '',
         };
+        this.readProfil();
     }
+
+    async readProfil() {
+        let userId = auth().currentUser.uid;
+        const refDb = database().ref(`/posts/${userId}`);
+        refDb
+            .once('value')
+            .then(snapshot => {
+                this.setState({
+                    fullName: snapshot.val().fullName,
+                    age: snapshot.val().age,
+                    Gender: snapshot.val().Gender,
+                    Birthday: snapshot.val().Birthday,
+                    Address: snapshot.val().Address,
+                    Work: snapshot.val().Work,
+                    schoolCompany: snapshot.val().schoolCompany,
+                    schoolCompanyAddress: snapshot.val().schoolCompanyAddress,
+                    income: snapshot.val().income,
+                    contactNumbers: snapshot.val().contactNumbers,
+                    DengueText: snapshot.val().DengueText,
+                    DengvaxiaText: snapshot.val().DengvaxiaText,
+                });
+            })
+            .catch(error => {
+                this.setState({
+                    fullName: '',
+                    age: '',
+                    Gender: '',
+                    Birthday: '',
+                    Address: '',
+                    Work: '',
+                    schoolCompany: '',
+                    schoolCompanyAddress: '',
+                    income: '',
+                    contactNumbers: '',
+                    DengueText: '',
+                    DengvaxiaText: '',
+                });
+            });
+    }
+
+    async submitUpdateProfil() {
+        let isBoolean = false;
+        let account = {};
+        account.fullName = this.state.fullName;
+        account.age = this.state.age;
+        account.Gender = this.state.Gender;
+        account.Birthday = this.state.Birthday;
+        account.Address = this.state.Address;
+        account.Work = this.state.Work;
+        account.schoolCompany = this.state.schoolCompany;
+        account.schoolCompanyAddress = this.state.schoolCompanyAddress;
+        account.income = this.state.income;
+        account.contactNumbers = this.state.contactNumbers;
+        account.DengueText = this.state.DengueText;
+        account.DengvaxiaText = this.state.DengvaxiaText;
+
+        if (!account.fullName.toString().trim()) {
+            alert('Masukkan username');
+            isBoolean = true;
+        }
+
+        if (!account.age.toString().trim()) {
+            alert('Masukkan umur anda.');
+            isBoolean = true;
+        }
+
+        if (!account.Gender.toString().trim()) {
+            alert('Masukkan jenis kelamin anda.');
+            isBoolean = true;
+        }
+
+        if (!account.Birthday.toString().trim()) {
+            alert('Masukkan tanggal ulang tahun anda.');
+            isBoolean = true;
+        }
+
+        if (!account.Address.toString().trim()) {
+            alert('Masukkan alamat lengkap anda.');
+            isBoolean = true;
+        }
+
+        if (!account.Work.toString().trim()) {
+            alert('Masukkan jenis kelamin anda.');
+            isBoolean = true;
+        }
+
+        if (!account.schoolCompany.toString().trim()) {
+            alert('Masukkan Nama Sekolah / Perusahaan.');
+            isBoolean = true;
+        }
+
+        if (!account.schoolCompanyAddress.toString().trim()) {
+            alert('Masukkan alamat sekolah / perusahaan.');
+            isBoolean = true;
+        }
+
+        if (!account.income.toString().trim()) {
+            alert('Masukkan pemasukkan uang bulanan.');
+            isBoolean = true;
+        }
+
+        if (!account.contactNumbers.toString().trim()) {
+            alert('Masukkan Nomor Handphone anda');
+            isBoolean = true;
+        }
+
+        if (!isBoolean) {
+            let userId = auth().currentUser.uid;
+            const refDb = database().ref(`/posts/${userId}`);
+            await refDb
+                .update(account)
+                .then(() => {
+                    ToastAndroid.show(
+                        'Update Profile berhasil',
+                        ToastAndroid.SHORT,
+                    );
+                    this.props.navigation.goBack();
+                })
+                .catch(error => {
+                    console.log(
+                        `Gagal menyimpan ke realtime database: ${
+                            error.message
+                        }`,
+                    );
+                });
+        }
+    }
+
     render() {
         return (
             <View style={styles.wrapper}>
@@ -64,13 +196,13 @@ class UpdateProfile extends Component {
                             {/*TODO Username FieldInput*/}
                             <Text style={styles.fieldLabel}>Username/Name</Text>
                             <TextInput
-                                value={this.state.username}
+                                value={this.state.fullName}
                                 style={styles.fieldInput}
                                 placeholder="Last Name, First Name, Middle Name"
                                 placeholderTextColor={colors.gray04}
                                 underlineColorAndroid="transparent"
-                                onChangeText={username =>
-                                    this.state({username})
+                                onChangeText={fullName =>
+                                    this.setState({fullName})
                                 }
                             />
                         </View>
@@ -93,13 +225,13 @@ class UpdateProfile extends Component {
                             <View style={styles.mb5}>
                                 <Text style={styles.fieldLabel}>Gender</Text>
                                 <TextInput
-                                    value={this.state.gender}
+                                    value={this.state.Gender}
                                     style={styles.fieldInput}
                                     placeholder="Gender"
                                     placeholderTextColor={colors.gray04}
                                     underlineColorAndroid="transparent"
-                                    onChangeText={gender =>
-                                        this.setState({gender})
+                                    onChangeText={Gender =>
+                                        this.setState({Gender})
                                     }
                                 />
                             </View>
@@ -112,13 +244,13 @@ class UpdateProfile extends Component {
                                     Date of Birthday
                                 </Text>
                                 <TextInput
-                                    value={this.state.birthday}
+                                    value={this.state.Birthday}
                                     style={styles.fieldInput}
                                     placeholder="Birthday"
                                     placeholderTextColor={colors.gray04}
                                     underlineColorAndroid="transparent"
-                                    onChangeText={birthday =>
-                                        this.state({birthday})
+                                    onChangeText={Birthday =>
+                                        this.setState({Birthday})
                                     }
                                 />
                             </View>
@@ -129,13 +261,13 @@ class UpdateProfile extends Component {
                             <View style={styles.mb5}>
                                 <Text style={styles.fieldLabel}>Address</Text>
                                 <TextInput
-                                    value={this.state.address}
+                                    value={this.state.Address}
                                     style={styles.fieldInput}
                                     placeholder="Address"
                                     placeholderTextColor={colors.gray04}
                                     underlineColorAndroid="transparent"
-                                    onChangeText={address =>
-                                        this.setState({address})
+                                    onChangeText={Address =>
+                                        this.setState({Address})
                                     }
                                 />
                             </View>
@@ -146,12 +278,12 @@ class UpdateProfile extends Component {
                             <View style={styles.mb5}>
                                 <Text style={styles.fieldLabel}>Work</Text>
                                 <TextInput
-                                    values={this.state.work}
+                                    values={this.state.Work}
                                     style={styles.fieldInput}
                                     placeholder="Name of Work (e.g student, employee, etc.)"
                                     placeholderTextColor={colors.gray04}
                                     underlineColorAndroid={'transparent'}
-                                    onChangeText={work => this.setState({work})}
+                                    onChangeText={Work => this.setState({Work})}
                                 />
                             </View>
                         </View>
@@ -177,14 +309,14 @@ class UpdateProfile extends Component {
 
                                 <View style={styles.sizeInput}>
                                     <TextInput
-                                        value={this.state.addressSchoolCompany}
+                                        value={this.state.schoolCompanyAddress}
                                         style={styles.fieldInput}
                                         placeholder="Address School / Company"
                                         placeholderTextColor={colors.gray04}
                                         underlineColorAndroid="transparent"
-                                        onChangeText={addressSchoolCompany => {
+                                        onChangeText={schoolCompanyAddress => {
                                             this.setState({
-                                                addressSchoolCompany,
+                                                schoolCompanyAddress,
                                             });
                                         }}
                                     />
@@ -199,13 +331,13 @@ class UpdateProfile extends Component {
                                     Family Monthly Income
                                 </Text>
                                 <TextInput
-                                    value={this.state.familyMonthlyIncome}
+                                    value={this.state.income}
                                     style={styles.fieldInput}
                                     placeholder="Family Monthly Income"
                                     placeholderTextColor={colors.gray04}
                                     underlineColorAndroid="transparent"
-                                    onChangeText={familyMonthlyIncome =>
-                                        this.setState({familyMonthlyIncome})
+                                    onChangeText={income =>
+                                        this.setState({income})
                                     }
                                 />
                             </View>
@@ -218,13 +350,13 @@ class UpdateProfile extends Component {
                                     Contacts number/s
                                 </Text>
                                 <TextInput
-                                    value={this.state.contactNumnber}
+                                    value={this.state.contactNumbers}
                                     style={styles.fieldInput}
                                     placeholder="Contacts number"
                                     placeholderTextColor={colors.gray04}
                                     underlineColorAndroid="transparent"
-                                    onChangeText={contactNumnber =>
-                                        this.setState({contactNumnber})
+                                    onChangeText={contactNumbers =>
+                                        this.setState({contactNumbers})
                                     }
                                 />
                             </View>
@@ -240,12 +372,12 @@ class UpdateProfile extends Component {
                             </Text>
                             <View style={styles.sizeInput}>
                                 <TextInput
-                                    value={this.state.question01}
+                                    value={this.state.DengueText}
                                     style={styles.fieldInput}
                                     placeholderTextColor={colors.gray04}
                                     underlineColorAndroid="transparent"
-                                    onChangeText={question01 =>
-                                        this.setState({question01})
+                                    onChangeText={DengueText =>
+                                        this.setState({DengueText})
                                     }
                                 />
                             </View>
@@ -255,17 +387,19 @@ class UpdateProfile extends Component {
                         </Text>
                         <View style={styles.sizeInput}>
                             <TextInput
-                                value={this.state.question02}
+                                value={this.state.DengvaxiaText}
                                 style={styles.fieldInput}
                                 placeholderTextColor={colors.gray04}
                                 underlineColorAndroid="transparent"
-                                onChangeText={question01 =>
-                                    this.setState({question01})
+                                onChangeText={DengvaxiaText =>
+                                    this.setState({DengvaxiaText})
                                 }
                             />
                         </View>
                         <TouchableOpacity
-                            onPress={() => {}}
+                            onPress={() => {
+                                this.submitUpdateProfil();
+                            }}
                             style={styles.saveButton}>
                             <Text style={styles.saveButtonText}>Save</Text>
                         </TouchableOpacity>

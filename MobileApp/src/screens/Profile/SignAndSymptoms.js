@@ -18,6 +18,8 @@ import {Button} from 'react-native';
 import Slider from '@react-native-community/slider';
 import HeaderTitleBackable from '../../components/headers/HeaderTitleBackable';
 import colors from '../../styles/colors';
+import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 
 const imagePath01 = require('./../../img/profil/fever.jpeg');
 const imagePath02 = require('./../../img/profil/headache.jpeg');
@@ -41,6 +43,23 @@ class SignAndSymptoms extends Component {
     constructor(props) {
         super(props);
         this.state = {};
+    }
+
+    async readSignAndSymptoms() {
+        let userId = auth().currentUser.uid;
+        const refDb = database().ref(`/posts/${userId}`);
+        refDb
+            .once('value')
+            .then(snapshot => {
+                this.setState({});
+            })
+            .catch(error => {
+                this.setState({});
+            });
+    }
+
+    async submitSignAndSymptoms() {
+
     }
 
     renderFever() {
@@ -89,15 +108,6 @@ class SignAndSymptoms extends Component {
                                 placeholderTextColor={colors.gray04}
                                 underlineColorAndroid="transparent"
                                 onChangeText={age => this.setState({age})}
-                            />
-                        </View>
-                    </View>
-                    <View style={[styles.mb5, styles.buttonGroup]}>
-                        <View style={styles.fixToText}>
-                            <Button
-                                color={colors.green01}
-                                title="Confirm"
-                                onPress={() => {}}
                             />
                         </View>
                     </View>
@@ -155,15 +165,6 @@ class SignAndSymptoms extends Component {
                             />
                         </View>
                     </View>
-                    <View style={[styles.mb5, styles.buttonGroup]}>
-                        <View style={styles.fixToText}>
-                            <Button
-                                color={colors.green01}
-                                title="Confirm"
-                                onPress={() => {}}
-                            />
-                        </View>
-                    </View>
                 </View>
             </View>
         );
@@ -206,15 +207,6 @@ class SignAndSymptoms extends Component {
                                 maximumValue={1}
                                 minimumTrackTintColor="#FFFFFF"
                                 maximumTrackTintColor={colors.green01}
-                            />
-                        </View>
-                    </View>
-                    <View style={[styles.mb5, styles.buttonGroup]}>
-                        <View style={styles.fixToText}>
-                            <Button
-                                color={colors.green01}
-                                title="Confirm"
-                                onPress={() => {}}
                             />
                         </View>
                     </View>
@@ -278,15 +270,6 @@ class SignAndSymptoms extends Component {
                                 maximumValue={1}
                                 minimumTrackTintColor="#FFFFFF"
                                 maximumTrackTintColor={colors.green01}
-                            />
-                        </View>
-                    </View>
-                    <View style={[styles.mb5, styles.buttonGroup]}>
-                        <View style={styles.fixToText}>
-                            <Button
-                                color={colors.green01}
-                                title="Confirm"
-                                onPress={() => {}}
                             />
                         </View>
                     </View>
@@ -354,15 +337,6 @@ class SignAndSymptoms extends Component {
                             />
                         </View>
                     </View>
-                    <View style={[styles.mb5, styles.buttonGroup]}>
-                        <View style={styles.fixToText}>
-                            <Button
-                                color={colors.green01}
-                                title="Confirm"
-                                onPress={() => {}}
-                            />
-                        </View>
-                    </View>
                     <View style={styles.mb5}>
                         <Text style={styles.fieldLabel}>
                             Do you feel pain in your stomach?
@@ -393,15 +367,6 @@ class SignAndSymptoms extends Component {
                                 maximumValue={1}
                                 minimumTrackTintColor="#FFFFFF"
                                 maximumTrackTintColor={colors.green01}
-                            />
-                        </View>
-                    </View>
-                    <View style={[styles.mb5, styles.buttonGroup]}>
-                        <View style={styles.fixToText}>
-                            <Button
-                                color={colors.green01}
-                                title="Confirm"
-                                onPress={() => {}}
                             />
                         </View>
                     </View>
@@ -449,15 +414,6 @@ class SignAndSymptoms extends Component {
                             />
                         </View>
                     </View>
-                    <View style={[styles.mb5, styles.buttonGroup]}>
-                        <View style={styles.fixToText}>
-                            <Button
-                                color={colors.green01}
-                                title="Confirm"
-                                onPress={() => {}}
-                            />
-                        </View>
-                    </View>
                     <View style={styles.mb5}>
                         <Text style={styles.fieldLabel}>
                             Do you feel pain in your joints?
@@ -486,15 +442,6 @@ class SignAndSymptoms extends Component {
                                 maximumValue={1}
                                 minimumTrackTintColor="#FFFFFF"
                                 maximumTrackTintColor={colors.green01}
-                            />
-                        </View>
-                    </View>
-                    <View style={[styles.mb5, styles.buttonGroup]}>
-                        <View style={styles.fixToText}>
-                            <Button
-                                color={colors.green01}
-                                title="Confirm"
-                                onPress={() => {}}
                             />
                         </View>
                     </View>
@@ -539,15 +486,6 @@ class SignAndSymptoms extends Component {
                                 maximumValue={1}
                                 minimumTrackTintColor="#FFFFFF"
                                 maximumTrackTintColor={colors.green01}
-                            />
-                        </View>
-                    </View>
-                    <View style={[styles.mb5, styles.buttonGroup]}>
-                        <View style={styles.fixToText}>
-                            <Button
-                                color={colors.green01}
-                                title="Confirm"
-                                onPress={() => {}}
                             />
                         </View>
                     </View>
