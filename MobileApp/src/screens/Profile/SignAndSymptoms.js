@@ -14,7 +14,7 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import {Image} from 'react-native';
-import {Button} from 'react-native';
+import {CheckBox} from 'react-native';
 import Slider from '@react-native-community/slider';
 import HeaderTitleBackable from '../../components/headers/HeaderTitleBackable';
 import colors from '../../styles/colors';
@@ -58,9 +58,7 @@ class SignAndSymptoms extends Component {
             });
     }
 
-    async submitSignAndSymptoms() {
-
-    }
+    async submitSignAndSymptoms() {}
 
     renderFever() {
         return (
@@ -75,12 +73,23 @@ class SignAndSymptoms extends Component {
                         <Text style={styles.fieldLabel}>
                             Do you have fever?
                         </Text>
-                        <TextInput
-                            //  value={this.state.age}
-                            style={styles.fieldInput}
-                            placeholderTextColor={colors.gray04}
-                            underlineColorAndroid="transparent"
-                            onChangeText={age => this.setState({age})}
+                        <CheckBox
+                            title="value1"
+                            checkedIcon="dot-circle-o"
+                            uncheckedIcon="circle-o"
+                            checked={this.state.radioButton === 'value1'}
+                            onPress={() =>
+                                this.setState({radioButton: 'value1'})
+                            }
+                        />
+                        <CheckBox
+                            title="value2"
+                            checkedIcon="dot-circle-o"
+                            uncheckedIcon="circle-o"
+                            checked={this.state.radioButton === 'value2'}
+                            onPress={() =>
+                                this.setState({radioButton: 'value2'})
+                            }
                         />
                     </View>
                     <View style={styles.mb5}>
