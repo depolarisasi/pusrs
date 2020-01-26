@@ -11,7 +11,6 @@ import {
     Image,
     StyleSheet,
     FlatList,
-    AppRegistry,
     TouchableWithoutFeedback,
 } from 'react-native';
 import colors from './../../styles/colors';
@@ -35,7 +34,7 @@ class PDFCollection extends Component {
             PDF: [
                 {
                     id: 1,
-                    img: require('./../../img/pdf/1.jpg'),
+                    imgPdf: require('./../../img/pdf/1.png'),
                     onPress: () =>
                         this.props.navigation.navigate('PdfScreen', {
                             onClickPdfScreen: require('./../../img/pdf/PDF1.pdf'),
@@ -43,7 +42,7 @@ class PDFCollection extends Component {
                 },
                 {
                     id: 2,
-                    img: require('./../../img/pdf/2.jpg'),
+                    imgPdf: require('./../../img/pdf/2.png'),
                     onPress: () =>
                         this.props.navigation.navigate('PdfScreen', {
                             onClickPdfScreen: require('./../../img/pdf/PDF2.pdf'),
@@ -51,7 +50,7 @@ class PDFCollection extends Component {
                 },
                 {
                     id: 3,
-                    img: require('./../../img/pdf/3.jpg'),
+                    imgPdf: require('./../../img/pdf/3.png'),
                     onPress: () =>
                         this.props.navigation.navigate('PdfScreen', {
                             onClickPdfScreen: require('./../../img/pdf/PDF3.pdf'),
@@ -59,7 +58,7 @@ class PDFCollection extends Component {
                 },
                 {
                     id: 4,
-                    img: require('./../../img/pdf/4.jpg'),
+                    imgPdf: require('./../../img/pdf/4.png'),
                     onPress: () =>
                         this.props.navigation.navigate('PdfScreen', {
                             onClickPdfScreen: require('./../../img/pdf/PDF4.pdf'),
@@ -67,7 +66,7 @@ class PDFCollection extends Component {
                 },
                 {
                     id: 5,
-                    img: require('./../../img/pdf/5.jpg'),
+                    imgPdf: require('./../../img/pdf/5.png'),
                     onPress: () =>
                         this.props.navigation.navigate('PdfScreen', {
                             onClickPdfScreen: require('./../../img/pdf/PDF5.pdf'),
@@ -75,7 +74,7 @@ class PDFCollection extends Component {
                 },
                 {
                     id: 6,
-                    img: require('./../../img/pdf/6.jpg'),
+                    imgPdf: require('./../../img/pdf/6.png'),
                     onPress: () =>
                         this.props.navigation.navigate('PdfScreen', {
                             onClickPdfScreen: require('./../../img/pdf/pdf.pdf'),
@@ -90,7 +89,7 @@ class PDFCollection extends Component {
             <TouchableWithoutFeedback onPress={item.onPress}>
                 <View style={styles.pdfInnerContainer}>
                     <View style={styles.imageContainer}>
-                        <Image source={item.img} style={styles.image} />
+                        <Image source={item.imgPdf} style={styles.image} />
                     </View>
                 </View>
             </TouchableWithoutFeedback>
