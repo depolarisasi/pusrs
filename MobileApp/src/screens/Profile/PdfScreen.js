@@ -14,7 +14,7 @@ class PdfScreen extends Component {
             header: () => (
                 <HeaderTitleBackable
                     navigation={navigation}
-                    title="Pdf Screen"
+                    title="PDF SCREEN"
                 />
             ),
         };
@@ -35,8 +35,9 @@ class PdfScreen extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'center',
+        marginTop: 25,
     },
     pdf: {
         flex: 1,
