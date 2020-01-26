@@ -5,23 +5,17 @@
  */
 
 import React, {Component} from 'react';
-import {PropTypes} from 'prop-types';
-import {StatusBar, View, Image, StyleSheet, FlatList} from 'react-native';
+import {
+    StatusBar,
+    View,
+    Image,
+    StyleSheet,
+    FlatList,
+    AppRegistry,
+    TouchableWithoutFeedback,
+} from 'react-native';
 import colors from './../../styles/colors';
 import HeaderTitleBackable from './../../components/headers/HeaderTitleBackable';
-
-const PDF = [
-    {
-        id: 1,
-        img: require('./../../img/pdf/1.jpg'),
-        pdf: require('./../../img/pdf/pdf.pdf'),
-    },
-    {id: 2, img: require('./../../img/pdf/2.jpg')},
-    {id: 3, img: require('./../../img/pdf/3.jpg')},
-    {id: 4, img: require('./../../img/pdf/4.jpg')},
-    {id: 5, img: require('./../../img/pdf/5.jpg')},
-    {id: 6, img: require('./../../img/pdf/6.jpg')},
-];
 
 class PDFCollection extends Component {
     static navigationOptions = ({navigation}) => {
@@ -35,13 +29,71 @@ class PDFCollection extends Component {
         };
     };
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            PDF: [
+                {
+                    id: 1,
+                    img: require('./../../img/pdf/1.jpg'),
+                    onPress: () =>
+                        this.props.navigation.navigate('PdfScreen', {
+                            onClickPdfScreen: require('./../../img/pdf/PDF1.pdf'),
+                        }),
+                },
+                {
+                    id: 2,
+                    img: require('./../../img/pdf/2.jpg'),
+                    onPress: () =>
+                        this.props.navigation.navigate('PdfScreen', {
+                            onClickPdfScreen: require('./../../img/pdf/PDF2.pdf'),
+                        }),
+                },
+                {
+                    id: 3,
+                    img: require('./../../img/pdf/3.jpg'),
+                    onPress: () =>
+                        this.props.navigation.navigate('PdfScreen', {
+                            onClickPdfScreen: require('./../../img/pdf/PDF3.pdf'),
+                        }),
+                },
+                {
+                    id: 4,
+                    img: require('./../../img/pdf/4.jpg'),
+                    onPress: () =>
+                        this.props.navigation.navigate('PdfScreen', {
+                            onClickPdfScreen: require('./../../img/pdf/PDF4.pdf'),
+                        }),
+                },
+                {
+                    id: 5,
+                    img: require('./../../img/pdf/5.jpg'),
+                    onPress: () =>
+                        this.props.navigation.navigate('PdfScreen', {
+                            onClickPdfScreen: require('./../../img/pdf/PDF5.pdf'),
+                        }),
+                },
+                {
+                    id: 6,
+                    img: require('./../../img/pdf/6.jpg'),
+                    onPress: () =>
+                        this.props.navigation.navigate('PdfScreen', {
+                            onClickPdfScreen: require('./../../img/pdf/pdf.pdf'),
+                        }),
+                },
+            ],
+        };
+    }
+
     renderItem({item, index}) {
         return (
-            <View style={styles.pdfInnerContainer}>
-                <View style={styles.imageContainer}>
-                    <Image source={item.img} style={styles.image} />
+            <TouchableWithoutFeedback onPress={item.onPress}>
+                <View style={styles.pdfInnerContainer}>
+                    <View style={styles.imageContainer}>
+                        <Image source={item.img} style={styles.image} />
+                    </View>
                 </View>
-            </View>
+            </TouchableWithoutFeedback>
         );
     }
 
@@ -54,7 +106,7 @@ class PDFCollection extends Component {
                 />
                 <FlatList
                     contentContainerStyle={styles.listContainer}
-                    data={PDF}
+                    data={this.state.PDF}
                     renderItem={this.renderItem}
                     numColumns={2}
                     keyExtractor={(item, index) => `pdf-${item.id}`}
