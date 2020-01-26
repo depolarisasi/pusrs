@@ -142,7 +142,6 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginTop: '2%',
         marginBottom: '5%',
-
     },
     imageStyle: {
         flex: 1,
