@@ -5,14 +5,30 @@
  */
 
 import React, {Component} from 'react';
-import {StyleSheet, ScrollView, View, Text, Image} from 'react-native';
+import {
+    StyleSheet,
+    ScrollView,
+    View,
+    Text,
+    Image,
+    Dimensions,
+} from 'react-native';
 import {Linking} from 'react-native';
 import {TouchableHighlight} from 'react-native';
 import colors from './../../styles/colors';
 
 const WEBSITES = [
-    {id: 1, img: require('./../../img/who.png')},
-    {id: 2, img: require('./../../img/dept_of_health_logo.png')},
+    {
+        id: 1,
+        img: require('./../../img/who.png'),
+        url:
+            'https://www.who.int/news-room/fact-sheets/detail/dengue-and-severe-dengue',
+    },
+    {
+        id: 2,
+        img: require('./../../img/dept_of_health_logo.png'),
+        url: 'https://www.doh.gov.ph/Health-Advisory/Dengue',
+    },
 ];
 
 const NEWS = [
@@ -41,17 +57,13 @@ class News extends Component {
         return (
             <View>
                 {WEBSITES.map((website, index) => (
-                    <View
+                    <TouchableHighlight
                         key={`website-${index}`}
-                        style={styles.websiteContainer}>
-                        <TouchableHighlight
-                            style={styles.image}
-                            onPress={() =>
-                                Linking.openURL('https://www.google.com')
-                            }>
-                            <Image source={website.img} />
-                        </TouchableHighlight>
-                    </View>
+                        onPress={() => Linking.openURL(website.url)}>
+                        <View style={styles.websiteContainer}>
+                            <Image source={website.img} style={styles.image} />
+                        </View>
+                    </TouchableHighlight>
                 ))}
             </View>
         );
@@ -128,8 +140,13 @@ const styles = StyleSheet.create({
     },
     websiteContainer: {
         backgroundColor: colors.white,
-        width: '100%',
+        width: Dimensions.get('window').width,
         height: 150,
+    },
+    newsContainer: {
+        width: Dimensions.get('window').width,
+        height: 200,
+        paddingBottom: 10,
     },
     imageContainer: {
         display: 'flex',
@@ -139,6 +156,8 @@ const styles = StyleSheet.create({
     image: {
         flex: 1,
         height: 150,
+        width: Dimensions.get('window').width,
+        resizeMode: 'stretch',
         alignSelf: 'center',
         marginTop: '2%',
         marginBottom: '5%',
