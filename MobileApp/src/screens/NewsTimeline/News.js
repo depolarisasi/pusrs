@@ -13,10 +13,12 @@ import {
     Image,
     Dimensions,
     ToastAndroid,
+    ActivityIndicator,
 } from 'react-native';
 import {Linking} from 'react-native';
 import {TouchableHighlight} from 'react-native';
 import colors from './../../styles/colors';
+import {getUSANews} from './fetchNews';
 
 const WEBSITES = [
     {
@@ -54,6 +56,46 @@ const NEWS = [
 ];
 
 class News extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isLoading: true,
+            articles: null,
+        };
+    }
+
+    componentDidMount() {
+        this.fetchNews();
+        // const API_KEY = 'a00dd5783aa14cdc8c12add506fae426';
+        // const q_SHOW_NEWS = 'mosquito%20AND%20(dengue%20OR%20denguefever)';
+        // const language_api_news = 'en';
+        // return fetch(
+        //     `https://newsapi.org/v2/everything?q=${q_SHOW_NEWS}&language=${language_api_news}&apiKey=${API_KEY}`,
+        // )
+        //     .then(response => response.json())
+        //     .then(responseJson => {
+        //         this.state({
+        //             isLoading: false,
+        //             dataSource: responseJson.toString(),
+        //         });
+        //     })
+        //     .catch(error => {
+        //         ToastAndroid.show(`Error ${error}`, ToastAndroid.SHORT);
+        //     });
+    }
+
+    fetchNews = () => {
+        getUSANews()
+            .then(articles => {
+                this.setState({articles, isLoading: false});
+            })
+            .catch(() => this.setState({isLoading: false}));
+    };
+
+    handleRefresh = () => {
+        this.setState({isLoading: true}, () => this.fetchNews());
+    };
+
     renderWebsites() {
         return (
             <View>
@@ -71,33 +113,42 @@ class News extends Component {
     }
 
     renderNews() {
-        return (
-            <View>
-                {NEWS.map((news, index) => (
-                    <TouchableHighlight
-                        key={`news-${index}`}
-                        onPress={() =>
-                            ToastAndroid.show(
-                                `news-id ${news.id}`,
-                                ToastAndroid.SHORT,
-                            )
-                        }>
-                        <View style={styles.newsContainer}>
-                            <View style={styles.imageContainer}>
-                                <Image
-                                    source={news.img}
-                                    style={styles.imageNews}
-                                />
+        if (this.state.isLoading) {
+            return (
+                <View style={styles.newsContainer}>
+                    <ActivityIndicator />
+                </View>
+            );
+        } else {
+            return (
+                <View>
+                    {this.state.articles.map((val, index) => (
+                        <TouchableHighlight
+                            key={`news-${index}`}
+                            onPress={() =>
+                                ToastAndroid.show(
+                                    `news-id ${val.url}`,
+                                    ToastAndroid.SHORT,
+                                )
+                            }>
+                            <View style={styles.newsContainer}>
+                                <View style={styles.imageContainer}>
+                                    <Image
+                                        source={{uri: val.urlToImage}}
+                                        style={styles.imageNews}
+                                    />
+                                </View>
+                                <View style={styles.newsTextContainer}>
+                                    <Text style={styles.title}>
+                                        {val.title}
+                                    </Text>
+                                </View>
                             </View>
-                            <View style={styles.newsTextContainer}>
-                                <Text style={styles.title}>{news.title}</Text>
-                                <Text>CNN America</Text>
-                            </View>
-                        </View>
-                    </TouchableHighlight>
-                ))}
-            </View>
-        );
+                        </TouchableHighlight>
+                    ))}
+                </View>
+            );
+        }
     }
 
     render() {
