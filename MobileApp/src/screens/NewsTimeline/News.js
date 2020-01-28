@@ -12,6 +12,7 @@ import {
     Text,
     Image,
     Dimensions,
+    ToastAndroid,
 } from 'react-native';
 import {Linking} from 'react-native';
 import {TouchableHighlight} from 'react-native';
@@ -33,19 +34,19 @@ const WEBSITES = [
 
 const NEWS = [
     {
-        id: 1,
+        id: 26,
         img: require('./../../img/relief_web.png'),
         title:
             'Dengue cases slightly up in Pengasinan - Philippines - ReliefWeb',
     },
     {
-        id: 2,
+        id: 27,
         img: require('./../../img/relief_web.png'),
         title:
             'Dengue cases slightly up in Pengasinan - Philippines - ReliefWeb',
     },
     {
-        id: 3,
+        id: 28,
         img: require('./../../img/relief_web.png'),
         title:
             'Dengue cases slightly up in Pengasinan - Philippines - ReliefWeb',
@@ -73,15 +74,27 @@ class News extends Component {
         return (
             <View>
                 {NEWS.map((news, index) => (
-                    <View key={`news-${index}`} style={styles.newsContainer}>
-                        <View style={styles.imageContainer}>
-                            <Image source={news.img} style={styles.imageNews} />
+                    <TouchableHighlight
+                        key={`news-${index}`}
+                        onPress={() =>
+                            ToastAndroid.show(
+                                `news-id ${news.id}`,
+                                ToastAndroid.SHORT,
+                            )
+                        }>
+                        <View style={styles.newsContainer}>
+                            <View style={styles.imageContainer}>
+                                <Image
+                                    source={news.img}
+                                    style={styles.imageNews}
+                                />
+                            </View>
+                            <View style={styles.newsTextContainer}>
+                                <Text style={styles.title}>{news.title}</Text>
+                                <Text>CNN America</Text>
+                            </View>
                         </View>
-                        <View style={styles.newsTextContainer}>
-                            <Text style={styles.title}>{news.title}</Text>
-                            <Text>CNN America</Text>
-                        </View>
-                    </View>
+                    </TouchableHighlight>
                 ))}
             </View>
         );
