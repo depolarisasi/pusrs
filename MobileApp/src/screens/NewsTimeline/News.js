@@ -34,27 +34,6 @@ const WEBSITES = [
     },
 ];
 
-const NEWS = [
-    {
-        id: 26,
-        img: require('./../../img/relief_web.png'),
-        title:
-            'Dengue cases slightly up in Pengasinan - Philippines - ReliefWeb',
-    },
-    {
-        id: 27,
-        img: require('./../../img/relief_web.png'),
-        title:
-            'Dengue cases slightly up in Pengasinan - Philippines - ReliefWeb',
-    },
-    {
-        id: 28,
-        img: require('./../../img/relief_web.png'),
-        title:
-            'Dengue cases slightly up in Pengasinan - Philippines - ReliefWeb',
-    },
-];
-
 class News extends Component {
     constructor(props) {
         super(props);
@@ -66,22 +45,6 @@ class News extends Component {
 
     componentDidMount() {
         this.fetchNews();
-        // const API_KEY = 'a00dd5783aa14cdc8c12add506fae426';
-        // const q_SHOW_NEWS = 'mosquito%20AND%20(dengue%20OR%20denguefever)';
-        // const language_api_news = 'en';
-        // return fetch(
-        //     `https://newsapi.org/v2/everything?q=${q_SHOW_NEWS}&language=${language_api_news}&apiKey=${API_KEY}`,
-        // )
-        //     .then(response => response.json())
-        //     .then(responseJson => {
-        //         this.state({
-        //             isLoading: false,
-        //             dataSource: responseJson.toString(),
-        //         });
-        //     })
-        //     .catch(error => {
-        //         ToastAndroid.show(`Error ${error}`, ToastAndroid.SHORT);
-        //     });
     }
 
     fetchNews = () => {
@@ -125,12 +88,7 @@ class News extends Component {
                     {this.state.articles.map((val, index) => (
                         <TouchableHighlight
                             key={`news-${index}`}
-                            onPress={() =>
-                                ToastAndroid.show(
-                                    `news-id ${val.url}`,
-                                    ToastAndroid.SHORT,
-                                )
-                            }>
+                            onPress={() => Linking.openURL(val.url)}>
                             <View style={styles.newsContainer}>
                                 <View style={styles.imageContainer}>
                                     <Image
