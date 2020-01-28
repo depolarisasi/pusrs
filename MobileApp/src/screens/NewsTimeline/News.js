@@ -75,10 +75,11 @@ class News extends Component {
                 {NEWS.map((news, index) => (
                     <View key={`news-${index}`} style={styles.newsContainer}>
                         <View style={styles.imageContainer}>
-                            <Image source={news.img} style={styles.image} />
+                            <Image source={news.img} style={styles.imageNews} />
                         </View>
                         <View style={styles.newsTextContainer}>
                             <Text style={styles.title}>{news.title}</Text>
+                            <Text>CNN America</Text>
                         </View>
                     </View>
                 ))}
@@ -145,12 +146,12 @@ const styles = StyleSheet.create({
     },
     newsContainer: {
         width: Dimensions.get('window').width,
-        height: 200,
+        height: 300,
         paddingBottom: 10,
     },
     imageContainer: {
         display: 'flex',
-        flex: 1,
+        flex: 2,
         backgroundColor: colors.gray05,
     },
     image: {
@@ -162,6 +163,14 @@ const styles = StyleSheet.create({
         marginTop: '2%',
         marginBottom: '5%',
     },
+    imageNews: {
+        flex: 1,
+        height: Dimensions.get('window').width / 2,
+        width: Dimensions.get('window').width,
+        resizeMode: 'stretch',
+        alignSelf: 'center',
+        marginBottom: '3%',
+    },
     imageStyle: {
         flex: 1,
         height: 150,
@@ -172,8 +181,8 @@ const styles = StyleSheet.create({
     },
     newsTextContainer: {
         justifyContent: 'center',
-        paddingTop: 20,
-        paddingBottom: 20,
+        paddingTop: 5,
+        paddingBottom: 10,
         paddingHorizontal: 16,
         backgroundColor: 'white',
     },
