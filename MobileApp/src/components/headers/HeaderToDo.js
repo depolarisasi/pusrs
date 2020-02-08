@@ -5,7 +5,6 @@
  */
 
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import colors from './../../styles/colors';
 

@@ -5,10 +5,8 @@
  */
 
 import React, {Component} from 'react';
-import {PropTypes} from 'prop-types';
 import {
     StatusBar,
-    BackHandler,
     View,
     Text,
     TextInput,
@@ -17,7 +15,9 @@ import {
     FlatList,
     TouchableOpacity,
     TouchableHighlight,
+    ToastAndroid,
 } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import colors from './../styles/colors';
 import HeaderToDo from './../components/headers/HeaderToDo';
 
@@ -46,8 +46,35 @@ class ToDoContainer extends Component {
         this.state = {
             newToDoName: '',
             modalAddToDoVisible: false,
+            date: new Date('2020-06-12T14:42:42'),
+            mode: 'date',
+            show: false,
         };
     }
+
+    setDate = (event, date) => {
+        date = date || this.state.date;
+
+        this.setState({
+            show: false,
+            date,
+        });
+    };
+
+    show = mode => {
+        this.setState({
+            show: true,
+            mode,
+        });
+    };
+
+    showDatepicker = () => {
+        this.show('date');
+    };
+
+    showTimepicker = () => {
+        this.show('time');
+    };
 
     componentDidMount() {
         this.props.navigation.setParams({
@@ -66,6 +93,23 @@ class ToDoContainer extends Component {
             />
         );
     };
+
+    async showDate() {
+        const {show, date, mode} = this.state;
+        return (
+            <View>
+                {show && (
+                    <DateTimePicker
+                        value={date}
+                        mode={mode}
+                        is24Hour={true}
+                        display="default"
+                        onChange={this.setDate}
+                    />
+                )}
+            </View>
+        );
+    }
 
     renderModalAddToDo() {
         return (
@@ -133,18 +177,24 @@ class ToDoContainer extends Component {
                     data={TODOS}
                     showsVerticalScrollIndicator={false}
                     renderItem={({item}) => (
-                        <View style={styles.listRow}>
-                            <View style={styles.listLeft}>
-                                <Text>{item.name}</Text>
+                        <TouchableHighlight
+                            key={item.id}
+                            onPress={() =>
+                                ToastAndroid.show('Success', ToastAndroid.SHORT)
+                            }>
+                            <View style={styles.listRow}>
+                                <View style={styles.listLeft}>
+                                    <Text>{item.name}</Text>
+                                </View>
+                                <View style={styles.listRight}>
+                                    <TouchableOpacity>
+                                        <Text style={styles.listButton}>
+                                            Add Reminder
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
-                            <View style={styles.listRight}>
-                                <TouchableOpacity onPress={() => {}}>
-                                    <Text style={styles.listButton}>
-                                        Add Reminder
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
+                        </TouchableHighlight>
                     )}
                     ItemSeparatorComponent={this.renderListItemSeparator}
                     keyExtractor={item => `${item.id}`}
