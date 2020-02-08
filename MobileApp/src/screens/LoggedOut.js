@@ -4,16 +4,16 @@
  * Copyright (c) 2019 Justin
  */
 
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
-  StatusBar,
-  Alert,
-  Text,
-  View,
-  Image,
-  ImageBackground,
-  TouchableHighlight,
-  ScrollView,
+    StatusBar,
+    Alert,
+    Text,
+    View,
+    Image,
+    ImageBackground,
+    TouchableHighlight,
+    ScrollView,
 } from 'react-native';
 import colors from './../styles/colors';
 import RoundedButton from './../components/buttons/RoundedButton';
@@ -23,9 +23,9 @@ const imgBg = require('./../img/bg.jpg');
 const appIcon = require('./../img/app-icon.jpg');
 
 const privacyTerms = {
-  privacy: {
-    headingText: 'Privacy Policy',
-    bodyText: `
+    privacy: {
+        headingText: 'Privacy Policy',
+        bodyText: `
 Effective date: June 17, 2019
 Mozzify ("us", "we", or "our") operates the Mozzify mobile application (hereinafter referred to as the "Service").
 This page informs you of our policies regarding the collection, use and disclosure of personal data when you use our Service and the choices you have associated with that data.
@@ -111,10 +111,10 @@ If you have any questions about this Privacy Policy, please contact us:
 By email: herbuelavonralphdane@gmail.com
 By phone number: +818039252523
     `,
-  },
-  terms: {
-    headingText: 'Terms & Conditions',
-    bodyText: `
+    },
+    terms: {
+        headingText: 'Terms & Conditions',
+        bodyText: `
 Last updated: June 17, 2019
 These Terms and Conditions ("Terms", "Terms and Conditions") govern your relationship with Mozzify mobile application (the "Service") operated by Mozzify ("us", "we", or "our").
 Please read these Terms and Conditions carefully before using our Mozzify mobile application (the "Service").
@@ -150,96 +150,117 @@ By continuing to access or use our Service after those revisions become effectiv
 Contact Us
 If you have any questions about these Terms, please contact us.
     `,
-  },
+    },
 };
 
 export default class LoggedOut extends Component {
-  static navigationOptions = ({ navigation }) => ({
-    header: null,
-  });
+    static navigationOptions = ({navigation}) => ({
+        header: null,
+    });
 
-  constructor(props) {
-    super(props);
-    this.onPrivacyPolicyPress = this.onPrivacyPolicyPress.bind(this);
-    this.onTermsConditionsPress = this.onTermsConditionsPress.bind(this);
-    this.onLoginPress = this.onLoginPress.bind(this);
-    this.onSignUpPress = this.onSignUpPress.bind(this);
-  }
+    constructor(props) {
+        super(props);
+        this.onPrivacyPolicyPress = this.onPrivacyPolicyPress.bind(this);
+        this.onTermsConditionsPress = this.onTermsConditionsPress.bind(this);
+        this.onLoginPress = this.onLoginPress.bind(this);
+        this.onSignUpPress = this.onSignUpPress.bind(this);
+    }
 
-  onPrivacyPolicyPress() {
-    this.props.navigation.navigate('PrivacyTerms', {content: privacyTerms.privacy});
-  }
+    onPrivacyPolicyPress() {
+        this.props.navigation.navigate('PrivacyTerms', {
+            content: privacyTerms.privacy,
+        });
+    }
 
-  onTermsConditionsPress() {
-    this.props.navigation.navigate('PrivacyTerms', {content: privacyTerms.terms});
-  }
+    onTermsConditionsPress() {
+        this.props.navigation.navigate('PrivacyTerms', {
+            content: privacyTerms.terms,
+        });
+    }
 
-  onLoginPress() {
-    setTimeout(() => this.props.navigation.navigate('LogIn'), 500);
-  }
+    onLoginPress() {
+        setTimeout(() => this.props.navigation.navigate('LogIn'), 500);
+    }
 
-  onSignUpPress() {
-    setTimeout(() => Alert.alert(
-      'Privasi Polisi dan Syarat & Ketentuan',
-      'Apakah Anda setuju dengan Privasi Polisi dan Syarat & Ketentuan kami?',
-      [
-        {text: 'Tidak', style: 'cancel'},
-        {text: 'Ya, Saya Setuju', onPress: () => this.props.navigation.navigate('SignUp')},
-      ]
-    ), 500);
-  }
+    onSignUpPress() {
+        setTimeout(
+            () =>
+                Alert.alert(
+                    'Privasi Polisi dan Syarat & Ketentuan',
+                    'Apakah Anda setuju dengan Privasi Polisi dan Syarat & Ketentuan kami?',
+                    [
+                        {text: 'Tidak', style: 'cancel'},
+                        {
+                            text: 'Ya, Saya Setuju',
+                            onPress: () =>
+                                this.props.navigation.navigate('SignUp'),
+                        },
+                    ],
+                ),
+            500,
+        );
+    }
 
-  render() {
-    return (
-      <ImageBackground source={imgBg} style={styles.bg}>
-        <ScrollView style={styles.wrapper}>
-          <StatusBar translucent backgroundColor={colors.transparent} barStyle="dark-content" />
-          <View style={styles.wrapperInner}>
-            <Image
-              source={appIcon}
-              style={styles.appIcon}
-            />
-            <Text style={styles.appName}>Mozzify</Text>
-            <View style={[styles.termsAndConditions, { marginTop: 50, marginBottom: 5 }]}>
-              <Text style={styles.termsText}>
-                Dengan mendaftar, Anda setuju dengan 
-              </Text>
-            </View>
-            <View style={[styles.termsAndConditions, { marginBottom: 50 }]}>
-              <TouchableHighlight onPress={this.onPrivacyPolicyPress}>
-                <Text style={[styles.termsText, styles.linkText]}>
-                  Privasi Polisi
-                </Text>
-              </TouchableHighlight>
-              <Text style={styles.termsText}>
-                {" dan "}
-              </Text>
-              <TouchableHighlight onPress={this.onTermsConditionsPress}>
-                <Text style={[styles.termsText, styles.linkText]}>
-                  Syarat & Ketentuan
-                </Text>
-              </TouchableHighlight>
-              <Text style={styles.termsText}>
-                {" kami "}
-              </Text>
-            </View>
-            <RoundedButton
-              text="Masuk"
-              textColor={colors.white}
-              background={colors.transparent}
-              borderColor={colors.white}
-              handleOnPress={this.onLoginPress}
-            />
-            <RoundedButton
-              text="Daftar"
-              textColor={colors.white}
-              background={colors.transparent}
-              borderColor={colors.white}
-              handleOnPress={this.onSignUpPress}
-            />
-          </View>
-        </ScrollView>
-      </ImageBackground>
-    );
-  }
+    render() {
+        return (
+            <ImageBackground source={imgBg} style={styles.bg}>
+                <ScrollView style={styles.wrapper}>
+                    <StatusBar
+                        translucent
+                        backgroundColor={colors.transparent}
+                        barStyle="dark-content"
+                    />
+                    <View style={styles.wrapperInner}>
+                        <Image source={appIcon} style={styles.appIcon} />
+                        <Text style={styles.appName}>Mozzify</Text>
+                        <View
+                            style={[
+                                styles.termsAndConditions,
+                                {marginTop: 50, marginBottom: 5},
+                            ]}>
+                            <Text style={styles.termsText}>
+                                Dengan mendaftar, Anda setuju dengan
+                            </Text>
+                        </View>
+                        <View
+                            style={[
+                                styles.termsAndConditions,
+                                {marginBottom: 50},
+                            ]}>
+                            <TouchableHighlight
+                                onPress={this.onPrivacyPolicyPress}>
+                                <Text
+                                    style={[styles.termsText, styles.linkText]}>
+                                    Privasi Polisi
+                                </Text>
+                            </TouchableHighlight>
+                            <Text style={styles.termsText}>{' dan '}</Text>
+                            <TouchableHighlight
+                                onPress={this.onTermsConditionsPress}>
+                                <Text
+                                    style={[styles.termsText, styles.linkText]}>
+                                    Syarat & Ketentuan
+                                </Text>
+                            </TouchableHighlight>
+                            <Text style={styles.termsText}>{' kami '}</Text>
+                        </View>
+                        <RoundedButton
+                            text="Masuk"
+                            textColor={colors.white}
+                            background={colors.transparent}
+                            borderColor={colors.white}
+                            handleOnPress={this.onLoginPress}
+                        />
+                        <RoundedButton
+                            text="Daftar"
+                            textColor={colors.white}
+                            background={colors.transparent}
+                            borderColor={colors.white}
+                            handleOnPress={this.onSignUpPress}
+                        />
+                    </View>
+                </ScrollView>
+            </ImageBackground>
+        );
+    }
 }
