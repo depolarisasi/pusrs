@@ -1,21 +1,22 @@
 import React, {Component} from 'react';
 import {
+    ActivityIndicator,
     FlatList,
+    Modal,
+    Alert,
     StyleSheet,
     Text,
-    Modal,
-    TouchableOpacity,
-    View,
-    TouchableHighlight,
     TextInput,
-    default as ToastAndroid,
-    ActivityIndicator,
+    TouchableHighlight,
+    TouchableOpacity,
+    ToastAndroid,
+    View,
 } from 'react-native';
 import colors from './../../styles/colors';
 import database from '@react-native-firebase/database';
-import randomWords from 'random-words';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import auth from '@react-native-firebase/auth';
+import Swipeout from 'react-native-swipeout';
 
 Array.prototype.random = function() {
     return this[Math.floor(Math.random() * this.length)];
@@ -23,6 +24,7 @@ Array.prototype.random = function() {
 String.prototype.capitalizeFirstLetter = function() {
     return `${this.substr(0, 1).toUpperCase()}${this.substr(1)}`;
 };
+
 class Timeline extends Component {
     renderListItemSeparator = () => {
         return (
@@ -44,7 +46,11 @@ class Timeline extends Component {
             arrData: [],
             newAddPostTimeline: '',
             fullname: '',
+            id_timeline: '',
             isLoading: true,
+            activeRowKey: null,
+            activeRow: null,
+            typeDialog: '',
         };
     }
 
@@ -67,6 +73,7 @@ class Timeline extends Component {
                             username: childSnapshot.val().username,
                             dateTimeline: childSnapshot.val().dateTimeline,
                             timeline: childSnapshot.val().timeline,
+                            id_timeline: childSnapshot.val().id_timeline,
                         });
                     } catch (e) {
                         console.error(e);
@@ -74,6 +81,7 @@ class Timeline extends Component {
                             username: '',
                             dateTimeline: '',
                             timeline: '',
+                            id_timeline: '',
                         });
                     }
                 });
@@ -82,6 +90,14 @@ class Timeline extends Component {
             })
             .then(() => {
                 this.setState({isLoading: false});
+            })
+            .catch(error => {
+                this.setState({isLoading: false});
+                console.error(error);
+                ToastAndroid.show(
+                    'Maaf Timeline sedang Kosong',
+                    ToastAndroid.SHORT,
+                );
             });
     }
 
@@ -122,14 +138,23 @@ class Timeline extends Component {
             timeline.dateTimeline = `${n.toLocaleString('en-GB')}`;
             timeline.timeline = this.state.newAddPostTimeline;
             timeline.username = this.state.fullName;
+            timeline.id_timeline = n.getTime();
             const refDb = database().ref('/timeline/');
             await refDb.push(timeline).then(() => {
-                this.setState({isLoading: false});
+                this.setState({isLoading: false, newAddPostTimeline: ''});
                 this.readTimeLine().then(console.log('Success'));
                 this.toggleModalAddTimeLine(false);
             });
         }
     }
+
+    refreshFlatList = deletedKey => {
+        this.setState(prevState => {
+            return {
+                deletedRowKey: deletedKey,
+            };
+        });
+    };
 
     toggleModalAddTimeLine = state =>
         this.setState({modalAddTimeLineVisible: state});
@@ -166,9 +191,13 @@ class Timeline extends Component {
                             <TouchableOpacity
                                 style={styles.buttonDismiss}
                                 activeOpacity={0.7}
-                                onPress={() =>
-                                    this.toggleModalAddTimeLine(false)
-                                }>
+                                onPress={() => {
+                                    this.setState({
+                                        isLoading: false,
+                                        newAddPostTimeline: '',
+                                    });
+                                    this.toggleModalAddTimeLine(false);
+                                }}>
                                 <Text style={styles.buttonDismissText}>
                                     Cancel
                                 </Text>
@@ -177,9 +206,15 @@ class Timeline extends Component {
                                 style={styles.buttonAddTimeLine}
                                 activeOpacity={0.7}
                                 onPress={() => {
-                                    this.addPostTimeline().then(
-                                        'Execute Add Post Timeline',
-                                    );
+                                    if (this.state.typeDialog === 'Edit') {
+                                        this.onChangeTimeline().then(
+                                            'Execute Edit Post Timeline',
+                                        );
+                                    } else {
+                                        this.addPostTimeline().then(
+                                            'Execute Add Post Timeline',
+                                        );
+                                    }
                                 }}>
                                 <Text style={styles.buttonAddTimeLineText}>
                                     Post
@@ -191,65 +226,188 @@ class Timeline extends Component {
             </Modal>
         );
     }
+    swipeBtns = [
+        {
+            text: 'Delete',
+            type: 'delete',
+            backgroundColor: 'red',
+            underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
+            onPress: () => {
+                this.onDialogTimeline('Delete');
+            },
+        },
+        {
+            text: 'Edit',
+            type: 'Edit',
+            backgroundColor: colors.green01,
+            underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
+            onPress: () => {
+                console.log('Deleting Row with Id ', this.state.activeRow);
+                this.onDialogTimeline('edit');
+            },
+        },
+    ];
+
+    onDialogTimeline(type) {
+        if (type === 'Delete') {
+            Alert.alert('Delete', 'Are you sure delete timeline?', [
+                {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                },
+                {
+                    text: 'OK',
+                    onPress: async () => {
+                        this.onDeleteTimeline();
+                    },
+                },
+            ]);
+        } else {
+            Alert.alert('Edit', 'Are you sure change timeline?', [
+                {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                },
+                {
+                    text: 'OK',
+                    onPress: async () => {
+                        console.log(this.state.activeRow);
+                        this.setState({
+                            newAddPostTimeline: this.state.arrData[
+                                this.state.activeRow
+                            ].timeline,
+                            typeDialog: 'Edit',
+                        });
+                        this.toggleModalAddTimeLine(true);
+                    },
+                },
+            ]);
+        }
+    }
+
+    async onChangeTimeline() {
+        let changeTimeLine = {};
+        changeTimeLine.timeline = this.state.newAddPostTimeline;
+        const refDb = database().ref('/timeline/');
+        await refDb
+            .orderByChild('id_timeline')
+            .equalTo(this.state.arrData[this.state.activeRow].id_timeline)
+            .once('child_added', function(snapshot) {
+                snapshot.ref.update(changeTimeLine);
+            });
+        this.setState({
+            isLoading: false,
+            newAddPostTimeline: '',
+            typeDialog: '',
+        });
+        this.readTimeLine().then(console.log('Success'));
+        this.toggleModalAddTimeLine(false);
+    }
+
+    async onDeleteTimeline() {
+        const refDb = database().ref('/timeline/');
+        await refDb
+            .orderByChild('id_timeline')
+            .equalTo(this.state.arrData[this.state.activeRow].id_timeline)
+            .once('value')
+            .then(function(snapshot) {
+                snapshot.forEach(function(childSnapshot) {
+                    refDb.child(childSnapshot.key).remove();
+                });
+            });
+        this.setState({isLoading: false, newAddPostTimeline: ''});
+        this.readTimeLine().then(console.log('Success'));
+        this.toggleModalAddTimeLine(false);
+    }
+
+    onSwipeOpen(rowId, direction) {
+        if (typeof direction !== 'undefined') {
+            this.setState({activeRow: rowId});
+            console.log('Active Row02', rowId);
+        }
+    }
+
+    handleDeleteTimeline(rowId, direction) {
+        if (this.state.fullName === this.state.arrData[rowId].username) {
+            this.onSwipeOpen(rowId, direction);
+        }
+    }
 
     renderTimeline() {
         if (this.state.isLoading) {
             return (
                 <View style={styles.container}>
-                    <ActivityIndicator />
+                    <ActivityIndicator size="large" />
                 </View>
             );
         } else {
-            return (
-                <FlatList
-                    contentContainerStyle={styles.listContainer}
-                    data={this.state.arrData}
-                    showsVerticalScrollIndicator={false}
-                    renderItem={({item}) => (
-                        <View style={styles.innerContainer}>
-                            <View style={styles.photoContainer}>
-                                <View style={styles.innerPhotoContainer}>
-                                    <TouchableOpacity>
-                                        <EvilIcons
-                                            name={'user'}
-                                            size={50}
-                                            style={styles.photo}
-                                            color={'rgb(136, 153, 166)'}
-                                        />
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                            <View style={styles.info}>
-                                <View style={styles.userDetails}>
-                                    <Text style={styles.userHandleAndTime}>
-                                        {item.username} · {item.dateTimeline}
-                                    </Text>
-                                </View>
-                                <View style={styles.tweetTextContainer}>
-                                    <Text style={styles.tweetText}>
-                                        {item.timeline}
-                                    </Text>
-                                </View>
-                                <View
-                                    style={{
-                                        flex: 0.23,
-                                        borderColor: 'red',
-                                        borderWidth: 0,
-                                        alignItems: 'flex-end',
-                                    }}>
-                                    <EvilIcons
-                                        name={'gear'}
-                                        size={25}
-                                        color={'rgb(136, 153, 166)'}
-                                    />
-                                </View>
-                            </View>
-                        </View>
-                    )}
-                    ItemSeparatorComponent={this.renderListItemSeparator}
-                    keyExtractor={item => `${item.dateTimeline}`}
-                />
-            );
+            if (this.state.arrData.length === 0) {
+                return (
+                    <View>
+                        <Text style={styles.textEmpty}>
+                            Sorry, the Timeline Data is Empty
+                        </Text>
+                    </View>
+                );
+            } else {
+                return (
+                    <FlatList
+                        contentContainerStyle={styles.listContainer}
+                        data={this.state.arrData}
+                        parentFlatList={this}
+                        showsVerticalScrollIndicator={false}
+                        renderItem={({item, index}) => (
+                            <Swipeout
+                                right={this.swipeBtns}
+                                close={this.state.activeRow !== index}
+                                rowID={index}
+                                sectionId={1}
+                                autoClose={true}
+                                onOpen={(secId, rowId, direction) =>
+                                    this.handleDeleteTimeline(rowId, direction)
+                                }>
+                                <TouchableOpacity>
+                                    <View style={styles.innerContainer}>
+                                        <View style={styles.photoContainer}>
+                                            <View
+                                                style={
+                                                    styles.innerPhotoContainer
+                                                }>
+                                                <TouchableOpacity>
+                                                    <EvilIcons
+                                                        name={'user'}
+                                                        size={65}
+                                                        style={styles.photo}
+                                                        color={
+                                                            'rgb(136, 153, 166)'
+                                                        }
+                                                    />
+                                                </TouchableOpacity>
+                                            </View>
+                                        </View>
+                                        <View style={styles.info}>
+                                            <Text
+                                                style={
+                                                    styles.userHandleAndTime
+                                                }>
+                                                {item.username} ·{' '}
+                                                {item.dateTimeline}
+                                            </Text>
+                                            <Text style={styles.tweetText}>
+                                                {item.timeline}
+                                            </Text>
+                                        </View>
+                                    </View>
+                                </TouchableOpacity>
+                            </Swipeout>
+                        )}
+                        ItemSeparatorComponent={this.renderListItemSeparator}
+                        keyExtractor={item => `${item.id_timeline}`}
+                    />
+                );
+            }
         }
     }
 
@@ -287,11 +445,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     innerContainer: {
-        flex: 1,
         borderColor: 'green',
         flexDirection: 'row',
-        borderWidth: 0,
-        height: 'auto',
     },
     photoContainer: {
         flex: 0.23,
@@ -299,10 +454,10 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         borderWidth: 0,
     },
-    innerPhotoContainer: {height: 100, alignItems: 'center'},
+    innerPhotoContainer: {height: 70, alignItems: 'center'},
     photo: {
-        width: 50,
-        height: 50,
+        width: 75,
+        height: 75,
         borderRadius: 50,
         marginTop: 15,
     },
@@ -328,15 +483,7 @@ const styles = StyleSheet.create({
         marginTop: 5,
     },
     tweetTextContainer: {borderColor: 'blue', borderWidth: 0},
-    tweetText: {color: colors.gray01, paddingRight: 10},
-    commentButton: {
-        paddingLeft: 0,
-        flex: 1,
-        alignItems: 'center',
-        flexDirection: 'row',
-        borderColor: 'red',
-        borderWidth: 0,
-    },
+    tweetText: {color: colors.gray01, paddingRight: 10, flex: 0.25},
     commentButtonIcon: {
         margin: 0,
         marginLeft: -4,
@@ -398,6 +545,12 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         color: colors.white,
         marginHorizontal: 15,
+    },
+    textEmpty: {
+        fontWeight: 'bold',
+        color: colors.white,
+        marginHorizontal: 15,
+        justifyContent: 'center',
     },
     bold: {
         fontWeight: 'bold',

@@ -31,6 +31,10 @@ class ReduxNavigation extends PureComponent {
         BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
     }
 
+    UNSAFE_componentWillMount(): void {
+        BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
+    }
+
     shouldCloseApp = nav => {
         if (nav.index > 0) {
             return false;

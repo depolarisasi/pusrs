@@ -76,6 +76,10 @@ class MapContainer extends Component {
         BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
     }
 
+    UNSAFE_componentWillMount(): void {
+        BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
+    }
+
     onBackPress = () => {
         if (this.state.drawerActive) {
             this.drawer.closeDrawer();

@@ -79,7 +79,7 @@ class News extends Component {
         if (this.state.isLoading) {
             return (
                 <View style={styles.newsContainer}>
-                    <ActivityIndicator />
+                    <ActivityIndicator size="large" />
                 </View>
             );
         } else {
