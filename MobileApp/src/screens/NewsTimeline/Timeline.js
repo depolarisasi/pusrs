@@ -436,7 +436,7 @@ const styles = StyleSheet.create({
         borderBottomColor: 'black',
         borderBottomWidth: 0.5,
         flexDirection: 'column',
-        backgroundColor: colors.green01,
+        backgroundColor: colors.gray02,
     },
     header: {
         height: 50,
