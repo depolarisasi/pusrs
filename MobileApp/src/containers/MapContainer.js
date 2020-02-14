@@ -5,7 +5,7 @@
  */
 
 import React, {Component} from 'react';
-import {PropTypes} from 'prop-types';
+import Geolocation from '@react-native-community/geolocation';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Icon2 from 'react-native-vector-icons/Feather';
 import {
@@ -16,9 +16,12 @@ import {
     Alert,
     Dimensions,
     StyleSheet,
+    Platform,
+    PermissionsAndroid,
 } from 'react-native';
 import colors from './../styles/colors';
 import DrawerLayout from 'react-native-drawer-layout';
+import ActionSheet from 'react-native-actionsheet';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 import auth from '@react-native-firebase/auth';
 import HeaderMap from './../components/headers/HeaderMap';
@@ -31,6 +34,7 @@ const LONGITUDE = 106.7978743;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 let id = 0;
+console.disableYellowBox = false;
 
 function randomColor() {
     return `#${Math.floor(Math.random() * 16777215)
@@ -39,10 +43,108 @@ function randomColor() {
 }
 
 class MapContainer extends Component {
+    _isMounted = false;
+    _isPermission = false;
+
+    showActionSheet = () => {
+        this.ActionSheet.show();
+    };
     static navigationOptions = ({navigation}) => {
         return {
             header: () => <HeaderMap navigation={navigation} />,
         };
+    };
+
+    async requestGPSPermission() {
+        try {
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+                {
+                    title: 'Permission Maps',
+                    message: 'Do you want to allow Google Maps?',
+                    buttonPositive: 'OK',
+                },
+            );
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                this._isPermission = true;
+            } else {
+                this._isPermission = false;
+                console.log('Maps permission denied');
+            }
+        } catch (err) {
+            console.warn(err);
+        }
+    }
+
+    renderGeoLocation() {
+        if (this._isPermission) {
+            Geolocation.getCurrentPosition(
+                position => {
+                    const region = {
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                        latitudeDelta: 0.001,
+                        longitudeDelta: 0.001,
+                    };
+                    this.setState({
+                        region: region,
+                        loading: false,
+                        error: null,
+                    });
+                },
+                error => {
+                    alert(error.message);
+                    this.setState({
+                        error: error.message,
+                        loading: false,
+                    });
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 20000,
+                    maximumAge: 1000,
+                    distanceFilter: 10,
+                },
+            );
+        }
+    }
+
+    watchLocation = () => {
+        const {coordinate} = this.state;
+
+        this.watchID = Geolocation.watchPosition(
+            position => {
+                const {latitude, longitude} = position.coords;
+
+                const newCoordinate = {
+                    latitude,
+                    longitude,
+                };
+
+                if (Platform.OS === 'android') {
+                    if (this.marker) {
+                        this.marker._component.animateMarkerToCoordinate(
+                            newCoordinate,
+                            500, // 500 is the duration to animate the marker
+                        );
+                    }
+                } else {
+                    coordinate.timing(newCoordinate).start();
+                }
+
+                this.setState({
+                    latitude,
+                    longitude,
+                });
+            },
+            error => console.log(error),
+            {
+                enableHighAccuracy: true,
+                timeout: 20000,
+                maximumAge: 1000,
+                distanceFilter: 10,
+            },
+        );
     };
 
     constructor(props) {
@@ -57,28 +159,45 @@ class MapContainer extends Component {
                 longitudeDelta: LONGITUDE_DELTA,
             },
             markers: [],
+            isMapReady: false,
+            marginTop: 1,
+            userLocation: '',
+            regionChangeProgress: false,
         };
-
         this.toggleDrawer = this.toggleDrawer.bind(this);
         this.onLogOutPress = this.onLogOutPress.bind(this);
+        this.requestGPSPermission = this.requestGPSPermission.bind(this);
     }
 
     componentDidMount() {
-        this.props.navigation.setParams({
-            toggleDrawer: this.toggleDrawer,
-            onLogOutPress: this.onLogOutPress,
-        });
-
+        this._isMounted = true;
+        this._isMounted &&
+            this.props.navigation.setParams({
+                toggleDrawer: this.toggleDrawer,
+                onLogOutPress: this.onLogOutPress,
+            });
+        this._isMounted && this.requestGPSPermission();
         BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
     }
 
     componentWillUnmount() {
+        this._isMounted = false;
+        Geolocation.clearWatch(this.watchID);
         BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
     }
 
-    UNSAFE_componentWillMount(): void {
-        BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
+    componentDidUpdate(prevProps, prevState) {
+        if (this.state.region === null) {
+            this.requestGPSPermission().then(
+                console.log('GPS component will update'),
+            );
+        }
     }
+
+    UNSAFE_componentWillReceiveProps(
+        nextProps: Readonly<P>,
+        nextContext: any,
+    ): void {}
 
     onBackPress = () => {
         if (this.state.drawerActive) {
@@ -111,12 +230,8 @@ class MapContainer extends Component {
             {
                 text: 'OK',
                 onPress: async () => {
-                    try {
-                        await auth().signOut();
-                        this.props.navigation.reset('LoggedOut');
-                    } catch (e) {
-                        console.log(e);
-                    }
+                    this.props.navigation.reset('LoggedOut');
+                    await auth().signOut();
                 },
             },
         ]);
@@ -131,6 +246,22 @@ class MapContainer extends Component {
             this.drawer.openDrawer();
         }
     }
+
+    onMapReady = () => {
+        this.setState({isMapReady: true, marginTop: 0});
+    };
+
+    // Update state on region change
+    onRegionChange = region => {
+        console.log(`region: ${region.latitude}`);
+        this.setState({
+            region,
+            regionChangeProgress: true,
+        });
+    };
+
+    // Action to be taken after select location button click
+    onLocationSelect = () => alert(this.state.userLocation);
 
     render() {
         const navigationView = (
@@ -223,6 +354,14 @@ class MapContainer extends Component {
             </View>
         );
 
+        const optionArray = [
+            'Option 1',
+            'Option 2',
+            'Option 3',
+            'Option 4',
+            'Cancel',
+        ];
+
         return (
             <View style={styles.wrapper}>
                 <StatusBar
@@ -241,7 +380,12 @@ class MapContainer extends Component {
                     <MapView
                         provider={PROVIDER_GOOGLE}
                         style={styles.map}
+                        showsUserLocation={true}
+                        showsCompass={true}
+                        showsMyLocationButton={true}
                         initialRegion={this.state.region}
+                        onMapReady={this.onMapReady}
+                        onRegionChangeComplete={this.onRegionChange}
                         onPress={e => this.onMapPress(e)}>
                         {this.state.markers.map(marker => (
                             <Marker
@@ -251,7 +395,32 @@ class MapContainer extends Component {
                             />
                         ))}
                     </MapView>
+                    <View style={styles.mapMarkerContainer}>
+                        <Text
+                            style={{
+                                fontSize: 42,
+                                color: '#ad1f1f',
+                            }}>
+                            &#xf041;
+                        </Text>
+                    </View>
                 </DrawerLayout>
+                <ActionSheet
+                    ref={o => (this.ActionSheet = o)}
+                    //Title of the Bottom Sheet
+                    title={'Which one do you like ?'}
+                    //Options Array to show in bottom sheet
+                    options={optionArray}
+                    //Define cancel button index in the option array
+                    //this will take the cancel option in bottom and will highlight it
+                    cancelButtonIndex={4}
+                    //If you want to highlight any specific option you can use below prop
+                    destructiveButtonIndex={1}
+                    onPress={index => {
+                        //Clicking on the option will give you the index of the option clicked
+                        alert(optionArray[index]);
+                    }}
+                />
             </View>
         );
     }
@@ -270,6 +439,11 @@ const styles = StyleSheet.create({
         padding: 20,
         backgroundColor: colors.gray01,
         justifyContent: 'center',
+    },
+    mapMarkerContainer: {
+        left: '47%',
+        position: 'absolute',
+        top: '42%',
     },
     drawerTopText: {
         color: colors.white,
@@ -321,6 +495,21 @@ const styles = StyleSheet.create({
         color: colors.gray02,
         fontSize: 11,
         fontWeight: 'bold',
+    },
+    deatilSection: {
+        backgroundColor: '#fff',
+        padding: 10,
+        flex: 0.35,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+    },
+    btnContainer: {
+        width: Dimensions.get('window').width - 20,
+        position: 'relative',
+        alignSelf: 'stretch',
+        bottom: 100,
+        left: 10,
     },
 });
 

@@ -55,7 +55,7 @@ class UpdateProfile extends Component {
                 this.setState({
                     fullName: snapshot.val().fullName,
                     age: snapshot.val().age,
-                    Gender: snapshot.val().Gender,
+                    Gender: snapshoct.val().Gender,
                     Birthday: snapshot.val().Birthday,
                     Address: snapshot.val().Address,
                     Work: snapshot.val().Work,

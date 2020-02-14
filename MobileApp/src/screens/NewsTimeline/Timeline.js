@@ -59,6 +59,8 @@ class Timeline extends Component {
         this.readPost().then(console.log('Execute ReadPost'));
     }
 
+
+
     async readTimeLine() {
         const refDb = database()
             .ref('/timeline/')

@@ -19,6 +19,7 @@ import {
     TimePickerAndroid,
     ToastAndroid,
     ActivityIndicator,
+    PermissionsAndroid,
 } from 'react-native';
 import colors from './../styles/colors';
 import HeaderToDo from './../components/headers/HeaderToDo';

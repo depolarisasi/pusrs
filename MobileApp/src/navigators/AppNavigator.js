@@ -23,16 +23,16 @@ const middleware = createReactNavigationReduxMiddleware(state => state.nav);
 const App = createReduxContainer(AppRouteConfigs);
 
 class ReduxNavigation extends PureComponent {
-    componentDidMount() {
-        BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
-    }
+    // componentDidMount() {
+    //     BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
+    // }
 
     componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
     }
 
     UNSAFE_componentWillMount(): void {
-        BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
+        BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
     }
 
     shouldCloseApp = nav => {
