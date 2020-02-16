@@ -1,26 +1,25 @@
-/*
- * Created on Wed Dec 11 2019
- *
- * Copyright (c) 2019 Justin
+/**
+ * Created by Handika Dwiputra on 16/02/2020.
+ * handikadwiputradev@gmail.com
  */
 
 import React, {Component} from 'react';
+import HeaderForm from '../components/headers/HeaderForm';
 import {
+    Dimensions,
     StatusBar,
-    View,
+    StyleSheet,
     Text,
     TouchableWithoutFeedback,
-    StyleSheet,
-    Dimensions,
+    View,
 } from 'react-native';
-import {TabView, SceneMap} from 'react-native-tab-view';
-import Animated from 'react-native-reanimated';
-import colors from './../styles/colors';
-import HeaderForm from './../components/headers/HeaderForm';
+import colors from '../styles/colors';
+import {SceneMap, TabView} from 'react-native-tab-view';
 import DetailsScreen from './ProbableCases/Details';
 import AttachmentsScreen from './ProbableCases/Attachments';
+import Animated from 'react-native-reanimated';
 
-class ProbableCases extends Component {
+class MoquitoCases extends Component {
     static navigationOptions = ({navigation}) => {
         return {
             header: () => <HeaderForm navigation={navigation} />,
@@ -29,17 +28,12 @@ class ProbableCases extends Component {
 
     constructor(props) {
         super(props);
-        const {params} = this.props.navigation.state;
         this.state = {
             tab: {
                 index: 0,
                 routes: [
-                    {key: 'details', title: 'Details', extras: params.extras},
-                    {
-                        key: 'attachments',
-                        title: 'Attachments',
-                        extras: params.extras,
-                    },
+                    {key: 'details', title: 'Details'},
+                    {key: 'attachments', title: 'Attachments'},
                 ],
             },
         };
@@ -89,7 +83,16 @@ class ProbableCases extends Component {
         );
     };
 
-    render() {
+    render():
+        | React.ReactElement<any>
+        | string
+        | number
+        | {}
+        | React.ReactNodeArray
+        | React.ReactPortal
+        | boolean
+        | null
+        | undefined {
         return (
             <View style={styles.wrapper}>
                 <StatusBar
@@ -151,4 +154,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ProbableCases;
+export default MoquitoCases;

@@ -5,24 +5,23 @@
  */
 
 import React, {Component} from 'react';
-import Geolocation from '@react-native-community/geolocation';
+import Geolocation from 'react-native-geolocation-service';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Icon2 from 'react-native-vector-icons/Feather';
 import {
-    StatusBar,
-    BackHandler,
-    View,
-    Text,
     Alert,
+    BackHandler,
     Dimensions,
+    StatusBar,
     StyleSheet,
-    Platform,
-    PermissionsAndroid,
+    Text,
+    ToastAndroid,
+    View,
 } from 'react-native';
 import colors from './../styles/colors';
 import DrawerLayout from 'react-native-drawer-layout';
 import ActionSheet from 'react-native-actionsheet';
-import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
+import MapView, {MAP_TYPES, PROVIDER_GOOGLE} from 'react-native-maps';
 import auth from '@react-native-firebase/auth';
 import HeaderMap from './../components/headers/HeaderMap';
 
@@ -44,37 +43,13 @@ function randomColor() {
 
 class MapContainer extends Component {
     _isMounted = false;
-    _isPermission = false;
+    _isPermission = true;
 
-    showActionSheet = () => {
-        this.ActionSheet.show();
-    };
     static navigationOptions = ({navigation}) => {
         return {
             header: () => <HeaderMap navigation={navigation} />,
         };
     };
-
-    async requestGPSPermission() {
-        try {
-            const granted = await PermissionsAndroid.request(
-                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-                {
-                    title: 'Permission Maps',
-                    message: 'Do you want to allow Google Maps?',
-                    buttonPositive: 'OK',
-                },
-            );
-            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                this._isPermission = true;
-            } else {
-                this._isPermission = false;
-                console.log('Maps permission denied');
-            }
-        } catch (err) {
-            console.warn(err);
-        }
-    }
 
     renderGeoLocation() {
         if (this._isPermission) {
@@ -83,6 +58,7 @@ class MapContainer extends Component {
                     const region = {
                         latitude: position.coords.latitude,
                         longitude: position.coords.longitude,
+                        accuracy: position.coords.accuracy,
                         latitudeDelta: 0.001,
                         longitudeDelta: 0.001,
                     };
@@ -92,64 +68,45 @@ class MapContainer extends Component {
                         error: null,
                     });
                 },
-                error => {
-                    alert(error.message);
-                    this.setState({
-                        error: error.message,
-                        loading: false,
-                    });
-                },
+                error => alert(error.message),
                 {
                     enableHighAccuracy: true,
-                    timeout: 20000,
-                    maximumAge: 1000,
-                    distanceFilter: 10,
+                    distanceFilter: 0,
+                    showLocationDialog: true,
+                    forceRequestLocation: true,
+                },
+            ).then(r => console.log('Masuk'));
+            this.watchID = Geolocation.watchPosition(
+                position => {
+                    const region = {
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                        accuracy: position.coords.accuracy,
+                        latitudeDelta: 0.001,
+                        longitudeDelta: 0.001,
+                    };
+                    this.setState({
+                        region: region,
+                        loading: false,
+                        error: null,
+                    });
+                },
+                error => alert(error.message),
+                {
+                    enableHighAccuracy: true,
+                    distanceFilter: 1,
+                    interval: 10000,
+                    maximumAge: 0,
+                    fastestInterval: 5000,
+                    showLocationDialog: true,
+                    forceRequestLocation: true,
                 },
             );
         }
     }
 
-    watchLocation = () => {
-        const {coordinate} = this.state;
-
-        this.watchID = Geolocation.watchPosition(
-            position => {
-                const {latitude, longitude} = position.coords;
-
-                const newCoordinate = {
-                    latitude,
-                    longitude,
-                };
-
-                if (Platform.OS === 'android') {
-                    if (this.marker) {
-                        this.marker._component.animateMarkerToCoordinate(
-                            newCoordinate,
-                            500, // 500 is the duration to animate the marker
-                        );
-                    }
-                } else {
-                    coordinate.timing(newCoordinate).start();
-                }
-
-                this.setState({
-                    latitude,
-                    longitude,
-                });
-            },
-            error => console.log(error),
-            {
-                enableHighAccuracy: true,
-                timeout: 20000,
-                maximumAge: 1000,
-                distanceFilter: 10,
-            },
-        );
-    };
-
     constructor(props) {
         super(props);
-
         this.state = {
             drawerActive: false,
             region: {
@@ -163,21 +120,49 @@ class MapContainer extends Component {
             marginTop: 1,
             userLocation: '',
             regionChangeProgress: false,
+            isShowLocation: false,
         };
         this.toggleDrawer = this.toggleDrawer.bind(this);
         this.onLogOutPress = this.onLogOutPress.bind(this);
-        this.requestGPSPermission = this.requestGPSPermission.bind(this);
+        this.renderGeoLocation = this.renderGeoLocation.bind(this);
+        this.onBtnShowUserLocationTapped = this.onBtnShowUserLocationTapped.bind(
+            this,
+        );
+        this.showActionSheet = this.showActionSheet.bind(this);
+        this.forceUpdateHandler = this.forceUpdateHandler.bind(this);
     }
 
-    componentDidMount() {
+    onClickLegend(index) {
+        if (index === 1) {
+            this.props.navigation.navigate('ProbableCases', {
+                longtitude: this.state.region.latitude,
+                latitude: this.state.region.longitude,
+                extras: 'Probable Cases',
+            });
+        } else if (index === 2) {
+            this.props.navigation.navigate('MoquitoCases', {
+                longtitude: this.state.region.latitude,
+                latitude: this.state.region.longitude,
+                extras: 'Moquito Cases',
+            });
+        }
+    }
+
+    UNSAFE_componentWillMount() {
         this._isMounted = true;
         this._isMounted &&
             this.props.navigation.setParams({
                 toggleDrawer: this.toggleDrawer,
                 onLogOutPress: this.onLogOutPress,
+                onBntShowUserLocation: this.onBtnShowUserLocationTapped,
+                showActionSheet: this.showActionSheet,
             });
-        this._isMounted && this.requestGPSPermission();
+        this._isMounted && this.renderGeoLocation();
         BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
+    }
+
+    forceUpdateHandler() {
+        this.forceUpdate();
     }
 
     componentWillUnmount() {
@@ -186,25 +171,16 @@ class MapContainer extends Component {
         BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        if (this.state.region === null) {
-            this.requestGPSPermission().then(
-                console.log('GPS component will update'),
-            );
-        }
-    }
-
-    UNSAFE_componentWillReceiveProps(
-        nextProps: Readonly<P>,
-        nextContext: any,
-    ): void {}
-
     onBackPress = () => {
         if (this.state.drawerActive) {
             this.drawer.closeDrawer();
             return true;
         }
         return false;
+    };
+
+    showActionSheet = () => {
+        this.ActionSheet.show();
     };
 
     onMapPress(e) {
@@ -253,12 +229,28 @@ class MapContainer extends Component {
 
     // Update state on region change
     onRegionChange = region => {
-        console.log(`region: ${region.latitude}`);
         this.setState({
             region,
             regionChangeProgress: true,
         });
     };
+
+    onBtnShowUserLocationTapped() {
+        this.forceUpdateHandler();
+        this.props.navigation.getParam('MapContainer');
+        if (this.state.isShowLocation === true) {
+            this.setState({
+                isShowLocation: true,
+                forceRefresh: Math.floor(Math.random() * 100),
+            });
+        } else {
+            this.setState({
+                isShowLocation: true,
+                forceRefresh: Math.floor(Math.random() * 100),
+            });
+        }
+        ToastAndroid.show(`${this.state.isShowLocation}`, ToastAndroid.SHORT);
+    }
 
     // Action to be taken after select location button click
     onLocationSelect = () => alert(this.state.userLocation);
@@ -355,11 +347,9 @@ class MapContainer extends Component {
         );
 
         const optionArray = [
-            'Option 1',
-            'Option 2',
-            'Option 3',
-            'Option 4',
-            'Cancel',
+            <Text style={{color: colors.red01}}>Cancel</Text>,
+            'Probable Cases',
+            'Moquito Cases',
         ];
 
         return (
@@ -376,49 +366,62 @@ class MapContainer extends Component {
                     }}
                     renderNavigationView={() => navigationView}
                     onDrawerOpen={() => this.setState({drawerActive: true})}
-                    onDrawerClose={() => this.setState({drawerActive: false})}>
-                    <MapView
-                        provider={PROVIDER_GOOGLE}
-                        style={styles.map}
-                        showsUserLocation={true}
-                        showsCompass={true}
-                        showsMyLocationButton={true}
-                        initialRegion={this.state.region}
-                        onMapReady={this.onMapReady}
-                        onRegionChangeComplete={this.onRegionChange}
-                        onPress={e => this.onMapPress(e)}>
-                        {this.state.markers.map(marker => (
-                            <Marker
-                                key={marker.key}
-                                coordinate={marker.coordinate}
-                                pinColor={marker.color}
-                            />
-                        ))}
-                    </MapView>
-                    <View style={styles.mapMarkerContainer}>
-                        <Text
-                            style={{
-                                fontSize: 42,
-                                color: '#ad1f1f',
-                            }}>
-                            &#xf041;
-                        </Text>
-                    </View>
-                </DrawerLayout>
+                    onDrawerClose={() => this.setState({drawerActive: false})}
+                />
+                <MapView
+                    ref={MapView => (this.MapView = MapView)}
+                    key={this.state.forceRefresh}
+                    provider={PROVIDER_GOOGLE}
+                    style={styles.map}
+                    loadingEnabled={true}
+                    loadingIndicatorColor="#666666"
+                    moveOnMarkerPress={false}
+                    showsUserLocation={this.state.isShowLocation}
+                    showsMyLocationButton={true}
+                    showsPointsOfInterest={false}
+                    showsCompass={true}
+                    mapType={MAP_TYPES.STANDARD}
+                    showsScale={true}
+                    followsUserLocation={true}
+                    initialRegion={this.state.region}
+                    onMapReady={this.onMapReady}
+                    onRegionChangeComplete={this.onRegionChange}
+                    onPress={e => this.onMapPress(e)}>
+                    {this.state.markers.map(marker => (
+                        <MapView.Marker
+                            key={marker.id}
+                            coordinate={{
+                                latitude: this.state.region.latitude,
+                                longitude: this.state.region.longitude,
+                            }}
+                            title={marker.title}
+                            description={marker.description}
+                            tracksViewChanges={true}
+                            draggable
+                        />
+                    ))}
+                </MapView>
+                <View style={styles.mapMarkerContainer}>
+                    <Text
+                        style={{
+                            fontSize: 42,
+                            color: '#ad1f1f',
+                        }}>
+                        &#xf041;
+                    </Text>
+                </View>
                 <ActionSheet
                     ref={o => (this.ActionSheet = o)}
-                    //Title of the Bottom Sheet
-                    title={'Which one do you like ?'}
-                    //Options Array to show in bottom sheet
+                    title={
+                        <Text style={{color: '#000', fontSize: 18}}>
+                            Which one do you like?
+                        </Text>
+                    }
+                    style={styles.actionBar}
                     options={optionArray}
-                    //Define cancel button index in the option array
-                    //this will take the cancel option in bottom and will highlight it
-                    cancelButtonIndex={4}
-                    //If you want to highlight any specific option you can use below prop
-                    destructiveButtonIndex={1}
+                    cancelButtonIndex={0}
                     onPress={index => {
-                        //Clicking on the option will give you the index of the option clicked
-                        alert(optionArray[index]);
+                        this.onClickLegend(index);
                     }}
                 />
             </View>
@@ -510,6 +513,10 @@ const styles = StyleSheet.create({
         alignSelf: 'stretch',
         bottom: 100,
         left: 10,
+    },
+    actionBar: {
+        fontSize: 16,
+        color: '#000',
     },
 });
 

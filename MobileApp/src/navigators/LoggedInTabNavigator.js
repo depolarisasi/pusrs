@@ -15,6 +15,7 @@ import NewsContainer from './../containers/NewsContainer';
 import VideoContainer from './../containers/VideoContainer';
 import ToDoContainer from './../containers/ToDoContainer';
 import ProbableCases from './../screens/ProbableCases';
+import MoquitoCases from './../screens/MoquitoCases';
 import Legend from './../screens/Legend';
 import colors from './../styles/colors';
 
@@ -29,6 +30,9 @@ const MapTab = createStackNavigator({
     },
     ProbableCases: {
         screen: ProbableCases,
+    },
+    MoquitoCases: {
+        screen: MoquitoCases,
     },
     Legend: {
         screen: Legend,

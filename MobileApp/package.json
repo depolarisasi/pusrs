@@ -26,6 +26,7 @@
         "react-native-add-calendar-event": "^3.0.0",
         "react-native-btr": "^1.1.5",
         "react-native-drawer-layout": "^2.0.0",
+        "react-native-geolocation-service": "^4.0.0",
         "react-native-gesture-handler": "^1.4.1",
         "react-native-image-crop-picker": "^0.26.1",
         "react-native-maps": "0.26.1",

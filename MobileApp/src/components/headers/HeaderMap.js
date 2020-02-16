@@ -27,7 +27,8 @@ export default class HeaderMap extends Component {
                 </View>
                 <View style={styles.col}>
                     <Text style={[styles.text, styles.bold]}>Map</Text>
-                    <TouchableOpacity onPress={() => {}}>
+                    <TouchableOpacity
+                        onPress={navigation.getParam('onBntShowUserLocation')}>
                         <Icon
                             name="ios-compass"
                             color={colors.gray03}
@@ -37,7 +38,7 @@ export default class HeaderMap extends Component {
                 </View>
                 <View style={styles.col}>
                     <TouchableOpacity
-                        onPress={() => navigation.navigate('ProbableCases')}>
+                        onPress={navigation.getParam('showActionSheet')}>
                         <Icon name="ios-add" color={colors.gray03} size={30} />
                     </TouchableOpacity>
                     <TouchableOpacity
