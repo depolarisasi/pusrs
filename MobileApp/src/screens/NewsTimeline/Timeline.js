@@ -8,6 +8,7 @@ import {
     Text,
     TextInput,
     TouchableHighlight,
+    TouchableWithoutFeedback,
     TouchableOpacity,
     ToastAndroid,
     View,
@@ -16,7 +17,7 @@ import colors from './../../styles/colors';
 import database from '@react-native-firebase/database';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import auth from '@react-native-firebase/auth';
-import Swipeout from 'react-native-swipeout';
+import ActionSheet from 'react-native-actionsheet';
 
 Array.prototype.random = function() {
     return this[Math.floor(Math.random() * this.length)];
@@ -48,18 +49,22 @@ class Timeline extends Component {
             fullname: '',
             id_timeline: '',
             isLoading: true,
-            activeRowKey: null,
-            activeRow: null,
             typeDialog: '',
+            activeRow: null,
         };
     }
 
     componentDidMount(): void {
         this.readTimeLine().then(console.log('Success'));
         this.readPost().then(console.log('Execute ReadPost'));
+        this.showActionSheet = this.showActionSheet.bind(this);
     }
 
-
+    showActionSheet = index => {
+        this.setState({activeRow: index});
+        console.log(`position actionSheet: ${index}`);
+        this.ActionSheet.show();
+    };
 
     async readTimeLine() {
         const refDb = database()
@@ -158,6 +163,10 @@ class Timeline extends Component {
         });
     };
 
+    showDialogTimeline = () => {
+        this.ActionSheet.show();
+    };
+
     toggleModalAddTimeLine = state =>
         this.setState({modalAddTimeLineVisible: state});
 
@@ -228,66 +237,6 @@ class Timeline extends Component {
             </Modal>
         );
     }
-    swipeBtns = [
-        {
-            text: 'Delete',
-            type: 'delete',
-            backgroundColor: 'red',
-            underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
-            onPress: () => {
-                this.onDialogTimeline('Delete');
-            },
-        },
-        {
-            text: 'Edit',
-            type: 'Edit',
-            backgroundColor: colors.green01,
-            underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
-            onPress: () => {
-                console.log('Deleting Row with Id ', this.state.activeRow);
-                this.onDialogTimeline('edit');
-            },
-        },
-    ];
-
-    onDialogTimeline(type) {
-        if (type === 'Delete') {
-            Alert.alert('Delete', 'Are you sure delete timeline?', [
-                {
-                    text: 'Cancel',
-                    onPress: () => console.log('Cancel Pressed'),
-                    style: 'cancel',
-                },
-                {
-                    text: 'OK',
-                    onPress: async () => {
-                        this.onDeleteTimeline();
-                    },
-                },
-            ]);
-        } else {
-            Alert.alert('Edit', 'Are you sure change timeline?', [
-                {
-                    text: 'Cancel',
-                    onPress: () => console.log('Cancel Pressed'),
-                    style: 'cancel',
-                },
-                {
-                    text: 'OK',
-                    onPress: async () => {
-                        console.log(this.state.activeRow);
-                        this.setState({
-                            newAddPostTimeline: this.state.arrData[
-                                this.state.activeRow
-                            ].timeline,
-                            typeDialog: 'Edit',
-                        });
-                        this.toggleModalAddTimeLine(true);
-                    },
-                },
-            ]);
-        }
-    }
 
     async onChangeTimeline() {
         let changeTimeLine = {};
@@ -324,19 +273,6 @@ class Timeline extends Component {
         this.toggleModalAddTimeLine(false);
     }
 
-    onSwipeOpen(rowId, direction) {
-        if (typeof direction !== 'undefined') {
-            this.setState({activeRow: rowId});
-            console.log('Active Row02', rowId);
-        }
-    }
-
-    handleDeleteTimeline(rowId, direction) {
-        if (this.state.fullName === this.state.arrData[rowId].username) {
-            this.onSwipeOpen(rowId, direction);
-        }
-    }
-
     renderTimeline() {
         if (this.state.isLoading) {
             return (
@@ -361,49 +297,36 @@ class Timeline extends Component {
                         parentFlatList={this}
                         showsVerticalScrollIndicator={false}
                         renderItem={({item, index}) => (
-                            <Swipeout
-                                right={this.swipeBtns}
-                                close={this.state.activeRow !== index}
-                                rowID={index}
-                                sectionId={1}
-                                autoClose={true}
-                                onOpen={(secId, rowId, direction) =>
-                                    this.handleDeleteTimeline(rowId, direction)
-                                }>
-                                <TouchableOpacity>
-                                    <View style={styles.innerContainer}>
-                                        <View style={styles.photoContainer}>
-                                            <View
-                                                style={
-                                                    styles.innerPhotoContainer
-                                                }>
-                                                <TouchableOpacity>
-                                                    <EvilIcons
-                                                        name={'user'}
-                                                        size={65}
-                                                        style={styles.photo}
-                                                        color={
-                                                            'rgb(136, 153, 166)'
-                                                        }
-                                                    />
-                                                </TouchableOpacity>
-                                            </View>
-                                        </View>
-                                        <View style={styles.info}>
-                                            <Text
-                                                style={
-                                                    styles.userHandleAndTime
-                                                }>
-                                                {item.username} ·{' '}
-                                                {item.dateTimeline}
-                                            </Text>
-                                            <Text style={styles.tweetText}>
-                                                {item.timeline}
-                                            </Text>
+                            // <TouchableOpacity onPress={this.showActionSheet}>
+                            <TouchableWithoutFeedback
+                                onPress={() => {
+                                    this.showActionSheet(index);
+                                }}>
+                                <View style={styles.innerContainer}>
+                                    <View style={styles.photoContainer}>
+                                        <View
+                                            style={styles.innerPhotoContainer}>
+                                            <TouchableOpacity>
+                                                <EvilIcons
+                                                    name={'user'}
+                                                    size={65}
+                                                    style={styles.photo}
+                                                    color={'rgb(136, 153, 166)'}
+                                                />
+                                            </TouchableOpacity>
                                         </View>
                                     </View>
-                                </TouchableOpacity>
-                            </Swipeout>
+                                    <View style={styles.info}>
+                                        <Text style={styles.userHandleAndTime}>
+                                            {item.username} ·{' '}
+                                            {item.dateTimeline}
+                                        </Text>
+                                        <Text style={styles.tweetText}>
+                                            {item.timeline}
+                                        </Text>
+                                    </View>
+                                </View>
+                            </TouchableWithoutFeedback>
                         )}
                         ItemSeparatorComponent={this.renderListItemSeparator}
                         keyExtractor={item => `${item.id_timeline}`}
@@ -413,7 +336,51 @@ class Timeline extends Component {
         }
     }
 
+    onClickTimeline(index) {
+        if (index === 1) {
+            Alert.alert('Edit', 'Are you sure change timeline?', [
+                {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                },
+                {
+                    text: 'OK',
+                    onPress: async () => {
+                        console.log(this.state.activeRow);
+                        this.setState({
+                            newAddPostTimeline: this.state.arrData[
+                                this.state.activeRow
+                            ].timeline,
+                            typeDialog: 'Edit',
+                        });
+                        this.toggleModalAddTimeLine(true);
+                    },
+                },
+            ]);
+        } else if (index === 2) {
+            Alert.alert('Delete', 'Are you sure delete timeline?', [
+                {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                },
+                {
+                    text: 'OK',
+                    onPress: async () => {
+                        this.onDeleteTimeline();
+                    },
+                },
+            ]);
+        }
+    }
+
     render() {
+        const optionArray = [
+            <Text style={{color: colors.red01}}>Cancel</Text>,
+            'Edit',
+            'Delete',
+        ];
         return (
             <View style={styles.container}>
                 {this.renderModalAddTimeLine()}
@@ -427,6 +394,20 @@ class Timeline extends Component {
                     </View>
                 </View>
                 {this.renderTimeline(this.state.arrData)}
+                <ActionSheet
+                    ref={o => (this.ActionSheet = o)}
+                    title={
+                        <Text style={{color: '#000', fontSize: 18}}>
+                            Which one do you like?
+                        </Text>
+                    }
+                    style={styles.actionBar}
+                    options={optionArray}
+                    cancelButtonIndex={0}
+                    onPress={index => {
+                        this.onClickTimeline(index);
+                    }}
+                />
             </View>
         );
     }

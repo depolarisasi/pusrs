@@ -7,7 +7,11 @@
         "test": "jest",
         "lint": "eslint .",
         "build-android": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
-        "android-windows": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && react-native run-android"
+        "android-windows": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && react-native run-android",
+        "build": "npm run-script build",
+        "clean": "rmdir /s /q node_modules",
+        "reinstall": "npm run clean && npm install",
+        "rebuild": "npm run clean && npm install && npm npm run-script build"
     },
     "dependencies": {
         "@react-native-community/datetimepicker": "^2.2.1",
@@ -19,6 +23,7 @@
         "@react-native-firebase/database": "^6.0.3",
         "@react-native-firebase/storage": "^6.0.3",
         "buffer": "^5.4.3",
+        "moment": "^2.24.0",
         "react": "16.9.0",
         "react-codemod": "^5.1.1",
         "react-native": "0.61.5",
@@ -29,6 +34,7 @@
         "react-native-geolocation-service": "^4.0.0",
         "react-native-gesture-handler": "^1.4.1",
         "react-native-image-crop-picker": "^0.26.1",
+        "react-native-image-picker": "^2.3.0",
         "react-native-maps": "0.26.1",
         "react-native-pdf": "^6.0.1",
         "react-native-picker-module": "^1.2.3",

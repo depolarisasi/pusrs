@@ -13,7 +13,7 @@ import {
     StyleSheet,
     Dimensions,
 } from 'react-native';
-import {TabView, SceneMap} from 'react-native-tab-view';
+import {TabView} from 'react-native-tab-view';
 import Animated from 'react-native-reanimated';
 import colors from './../styles/colors';
 import HeaderForm from './../components/headers/HeaderForm';
@@ -34,11 +34,19 @@ class ProbableCases extends Component {
             tab: {
                 index: 0,
                 routes: [
-                    {key: 'details', title: 'Details', extras: params.extras},
+                    {
+                        key: 'details',
+                        title: 'Details',
+                        value: 'Probable Cases',
+                        latitude: params.latitude,
+                        longitude: params.longitude,
+                    },
                     {
                         key: 'attachments',
                         title: 'Attachments',
-                        extras: params.extras,
+                        value: 'Probable Cases',
+                        latitude: params.latitude,
+                        longitude: params.longitude,
                     },
                 ],
             },
@@ -89,6 +97,45 @@ class ProbableCases extends Component {
         );
     };
 
+    _renderScene = ({route}) => {
+        switch (route.key) {
+            case 'details':
+                return <DetailsScreen data={route} />;
+            case 'attachments':
+                return <AttachmentsScreen data={route} />;
+            default:
+                return null;
+        }
+    };
+
+    submitProbableCases() {
+        const o1 = [
+            {
+                geometry: {
+                    x: `${this.state.lat}`,
+                    y: `${this.state.long}`,
+                    spatialReference: {
+                        wkid: '4326',
+                    },
+                },
+                attributes: {
+                    ID: '',
+                    Reported_b: this.state.reportedBy,
+                    lat: `${this.state.lat}`,
+                    long: `${this.state.long}`,
+                    address: this.state.address,
+                    barangpay: this.state.barangay,
+                    Residence: this.state.residence,
+                    Notes: this.state.notes,
+                    gender: this.state.gender,
+                    condition: this.props.data.value,
+                    Age: this.state.age,
+                },
+            },
+        ];
+        return JSON.stringify(o1);
+    }
+
     render() {
         return (
             <View style={styles.wrapper}>
@@ -97,14 +144,13 @@ class ProbableCases extends Component {
                     barStyle="dark-content"
                 />
                 <View style={styles.titleContainer}>
-                    <Text style={styles.titleText}>Probable Cases</Text>
+                    <Text style={styles.titleText}>
+                        {this.state.tab.routes[0].value}
+                    </Text>
                 </View>
                 <TabView
                     navigationState={this.state.tab}
-                    renderScene={SceneMap({
-                        details: DetailsScreen,
-                        attachments: AttachmentsScreen,
-                    })}
+                    renderScene={this._renderScene}
                     renderTabBar={this.renderTabBar}
                     onIndexChange={index =>
                         this.setState({

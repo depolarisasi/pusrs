@@ -19,7 +19,6 @@ import {
     TimePickerAndroid,
     ToastAndroid,
     ActivityIndicator,
-    PermissionsAndroid,
 } from 'react-native';
 import colors from './../styles/colors';
 import HeaderToDo from './../components/headers/HeaderToDo';
@@ -27,6 +26,7 @@ import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 import * as AddCalendarEvent from 'react-native-add-calendar-event';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import moment from 'moment';
 
 class ToDoContainer extends Component {
     static navigationOptions = ({navigation}) => {
@@ -222,35 +222,15 @@ class ToDoContainer extends Component {
                     calendarItemIdentifier: string,
                     eventIdentifier: string,
                 }) => {
-                    alert('eventInfo -> ' + JSON.stringify(eventInfo));
+                    console.log(`eventInfo: ${eventInfo.eventIdentifier}`);
+                    //xalert('eventInfo -> ' + JSON.stringify(eventInfo));
                 },
             )
             .catch((error: string) => {
+                console.warn(error);
                 // handle error such as when user rejected permissions
             });
     };
-
-    async addReminderTodo() {
-        let userId = auth().currentUser.uid;
-        let todochange = {};
-        todochange.date = this.state.androidDate;
-        todochange.time = this.state.chooseAndroidTime;
-        todochange.reminder = false;
-        const refDb = database().ref(`/posts/${userId}/ToDo`);
-        await refDb
-            .orderByChild('id_todo')
-            .equalTo(this.state.todoArr[this.state.indexChooseTodo].id_todo)
-            .once('child_added', function(snapshot) {
-                snapshot.ref.update(todochange);
-            });
-        this.setState({
-            androidDate: '-',
-            chooseAndroidTime: '-',
-        });
-        this.setState({indexChooseTodo: ''});
-        this.readToDo().then('Execute');
-        this.toggleModalChooseTodo(false);
-    }
 
     async onDeleteToDo() {
         let userId = auth().currentUser.uid;
@@ -530,7 +510,17 @@ class ToDoContainer extends Component {
                                                 this.state.todoArr[
                                                     this.state.indexChooseTodo
                                                 ].name,
-                                                dt.toISOString(),
+                                                moment
+                                                    .utc([
+                                                        yearDate,
+                                                        monthDate,
+                                                        dayDate,
+                                                        hourTime,
+                                                        minutesTime,
+                                                        0,
+                                                        0,
+                                                    ])
+                                                    .toISOString(),
                                             ),
                                             console.log(
                                                 'Execute Add Reminder ToDo',
@@ -547,6 +537,50 @@ class ToDoContainer extends Component {
                 </View>
             </Modal>
         );
+    }
+
+    async addReminderTodo() {
+        let userId = auth().currentUser.uid;
+        let todochange = {};
+        todochange.date = this.state.androidDate;
+        todochange.time = this.state.chooseAndroidTime;
+        todochange.reminder = false;
+        const refDb = database().ref(`/posts/${userId}/ToDo`);
+        await refDb
+            .orderByChild('id_todo')
+            .equalTo(this.state.todoArr[this.state.indexChooseTodo].id_todo)
+            .once('child_added', function(snapshot) {
+                snapshot.ref.update(todochange);
+            });
+        this.setState({
+            androidDate: '-',
+            chooseAndroidTime: '-',
+        });
+        this.setState({indexChooseTodo: ''});
+        this.readToDo().then('Execute');
+        this.toggleModalChooseTodo(false);
+    }
+
+    async addReminderTodo() {
+        let userId = auth().currentUser.uid;
+        let todochange = {};
+        todochange.date = this.state.androidDate;
+        todochange.time = this.state.chooseAndroidTime;
+        todochange.reminder = false;
+        const refDb = database().ref(`/posts/${userId}/ToDo`);
+        await refDb
+            .orderByChild('id_todo')
+            .equalTo(this.state.todoArr[this.state.indexChooseTodo].id_todo)
+            .once('child_added', function(snapshot) {
+                snapshot.ref.update(todochange);
+            });
+        this.setState({
+            androidDate: '-',
+            chooseAndroidTime: '-',
+        });
+        this.setState({indexChooseTodo: ''});
+        this.readToDo().then('Execute');
+        this.toggleModalChooseTodo(false);
     }
 }
 

@@ -14,10 +14,11 @@ import {
     View,
 } from 'react-native';
 import colors from '../styles/colors';
-import {SceneMap, TabView} from 'react-native-tab-view';
+import {TabView} from 'react-native-tab-view';
 import DetailsScreen from './ProbableCases/Details';
 import AttachmentsScreen from './ProbableCases/Attachments';
 import Animated from 'react-native-reanimated';
+import Details from './ProbableCases/Details';
 
 class MoquitoCases extends Component {
     static navigationOptions = ({navigation}) => {
@@ -25,19 +26,52 @@ class MoquitoCases extends Component {
             header: () => <HeaderForm navigation={navigation} />,
         };
     };
+    obj: Details;
 
     constructor(props) {
         super(props);
+        const {params} = this.props.navigation.state;
         this.state = {
             tab: {
                 index: 0,
                 routes: [
-                    {key: 'details', title: 'Details'},
-                    {key: 'attachments', title: 'Attachments'},
+                    {
+                        key: 'details',
+                        title: 'Details',
+                        value: 'Mosquito Bite',
+                        latitude: params.latitude,
+                        longitude: params.longtitude,
+                    },
+                    {
+                        key: 'attachments',
+                        title: 'Attachments',
+                        value: 'Mosquito Bite',
+                        latitude: params.latitude,
+                        longitude: params.longtitude,
+                    },
                 ],
             },
         };
     }
+
+    componentDidMount(): void {
+        console.log(`submitMoquitoCasesOK!: ${Details.submitMoquitoCases()}`);
+    }
+
+    submitMoquitoCases() {
+        return this.obj.submitMoquitoCases();
+    }
+
+    _renderScene = ({route}) => {
+        switch (route.key) {
+            case 'details':
+                return <DetailsScreen data={route} />;
+            case 'attachments':
+                return <AttachmentsScreen data={route} />;
+            default:
+                return null;
+        }
+    };
 
     renderTabBar = props => {
         const inputRange = props.navigationState.routes.map((x, i) => i);
@@ -74,6 +108,7 @@ class MoquitoCases extends Component {
                                 ]}>
                                 <Animated.Text style={{color}}>
                                     {route.title}
+                                    {console.log(`TabTitle: ${route.extras}`)}
                                 </Animated.Text>
                             </View>
                         </TouchableWithoutFeedback>
@@ -100,14 +135,13 @@ class MoquitoCases extends Component {
                     barStyle="dark-content"
                 />
                 <View style={styles.titleContainer}>
-                    <Text style={styles.titleText}>Probable Cases</Text>
+                    <Text style={styles.titleText}>
+                        {this.state.tab.routes[0].value}
+                    </Text>
                 </View>
                 <TabView
                     navigationState={this.state.tab}
-                    renderScene={SceneMap({
-                        details: DetailsScreen,
-                        attachments: AttachmentsScreen,
-                    })}
+                    renderScene={this._renderScene}
                     renderTabBar={this.renderTabBar}
                     onIndexChange={index =>
                         this.setState({

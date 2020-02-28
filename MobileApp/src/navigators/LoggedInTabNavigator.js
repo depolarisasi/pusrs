@@ -23,6 +23,8 @@ import PDFCollectionScreen from './../screens/Profile/PDFCollection';
 import ClinicalDataScreen from './../screens/Profile/ClinicalData';
 import UpdateProfileScreen from './../screens/Profile/UpdateProfile';
 import SignAndSymptoms from '../screens/Profile/SignAndSymptoms';
+import Details from '../screens/ProbableCases/Details';
+import Attachments from '../screens/ProbableCases/Attachments';
 
 const MapTab = createStackNavigator({
     MapContainer: {
@@ -46,6 +48,12 @@ const MapTab = createStackNavigator({
                 fontWeight: '500',
             },
         },
+    },
+    DetailScreen: {
+        screen: Details,
+    },
+    attachments: {
+        screen: Attachments,
     },
 });
 
