@@ -12,7 +12,7 @@ import {
     TouchableOpacity,
     ScrollView,
     StyleSheet,
-    ToastAndroid,
+    ToastAndroid, DatePickerAndroid,
 } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
@@ -173,6 +173,25 @@ class UpdateProfile extends Component {
         }
     }
 
+    async showDateBirthday() {
+        try {
+            const {action, year, month, day} = await DatePickerAndroid.open({
+                date: new Date(),
+                maxDate: new Date(),
+            });
+            if (action !== DatePickerAndroid.dismissedAction) {
+                this.setState({
+                    yearDate: `${year}`,
+                    monthDate: `${month}`,
+                    dayDate: `${day}`,
+                });
+                this.setState({Birthday: `${day}/${month + 1}/${year}`});
+            }
+        } catch ({code, message}) {
+            console.warn('Cannot open date picker', message);
+        }
+    }
+
     render() {
         return (
             <View style={styles.wrapper}>
@@ -243,16 +262,22 @@ class UpdateProfile extends Component {
                                 <Text style={styles.fieldLabel}>
                                     Date of Birthday
                                 </Text>
-                                <TextInput
-                                    value={this.state.Birthday}
-                                    style={styles.fieldInput}
-                                    placeholder="Birthday"
-                                    placeholderTextColor={colors.gray04}
-                                    underlineColorAndroid="transparent"
-                                    onChangeText={Birthday =>
-                                        this.setState({Birthday})
-                                    }
-                                />
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        this.showDateBirthday().then('Execute');
+                                    }}>
+                                    <TextInput
+                                        value={this.state.Birthday}
+                                        style={styles.fieldInput}
+                                        placeholder="Birthday"
+                                        placeholderTextColor={colors.gray04}
+                                        underlineColorAndroid="transparent"
+                                        editable={false}
+                                        onChangeText={Birthday =>
+                                            this.setState({Birthday})
+                                        }
+                                    />
+                                </TouchableOpacity>
                             </View>
                         </View>
 
