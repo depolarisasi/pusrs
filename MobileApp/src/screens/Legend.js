@@ -26,13 +26,13 @@ export default () => (
                     <Text style={styles.legendItemText}>Mosquito Cases</Text>
                     <Pin color={colors.yellow01} />
                 </View>
-                <View style={styles.legendItem}>
-                    <Text style={styles.legendItemText}>Hospital Cases</Text>
-                    <Pin color={colors.red01} />
-                </View>
-                <View style={styles.legendItem}>
-                    <Text style={styles.legendItemText}>Tapographic</Text>
-                </View>
+                {/*<View style={styles.legendItem}>*/}
+                {/*    <Text style={styles.legendItemText}>Hospital Cases</Text>*/}
+                {/*    <Pin color={colors.red01} />*/}
+                {/*</View>*/}
+                {/*<View style={styles.legendItem}>*/}
+                {/*    <Text style={styles.legendItemText}>Tapographic</Text>*/}
+                {/*</View>*/}
             </ScrollView>
         </View>
     </View>

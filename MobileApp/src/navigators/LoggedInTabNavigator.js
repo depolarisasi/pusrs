@@ -6,7 +6,10 @@
 
 import React from 'react';
 import {PropTypes} from 'prop-types';
-import {createBottomTabNavigator} from 'react-navigation-tabs';
+import {
+    createBottomTabNavigator,
+    createMaterialTopTabNavigator,
+} from 'react-navigation-tabs';
 import {createStackNavigator} from 'react-navigation-stack';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MapContainer from './../containers/MapContainer';
@@ -14,8 +17,8 @@ import ProfileContainer from './../containers/ProfileContainer';
 import NewsContainer from './../containers/NewsContainer';
 import VideoContainer from './../containers/VideoContainer';
 import ToDoContainer from './../containers/ToDoContainer';
-import ProbableCases from './../screens/ProbableCases';
-import MoquitoCases from './../screens/MoquitoCases';
+import ProbableCases from '../screens/ProbableCases/ProbableCases';
+import MoquitoCases from '../screens/MoquitoCases/MoquitoCases';
 import Legend from './../screens/Legend';
 import colors from './../styles/colors';
 
@@ -23,8 +26,6 @@ import PDFCollectionScreen from './../screens/Profile/PDFCollection';
 import ClinicalDataScreen from './../screens/Profile/ClinicalData';
 import UpdateProfileScreen from './../screens/Profile/UpdateProfile';
 import SignAndSymptoms from '../screens/Profile/SignAndSymptoms';
-import Details from '../screens/ProbableCases/Details';
-import Attachments from '../screens/ProbableCases/Attachments';
 
 const MapTab = createStackNavigator({
     MapContainer: {
@@ -49,12 +50,6 @@ const MapTab = createStackNavigator({
             },
         },
     },
-    DetailScreen: {
-        screen: Details,
-    },
-    attachments: {
-        screen: Attachments,
-    },
 });
 
 MapTab.navigationOptions = ({navigation}) => {
@@ -67,7 +62,6 @@ MapTab.navigationOptions = ({navigation}) => {
         tabBarVisible,
     };
 };
-
 const ProfileTab = createStackNavigator({
     ProfileContainer: {
         screen: ProfileContainer,
@@ -132,21 +126,21 @@ const LoggedInTabNavigator = createBottomTabNavigator(
         Map: {
             screen: MapTab,
             navigationOptions: {
-                tabBarLabel: 'Map',
+                tabBarLabel: 'Peta',
                 tabBarIcon: CustomTabBarIcon('ios-map', 22),
             },
         },
         Profile: {
             screen: ProfileTab,
             navigationOptions: {
-                tabBarLabel: 'Profile',
+                tabBarLabel: 'Profil',
                 tabBarIcon: CustomTabBarIcon('ios-person', 22),
             },
         },
         News: {
             screen: NewsTab,
             navigationOptions: {
-                tabBarLabel: 'News',
+                tabBarLabel: 'Berita',
                 tabBarIcon: CustomTabBarIcon('ios-paper', 22),
             },
         },

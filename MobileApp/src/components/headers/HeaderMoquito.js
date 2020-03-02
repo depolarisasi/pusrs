@@ -1,15 +1,23 @@
-/*
- * Created on Wed Dec 11 2019
- *
- * Copyright (c) 2019 Justin
+/**
+ * Created by Handika Dwiputra on 29/02/2020.
+ * handikadwiputradev@gmail.com
  */
 
 import React, {Component} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import colors from '../../styles/colors';
 
-export default class HeaderForm extends Component {
-    render() {
+export default class HeaderMoquito extends Component {
+    render():
+        | React.ReactElement<any>
+        | string
+        | number
+        | {}
+        | React.ReactNodeArray
+        | React.ReactPortal
+        | boolean
+        | null
+        | undefined {
         return (
             <View style={styles.container}>
                 <TouchableOpacity
@@ -18,7 +26,7 @@ export default class HeaderForm extends Component {
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={() => {
-                        this.props.navigation.state.params.checkProbableCases();
+                        // this.props.navigation.state.params.checkProbableCases();
                     }}>
                     <Text style={[styles.text, styles.bold]}>Selesai</Text>
                 </TouchableOpacity>
@@ -26,8 +34,7 @@ export default class HeaderForm extends Component {
         );
     }
 }
-
-HeaderForm.propTypes = {
+HeaderMoquito.propTypes = {
     //
 };
 

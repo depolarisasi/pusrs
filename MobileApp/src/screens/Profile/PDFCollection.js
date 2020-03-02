@@ -22,7 +22,7 @@ class PDFCollection extends Component {
             header: () => (
                 <HeaderTitleBackable
                     navigation={navigation}
-                    title="PDF Collection"
+                    title="Koleksi PDF"
                 />
             ),
         };

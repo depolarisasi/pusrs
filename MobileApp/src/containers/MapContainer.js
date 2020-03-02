@@ -36,6 +36,7 @@ import auth from '@react-native-firebase/auth';
 import HeaderMap from './../components/headers/HeaderMap';
 import database from '@react-native-firebase/database';
 import MapMarker from 'react-native-maps/lib/components/MapMarker';
+import {AsyncStorage} from '@react-native-community/async-storage';
 
 const {width, height} = Dimensions.get('window');
 
@@ -163,6 +164,17 @@ class MapContainer extends Component {
                 });
             });
     }
+    accessToken;
+
+    fetchGetToken = () => {
+        AsyncStorage.getItem('accessToken', (error, result) => {
+            if (result) {
+                console.log(`accessToken: ${result}`);
+            }
+        }).then(r => {
+            console.log('execute');
+        });
+    };
 
     constructor(props) {
         super(props);
@@ -3167,6 +3179,7 @@ class MapContainer extends Component {
         if (this.state._isPermission) {
             this.onBtnShowUserLocationTapped();
         }
+        this.fetchGetToken();
     }
     componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {}
 
@@ -3212,16 +3225,16 @@ class MapContainer extends Component {
     }
 
     onLogOutPress() {
-        Alert.alert('Log out', 'Are you sure you want to log out?', [
+        Alert.alert('Pemberitahuan', 'Anda yakin ingin Log-out?', [
             {
-                text: 'Cancel',
+                text: 'Batal',
                 onPress: () => console.log('Cancel Pressed'),
                 style: 'cancel',
             },
             {
                 text: 'OK',
                 onPress: async () => {
-                    this.props.navigation.reset('LoggedOut');
+                    this.props.navigation.navigate('LoggedOut');
                     await auth().signOut();
                 },
             },
@@ -3300,7 +3313,7 @@ class MapContainer extends Component {
                         activeOpacity={1}
                         onPress={() => [
                             ToastAndroid.show(
-                                'Sorry, it will appear in the next version...',
+                                'Maaf, itu akan muncul di versi berikutnya',
                                 ToastAndroid.SHORT,
                             ),
                             this.onBackPress(),
@@ -3319,7 +3332,7 @@ class MapContainer extends Component {
                             </View>
                             <View style={styles.drawerBottomCol2}>
                                 <Text style={styles.drawerBottomText}>
-                                    Work Online
+                                    Peta Online
                                 </Text>
                             </View>
                         </View>
@@ -3329,7 +3342,7 @@ class MapContainer extends Component {
                         activeOpacity={1}
                         onPress={() => [
                             ToastAndroid.show(
-                                'Sorry, it will appear in the next version...',
+                                'Maaf, akan muncul di versi berikutnya',
                                 ToastAndroid.SHORT,
                             ),
                             this.onBackPress(),
@@ -3352,7 +3365,7 @@ class MapContainer extends Component {
                                         styles.drawerBottomText,
                                         {color: colors.gray01},
                                     ]}>
-                                    Working Offline
+                                    Peta Offline
                                 </Text>
                             </View>
                         </View>
@@ -3361,7 +3374,7 @@ class MapContainer extends Component {
                         activeOpacity={1}
                         onPress={() => [
                             ToastAndroid.show(
-                                'Sorry, it will appear in the next version...',
+                                'Maaf, akan muncul di versi berikutnya',
                                 ToastAndroid.SHORT,
                             ),
                             this.onBackPress(),
@@ -3376,15 +3389,15 @@ class MapContainer extends Component {
                             </View>
                             <View style={styles.drawerBottomCol2}>
                                 <Text style={styles.drawerBottomText}>
-                                    Synchronize Offline Map
+                                    Sinkronkan Peta Offline
                                 </Text>
-                                <Text
-                                    style={[
-                                        styles.drawerBottomText,
-                                        {fontSize: 10},
-                                    ]}>
-                                    last sync --/--/-- --:--
-                                </Text>
+                                {/*<Text*/}
+                                {/*    style={[*/}
+                                {/*        styles.drawerBottomText,*/}
+                                {/*        {fontSize: 10},*/}
+                                {/*    ]}>*/}
+                                {/*    /!*last sync --/--/-- --:--*!/*/}
+                                {/*</Text>*/}
                             </View>
                         </View>
                     </TouchableOpacity>
@@ -3392,7 +3405,7 @@ class MapContainer extends Component {
                         activeOpacity={1}
                         onPress={() => [
                             ToastAndroid.show(
-                                'Sorry, it will appear in the next version...',
+                                'Maaf, akan muncul di versi berikutnya',
                                 ToastAndroid.SHORT,
                             ),
                             this.onBackPress(),
@@ -3407,7 +3420,7 @@ class MapContainer extends Component {
                             </View>
                             <View style={styles.drawerBottomCol2}>
                                 <Text style={styles.drawerBottomText}>
-                                    Delete Offline Map
+                                    Hapus Peta Offline
                                 </Text>
                             </View>
                         </View>
@@ -3423,7 +3436,7 @@ class MapContainer extends Component {
         );
 
         const optionArray = [
-            <Text style={{color: colors.red01}}>Cancel</Text>,
+            <Text style={{color: colors.red01}}>Batal</Text>,
             'Probable Cases',
             'Moquito Cases',
         ];
@@ -3505,7 +3518,7 @@ class MapContainer extends Component {
                     ref={o => (this.ActionSheet = o)}
                     title={
                         <Text style={{color: '#000', fontSize: 18}}>
-                            Which one do you like?
+                            Yang mana yang kamu suka?
                         </Text>
                     }
                     style={styles.actionBar}

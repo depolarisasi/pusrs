@@ -144,7 +144,7 @@ class ToDoContainer extends Component {
                 return (
                     <View>
                         <Text style={styles.textEmpty}>
-                            Sorry, the To-Do Data is Empty
+                            Maaf, Data Agenda sedang Kosong
                         </Text>
                     </View>
                 );

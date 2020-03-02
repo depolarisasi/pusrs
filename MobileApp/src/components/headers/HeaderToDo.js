@@ -20,7 +20,7 @@ export default class HeaderToDo extends Component {
                                 true,
                             )
                         }>
-                        <Text style={styles.text}>Add</Text>
+                        <Text style={styles.text}>Tambah</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     text: {
         fontWeight: '500',
         color: colors.white,
-        marginHorizontal: 15,
+        marginHorizontal: 10,
     },
     bold: {
         fontWeight: 'bold',

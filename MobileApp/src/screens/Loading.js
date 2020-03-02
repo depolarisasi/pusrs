@@ -10,11 +10,15 @@ import {
     View,
     Text,
     ActivityIndicator,
+    Alert,
     StyleSheet,
 } from 'react-native';
 import {NavigationActions, StackActions} from 'react-navigation';
 import auth from '@react-native-firebase/auth';
 import colors from './../styles/colors';
+import {getGenerateTokenArchGIS} from './GenerateTokenArchGIS';
+import {saveUserToken} from './UtilsHelper';
+import {getUserToken} from './UtilsHelper';
 
 export default class Loading extends Component {
     static navigationOptions = ({navigation}) => {
@@ -23,7 +27,25 @@ export default class Loading extends Component {
         };
     };
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            loadingLabel: 'Sedang Memuat..',
+            loading: true,
+            access_token: '',
+            expires_in: '',
+            date: new Date(),
+        };
+    }
+
     componentDidMount() {
+        if (this.state.loading) {
+            this.fetchGenerateToken();
+        }
+        this.fetchGetToken();
+    }
+
+    setHandlerUserLogin() {
         setTimeout(() => {
             auth().onAuthStateChanged(user => {
                 const resetAction = StackActions.reset({
@@ -38,17 +60,65 @@ export default class Loading extends Component {
             });
         }, 2000);
     }
+
+    fetchGetToken = () => {
+        getUserToken('accessToken')
+            .then(data => {
+                console.log(`accessToken: ${data}`);
+            })
+            .catch(err => {
+                alert(`getUserToken: ${err}`);
+            });
+    };
+
+    fetchGenerateToken = () => {
+        getGenerateTokenArchGIS()
+            .then(data => {
+                this.setState({
+                    accessToken: data.access_token,
+                    loading: false,
+                });
+                saveUserToken('accessToken', data.access_token).then();
+                console.log(`DateNow: ${this.state.date}`);
+
+                this.setHandlerUserLogin();
+            })
+            .catch(error =>
+                Alert.alert('Pemberitahuan', `${error}`, [
+                    {
+                        text: 'OK',
+                        onPress: async () => {
+                            this.fetchGenerateToken();
+                        },
+                    },
+                ]),
+            );
+    };
+
     render() {
-        return (
-            <View style={styles.container}>
-                <StatusBar
-                    backgroundColor={colors.green01}
-                    barStyle="dark-content"
-                />
-                <Text>Loading</Text>
-                <ActivityIndicator size="large" />
-            </View>
-        );
+        if (this.state.loading) {
+            return (
+                <View style={styles.container}>
+                    <StatusBar
+                        backgroundColor={colors.green01}
+                        barStyle="dark-content"
+                    />
+                    <Text>Memeriksa Token..</Text>
+                    <ActivityIndicator size="large" />
+                </View>
+            );
+        } else {
+            return (
+                <View style={styles.container}>
+                    <StatusBar
+                        backgroundColor={colors.green01}
+                        barStyle="dark-content"
+                    />
+                    <Text>Sedang Memuat..</Text>
+                    <ActivityIndicator size="large" />
+                </View>
+            );
+        }
     }
 }
 

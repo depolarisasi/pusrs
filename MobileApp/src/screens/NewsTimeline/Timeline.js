@@ -19,13 +19,6 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import auth from '@react-native-firebase/auth';
 import ActionSheet from 'react-native-actionsheet';
 
-Array.prototype.random = function() {
-    return this[Math.floor(Math.random() * this.length)];
-};
-String.prototype.capitalizeFirstLetter = function() {
-    return `${this.substr(0, 1).toUpperCase()}${this.substr(1)}`;
-};
-
 class Timeline extends Component {
     renderListItemSeparator = () => {
         return (
@@ -62,7 +55,6 @@ class Timeline extends Component {
 
     showActionSheet = index => {
         this.setState({activeRow: index});
-        console.log(`position actionSheet: ${index}`);
         this.ActionSheet.show();
     };
 
@@ -102,7 +94,7 @@ class Timeline extends Component {
                 this.setState({isLoading: false});
                 console.error(error);
                 ToastAndroid.show(
-                    'Maaf Timeline sedang Kosong',
+                    'Maaf, Timeline sedang Kosong',
                     ToastAndroid.SHORT,
                 );
             });
@@ -187,7 +179,7 @@ class Timeline extends Component {
                     <View style={styles.modalAddTimeLine}>
                         <View style={styles.fieldLabelContainer}>
                             <Text style={styles.fieldLabel}>
-                                What is going on?
+                                Apa yang sedang terjadi?
                             </Text>
                         </View>
                         <TextInput
@@ -210,7 +202,7 @@ class Timeline extends Component {
                                     this.toggleModalAddTimeLine(false);
                                 }}>
                                 <Text style={styles.buttonDismissText}>
-                                    Cancel
+                                    Batal
                                 </Text>
                             </TouchableOpacity>
                             <TouchableOpacity
@@ -377,9 +369,9 @@ class Timeline extends Component {
 
     render() {
         const optionArray = [
-            <Text style={{color: colors.red01}}>Cancel</Text>,
-            'Edit',
-            'Delete',
+            <Text style={{color: colors.red01}}>Batal</Text>,
+            'Ubah',
+            'Hapus',
         ];
         return (
             <View style={styles.container}>
@@ -389,7 +381,7 @@ class Timeline extends Component {
                     <View style={styles.right}>
                         <TouchableOpacity
                             onPress={() => this.toggleModalAddTimeLine(true)}>
-                            <Text style={styles.text}>Add post</Text>
+                            <Text style={styles.text}>POST</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -398,7 +390,7 @@ class Timeline extends Component {
                     ref={o => (this.ActionSheet = o)}
                     title={
                         <Text style={{color: '#000', fontSize: 18}}>
-                            Which one do you like?
+                            Yang mana yang kamu suka?
                         </Text>
                     }
                     style={styles.actionBar}

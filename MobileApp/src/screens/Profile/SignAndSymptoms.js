@@ -37,7 +37,7 @@ class SignAndSymptoms extends Component {
             header: () => (
                 <HeaderTitleBackable
                     navigation={navigation}
-                    title="Sign And Symptoms"
+                    title="Tanda dan Gejala"
                 />
             ),
         };
@@ -167,7 +167,7 @@ class SignAndSymptoms extends Component {
             .update(signAndSyptoms)
             .then(() => {
                 ToastAndroid.show(
-                    'Update Sign And Sypmtoms berhasil',
+                    'Perbarui Data Tanda Dan Gejala berhasil',
                     ToastAndroid.SHORT,
                 );
             })
@@ -189,7 +189,7 @@ class SignAndSymptoms extends Component {
                 <View style={styles.formGroup}>
                     <View style={styles.mb5}>
                         <Text style={styles.fieldLabel}>
-                            Do you have fever?
+                            Apakah kamu demam?
                         </Text>
                         <View>
                             <Picker
@@ -200,14 +200,14 @@ class SignAndSymptoms extends Component {
                                         picker01Fever: picker01Fever,
                                     })
                                 }>
-                                <Picker.Item label="Yes" value="Yes" />
-                                <Picker.Item label="No" value="No" />
+                                <Picker.Item label="Ya" value="Ya" />
+                                <Picker.Item label="Tidak" value="Tidak" />
                             </Picker>
                         </View>
                     </View>
                     <View style={styles.mb5}>
                         <Text style={styles.fieldLabel}>
-                            if yes, for how many days?
+                            Jika iya, berapa hari?
                         </Text>
                         <View>
                             <TextInput
@@ -225,7 +225,7 @@ class SignAndSymptoms extends Component {
                     </View>
                     <View style={styles.mb5}>
                         <Text style={styles.fieldLabel}>
-                            Your average temperature is?
+                            Suhu rata-rata Anda?
                         </Text>
                         <View>
                             <TextInput
@@ -257,7 +257,7 @@ class SignAndSymptoms extends Component {
                 <View style={styles.formGroup}>
                     <View style={styles.mb5}>
                         <Text style={styles.fieldLabel}>
-                            Do you have headache?
+                            Apakah Anda sakit kepala?
                         </Text>
                         <Picker
                             selectedValue={this.state.picker01Headache}
@@ -267,13 +267,13 @@ class SignAndSymptoms extends Component {
                                     picker01Headache: picker01Headache,
                                 })
                             }>
-                            <Picker.Item label="Yes" value="Yes" />
-                            <Picker.Item label="No" value="No" />
+                            <Picker.Item label="Ya" value="Ya" />
+                            <Picker.Item label="Tidak" value="Tidak" />
                         </Picker>
                     </View>
                     <View style={styles.mb5}>
                         <Text style={styles.fieldLabel}>
-                            Do you feel pain behind your eyes?
+                            Apakah Anda merasakan sakit di belakang mata Anda?
                         </Text>
                         <View>
                             <Picker
@@ -284,14 +284,14 @@ class SignAndSymptoms extends Component {
                                         picker02Headache: picker02Headache,
                                     })
                                 }>
-                                <Picker.Item label="Yes" value="Yes" />
-                                <Picker.Item label="No" value="No" />
+                                <Picker.Item label="Ya" value="Ya" />
+                                <Picker.Item label="Tidak" value="Tidak" />
                             </Picker>
                         </View>
                     </View>
                     <View style={styles.mb5}>
                         <Text style={styles.fieldLabel}>
-                            Do you feel pain around your eyes?
+                            Apakah Anda merasakan sakit di sekitar mata Anda?
                         </Text>
                         <View>
                             <Picker
@@ -302,8 +302,8 @@ class SignAndSymptoms extends Component {
                                         picker03Headache: picker03Headache,
                                     })
                                 }>
-                                <Picker.Item label="Yes" value="Yes" />
-                                <Picker.Item label="No" value="No" />
+                                <Picker.Item label="Ya" value="Ya" />
+                                <Picker.Item label="Tidak" value="Tidak" />
                             </Picker>
                         </View>
                     </View>
@@ -323,7 +323,7 @@ class SignAndSymptoms extends Component {
                 <View style={styles.formGroup}>
                     <View style={styles.mb5}>
                         <Text style={styles.fieldLabel}>
-                            Do you feel nauseaous?
+                            Apakah Anda merasa mual?
                         </Text>
                         <Picker
                             selectedValue={this.state.picker01Nausea}
@@ -333,13 +333,13 @@ class SignAndSymptoms extends Component {
                                     picker01Nausea: picker01Nausea,
                                 })
                             }>
-                            <Picker.Item label="Yes" value="Yes" />
-                            <Picker.Item label="No" value="No" />
+                            <Picker.Item label="Ya" value="Ya" />
+                            <Picker.Item label="Tidak" value="Tidak" />
                         </Picker>
                     </View>
                     <View style={styles.mb5}>
                         <Text style={styles.fieldLabel}>
-                            if yes, from 1 to 5, 5 is the highest,what degree?
+                            Jika ya, dari 1 hingga 5, 5 adalah yang tertinggi?
                         </Text>
                         <View style={styles.fieldInputRow}>
                             <Slider
@@ -378,7 +378,9 @@ class SignAndSymptoms extends Component {
                 </View>
                 <View style={styles.formGroup}>
                     <View style={styles.mb5}>
-                        <Text style={styles.fieldLabel}>Do you bleeding?</Text>
+                        <Text style={styles.fieldLabel}>
+                            Apakah kamu berdarah?
+                        </Text>
                         <Picker
                             selectedValue={this.state.picker01Bleeding}
                             style={styles.pickerStyle}
@@ -387,10 +389,10 @@ class SignAndSymptoms extends Component {
                                     picker01Bleeding: picker01Bleeding,
                                 })
                             }>
-                            <Picker.Item label="Yes" value="Yes" />
-                            <Picker.Item label="No" value="No" />
+                            <Picker.Item label="Ya" value="Ya" />
+                            <Picker.Item label="Tidak" value="Tidak" />
                         </Picker>
-                        <Text style={styles.fieldLabel}>Where</Text>
+                        <Text style={styles.fieldLabel}>Dimana?</Text>
                         <TextInput
                             value={this.state.whereBleeding}
                             style={styles.fieldInput}
@@ -404,7 +406,7 @@ class SignAndSymptoms extends Component {
                     </View>
                     <View style={styles.mb5}>
                         <Text style={styles.fieldLabel}>
-                            if yes, from 1 to 5, 5 is the highest,what degree?
+                            Jika ya, dari 1 hingga 5, 5 adalah yang tertinggi?
                         </Text>
                         <View style={styles.fieldInputRow}>
                             <Slider
@@ -444,7 +446,7 @@ class SignAndSymptoms extends Component {
                 <View style={styles.formGroup}>
                     <View style={styles.mb5}>
                         <Text style={styles.fieldLabel}>
-                            Are you having diarrhea?
+                            Apakah Anda mengalami diare?
                         </Text>
                         <Picker
                             selectedValue={this.state.picker01Diarrhea}
@@ -454,13 +456,13 @@ class SignAndSymptoms extends Component {
                                     picker01Diarrhea: picker01Diarrhea,
                                 })
                             }>
-                            <Picker.Item label="Yes" value="Yes" />
-                            <Picker.Item label="No" value="No" />
+                            <Picker.Item label="Ya" value="Ya" />
+                            <Picker.Item label="Tidak" value="Tidak" />
                         </Picker>
                     </View>
                     <View style={styles.mb5}>
                         <Text style={styles.fieldLabel}>
-                            if yes, for how may times a days?
+                            Jika iya, berapa kali sehari?
                         </Text>
                         <View>
                             <TextInput
@@ -477,7 +479,7 @@ class SignAndSymptoms extends Component {
                         </View>
                     </View>
                     <View style={styles.mb5}>
-                        <Text style={styles.fieldLabel}>Color:</Text>
+                        <Text style={styles.fieldLabel}>Warna</Text>
                         <View>
                             <TextInput
                                 value={this.state.colorDiarrhea}
@@ -492,7 +494,7 @@ class SignAndSymptoms extends Component {
                         </View>
                     </View>
                     <View style={styles.mb5}>
-                        <Text style={styles.fieldLabel}>Consistency:</Text>
+                        <Text style={styles.fieldLabel}>Konsistensi</Text>
                         <View>
                             <TextInput
                                 value={this.state.consistencyDiarrhea}
@@ -508,7 +510,7 @@ class SignAndSymptoms extends Component {
                     </View>
                     <View style={styles.mb5}>
                         <Text style={styles.fieldLabel}>
-                            Do you feel pain in your stomach?
+                            Apakah Anda merasakan sakit di perut Anda?
                         </Text>
                         <View>
                             <Picker
@@ -519,14 +521,14 @@ class SignAndSymptoms extends Component {
                                         picker02Diarrhea: picker02Diarrhea,
                                     })
                                 }>
-                                <Picker.Item label="Yes" value="Yes" />
-                                <Picker.Item label="No" value="No" />
+                                <Picker.Item label="Ya" value="Ya" />
+                                <Picker.Item label="Tidak" value="Tidak" />
                             </Picker>
                         </View>
                     </View>
                     <View style={styles.mb5}>
                         <Text style={styles.fieldLabel}>
-                            if yes, from 1 to 5, 5 is the highest,what degree?
+                            Jika iya, dari 1 hingga 5, 5 adalah yang tertinggi?
                         </Text>
                         <View style={styles.fieldInputRow}>
                             <Slider
@@ -566,7 +568,7 @@ class SignAndSymptoms extends Component {
                 <View style={styles.formGroup}>
                     <View style={styles.mb5}>
                         <Text style={styles.fieldLabel}>
-                            Do you have Muscle pains?
+                            Apakah Anda memiliki sakit otot?
                         </Text>
                         <Picker
                             selectedValue={this.state.picker01Muscle}
@@ -576,13 +578,13 @@ class SignAndSymptoms extends Component {
                                     picker01Muscle: picker01Muscle,
                                 })
                             }>
-                            <Picker.Item label="Yes" value="Yes" />
-                            <Picker.Item label="No" value="No" />
+                            <Picker.Item label="Ya" value="Ya" />
+                            <Picker.Item label="Tidak" value="Tidak" />
                         </Picker>
                     </View>
                     <View style={styles.mb5}>
                         <Text style={styles.fieldLabel}>
-                            if yes, from 1 to 5, 5 is the highest,what degree?
+                            Jika ya, dari 1 hingga 5, 5 adalah yang tertinggi, tingkat apa?
                         </Text>
                         <View style={styles.fieldInputRow}>
                             <Slider
@@ -608,7 +610,7 @@ class SignAndSymptoms extends Component {
                     </View>
                     <View style={styles.mb5}>
                         <Text style={styles.fieldLabel}>
-                            Do you feel pain in your joints?
+                            Apakah Anda merasakan sakit pada persendian?
                         </Text>
                         <Picker
                             selectedValue={this.state.picker02Muscle}
@@ -618,13 +620,13 @@ class SignAndSymptoms extends Component {
                                     picker02Muscle: picker02Muscle,
                                 })
                             }>
-                            <Picker.Item label="Yes" value="Yes" />
-                            <Picker.Item label="No" value="No" />
+                            <Picker.Item label="Ya" value="Ya" />
+                            <Picker.Item label="Tidak" value="Tidak" />
                         </Picker>
                     </View>
                     <View style={styles.mb5}>
                         <Text style={styles.fieldLabel}>
-                            if yes, from 1 to 5, 5 is the highest,what degree?
+                            jika ya, dari 1 hingga 5, 5 adalah yang tertinggi?
                         </Text>
                         <View style={styles.fieldInputRow}>
                             <Slider
@@ -664,7 +666,7 @@ class SignAndSymptoms extends Component {
                 <View style={styles.formGroup}>
                     <View style={styles.mb5}>
                         <Text style={styles.fieldLabel}>
-                            Do you have muscle pains?
+                            Apakah Anda memiliki nyeri otot?
                         </Text>
                         <Picker
                             selectedValue={this.state.picker01Rashes}
@@ -674,13 +676,13 @@ class SignAndSymptoms extends Component {
                                     picker01Rashes: picker01Rashes,
                                 })
                             }>
-                            <Picker.Item label="Yes" value="Yes" />
-                            <Picker.Item label="No" value="No" />
+                            <Picker.Item label="Ya" value="Ya" />
+                            <Picker.Item label="Tidak" value="Tidak" />
                         </Picker>
                     </View>
                     <View style={styles.mb5}>
                         <Text style={styles.fieldLabel}>
-                            if yes, from 1 to 5, 5 is the highest,what degree?
+                            jika ya, dari 1 hingga 5, 5 adalah yang tertinggi?
                         </Text>
                         <View style={styles.fieldInputRow}>
                             <Slider
@@ -722,37 +724,37 @@ class SignAndSymptoms extends Component {
                     <View style={styles.container}>
                         <View style={styles.sectionTitle}>
                             <Text style={[styles.text, styles.bold]}>
-                                Fever
+                                Demam
                             </Text>
                         </View>
                         {this.renderFever()}
                         <View style={styles.sectionTitle}>
                             <Text style={[styles.text, styles.bold]}>
-                                Headache and retro
+                                Sakit kepala dan retro
                             </Text>
                         </View>
                         {this.renderHeadache()}
                         <View style={styles.sectionTitle}>
                             <Text style={[styles.text, styles.bold]}>
-                                Nausea and vomiting
+                                Mual dan muntah
                             </Text>
                         </View>
                         {this.renderNauseaAndVomitting()}
                         <View style={styles.sectionTitle}>
                             <Text style={[styles.text, styles.bold]}>
-                                Bleeding
+                                Perdarahan
                             </Text>
                         </View>
                         {this.renderBleeding()}
                         <View style={styles.sectionTitle}>
                             <Text style={[styles.text, styles.bold]}>
-                                Diarrhea and abdominal pain
+                                Diare dan sakit perut
                             </Text>
                         </View>
                         {this.renderDiarrhea()}
                         <View style={styles.sectionTitle}>
                             <Text style={[styles.text, styles.bold]}>
-                                Muscle and joint pains
+                                Nyeri otot dan sendi
                             </Text>
                         </View>
                         {this.renderMuscle()}

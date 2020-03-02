@@ -12,7 +12,6 @@ import {
     Text,
     Image,
     Dimensions,
-    ToastAndroid,
     ActivityIndicator,
 } from 'react-native';
 import {Linking} from 'react-native';
@@ -113,7 +112,9 @@ class News extends Component {
         return (
             <View style={{flex: 1}}>
                 <View style={styles.header}>
-                    <Text style={[styles.text, styles.bold]}>Web & News</Text>
+                    <Text style={[styles.text, styles.bold]}>
+                        Website & Berita
+                    </Text>
                 </View>
                 <ScrollView>
                     <View style={styles.container}>
@@ -124,7 +125,9 @@ class News extends Component {
                         </View>
                         {this.renderWebsites()}
                         <View style={styles.sectionTitle}>
-                            <Text style={[styles.text, styles.bold]}>News</Text>
+                            <Text style={[styles.text, styles.bold]}>
+                                Berita
+                            </Text>
                         </View>
                         {this.renderNews()}
                     </View>
