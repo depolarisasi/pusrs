@@ -3181,7 +3181,8 @@ class MapContainer extends Component {
         }
         this.fetchGetToken();
     }
-    componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {}
+
+    // componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {}
 
     // shouldComponentUpdate(
     //     nextProps: Readonly<P>,

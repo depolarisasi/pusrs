@@ -18,7 +18,7 @@ import auth from '@react-native-firebase/auth';
 import colors from './../styles/colors';
 import {getGenerateTokenArchGIS} from './GenerateTokenArchGIS';
 import {saveUserToken} from './UtilsHelper';
-import {getUserToken} from './UtilsHelper';
+import {getUserToken} from './UtilsHelper'
 
 export default class Loading extends Component {
     static navigationOptions = ({navigation}) => {
@@ -38,11 +38,11 @@ export default class Loading extends Component {
         };
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         if (this.state.loading) {
             this.fetchGenerateToken();
         }
-        this.fetchGetToken();
+        await this.fetchGetToken();
     }
 
     setHandlerUserLogin() {
@@ -61,7 +61,7 @@ export default class Loading extends Component {
         }, 2000);
     }
 
-    fetchGetToken = () => {
+    async fetchGetToken() {
         getUserToken('accessToken')
             .then(data => {
                 console.log(`accessToken: ${data}`);
@@ -69,7 +69,7 @@ export default class Loading extends Component {
             .catch(err => {
                 alert(`getUserToken: ${err}`);
             });
-    };
+    }
 
     fetchGenerateToken = () => {
         getGenerateTokenArchGIS()
