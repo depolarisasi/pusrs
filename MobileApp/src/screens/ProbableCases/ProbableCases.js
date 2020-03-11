@@ -6,17 +6,19 @@
 
 import React, {Component} from 'react';
 import {
-    StatusBar,
-    View,
-    Text,
-    Alert,
-    StyleSheet,
-    Dimensions,
-    TextInput,
-    ScrollView,
-    TouchableOpacity,
-    Image,
     ActivityIndicator,
+    Alert,
+    Dimensions,
+    Image,
+    ScrollView,
+    StatusBar,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
+    ToastAndroid,
+    Modal,
 } from 'react-native';
 import colors from '../../styles/colors';
 import HeaderForm from '../../components/headers/HeaderForm';
@@ -26,7 +28,11 @@ import database from '@react-native-firebase/database';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ActionSheet from 'react-native-actionsheet';
 import ImagePicker from 'react-native-image-picker';
-import {getGenerateTokenArchGIS} from '../GenerateTokenArchGIS';
+import {addDataProbableCases} from './PostTaskSubProbableCases';
+import storage from '@react-native-firebase/storage';
+import {getAsyncStorage} from '../UtilsHelper';
+
+let uuid = require('react-native-uuid');
 
 class ProbableCases extends Component {
     static navigationOptions = ({navigation}) => {
@@ -40,6 +46,7 @@ class ProbableCases extends Component {
         const {params} = this.props.navigation.state;
         this.state = {
             isLoading: true,
+            isUploading: false,
             reportedBy: '',
             accessToken: '',
             address: '',
@@ -57,25 +64,38 @@ class ProbableCases extends Component {
             },
             fileData: '',
             fileUri: '',
+            objectId: '',
+            uniqueId: '',
+            globalId: '',
+            progress: 0,
+            loadingLabel: 'Sedang Memuat',
+            urlPhotoFirebase: '',
+            statResponse: '',
+            modalSubmitProbableVisible: false,
         };
+        this.fetchGetTokenProbable = this.fetchGetTokenProbable.bind(this);
+        this.uploadImage = this.uploadImage.bind(this);
+        this.isUploadingLabel = this.isUploadingLabel.bind(this);
+        this.renderModulLoadingIndicatior = this.renderModulLoadingIndicatior.bind(
+            this,
+        );
     }
     async componentDidMount(): void {
         await this.readUserLogin();
-        this.fetchGenerateToken();
         this.props.navigation.setParams({
             checkProbableCases: this.checkProbableCases.bind(this),
         });
+        this.fetchGetTokenProbable();
+        this.submitProbableCases = this.submitProbableCases.bind(this);
     }
 
-    fetchGenerateToken = () => {
-        getGenerateTokenArchGIS()
-            .then(data => {
-                this.setState({
-                    accessToken: data,
-                });
-            })
-            .catch(error => console.log(`Error: ${error}`));
-    };
+    fetchGetTokenProbable() {
+        getAsyncStorage('accessToken').then(data => {
+            this.setState({
+                accessToken: data,
+            });
+        });
+    }
 
     handleRefreshToken = () => {
         this.setState({isLoading: true}, () => this.fetchGenerateToken());
@@ -100,6 +120,52 @@ class ProbableCases extends Component {
             });
     }
 
+    toogleModalLoadingIndicator = state =>
+        this.setState({modalSubmitProbableVisible: state});
+
+    renderModulLoadingIndicatior() {
+        return (
+            <Modal
+                transparent={true}
+                animationType="fade"
+                onRequestClose={() => this.toogleModalLoadingIndicator(false)}
+                visible={this.state.modalSubmitProbableVisible}>
+                <View style={styles.wrapper}>
+                    <StatusBar
+                        backgroundColor={colors.green01}
+                        barStyle="dark-content"
+                    />
+                    <View style={styles.titleContainer}>
+                        <Text style={styles.titleText}>
+                            {this.state.condition}
+                        </Text>
+                    </View>
+                    <View style={styles.loadingBackground}>
+                        <Text>{this.state.loadingLabel}</Text>
+                        {this.isUploadingLabel()}
+                        <ActivityIndicator size="large" />
+                    </View>
+                </View>
+            </Modal>
+        );
+    }
+
+    async addInfoProbableFirebase(objectId, uniqueId, globalId, status, url) {
+        let userId = auth().currentUser.uid;
+        let addInfoPro = {};
+        addInfoPro.object_id = objectId;
+        addInfoPro.uniqueId = uniqueId;
+        addInfoPro.globalId = globalId;
+        addInfoPro.staResponse = status;
+        addInfoPro.imageUrl = url;
+        const refDb = database().ref(`/posts/${userId}/probable_cases`);
+        await refDb.push(addInfoPro).then(() => {
+            this.props.navigation.goBack();
+            ToastAndroid.show('Input Data Berhasil', ToastAndroid.SHORT);
+            this.toogleModalLoadingIndicator(false);
+        });
+    }
+
     generateJsonProbableCases() {
         const o1 = [
             {
@@ -120,7 +186,7 @@ class ProbableCases extends Component {
                     Residence: this.state.residence,
                     Notes: this.state.notes,
                     gender: this.state.gender,
-                    condition: this.props.data.value,
+                    condition: 'Probable Cases',
                     Age: this.state.age,
                 },
             },
@@ -128,7 +194,56 @@ class ProbableCases extends Component {
         return JSON.stringify(o1);
     }
 
-    async submitProbableCases() {}
+    submitProbableCases = accessToken => {
+        addDataProbableCases(
+            accessToken,
+            this.generateJsonProbableCases(),
+        ).then(data => {
+            let state;
+            state = {
+                objectId: data.objectId,
+                uniqueId: data.uniqueId,
+                globalId: data.globalId,
+                statResponse: data.success,
+            };
+            this.setState(state);
+            console.log(`filePath: ${this.state.filepath}`);
+            this.toogleModalLoadingIndicator(true);
+            if (this.state.fileUri.length > 0) {
+                this.uploadImage();
+            } else {
+                this.addInfoProbableFirebase(
+                    `${this.state.objectId}`,
+                    `${this.state.uniqueId}`,
+                    `${this.state.globalId}`,
+                    `${this.state.statResponse}`,
+                    `${this.state.urlPhotoFirebase}`,
+                ).then(r => {
+                    this.setState({
+                        isUploading: false,
+                        isLoading: true,
+                        loadingLabel: 'Mengirim Data...',
+                    });
+                });
+            }
+        });
+    };
+
+    GetPropertyValue(obj1, dataToRetrieve) {
+        return dataToRetrieve
+            .split('.') // split string based on `.`
+            .reduce(function(o, k) {
+                return o && o[k]; // get inner property if `o` is defined else get `o` and return
+            }, obj1); // set initial value as object
+    }
+
+    GetPropertyValue2(dataToRetrieve) {
+        return dataToRetrieve
+            .split('.') // split string based on `.`
+            .reduce(function(o, k) {
+                return o && o[k]; // get inner property if `o` is defined else get `o` and return
+            });
+    }
 
     checkProbableCases() {
         let isError = false;
@@ -153,24 +268,83 @@ class ProbableCases extends Component {
         }
 
         if (this.state.age.length === 0) {
-            Alert.alert('Pemberitahuan', 'Silahkan Masukkan usia');
+            Alert.alert('Pemberitahuan', 'Silahkan Masukkan Usia');
             isError = true;
         }
 
-        if (this.state.gender.length === 0) {
+        if (this.state.gender.includes('-')) {
             Alert.alert('Pemberitahuan', 'Silahkan isi Jenis Kelamin');
             isError = true;
         }
 
-        if (this.state.fileData.length === 0) {
-            Alert.alert('Pemberitahuan', 'Silahkan Masukkan Foto dibawah ini');
-            isError = true;
-        }
-
         if (!isError) {
-            this.submitProbableCases();
+            this.submitProbableCases(this.state.accessToken);
         }
     }
+
+    uploadImage = () => {
+        const ext = this.state.fileUri.split('.').pop(); // Extract image extension
+        const filename = `${uuid()}.${ext}`; // Generate unique name
+        this.setState({
+            isLoading: true,
+            isUploading: true,
+            loadingLabel: 'Mengunggah Foto',
+        });
+        console.log(`firebase Storage ${this.state.fileUri}`);
+        storage()
+            .ref(`probable_cases/${filename}`)
+            .putFile(this.state.fileUri)
+            .on(
+                storage.TaskEvent.STATE_CHANGED,
+                snapshot => {
+                    let state = {};
+                    state = {
+                        ...state,
+                        progress:
+                            (snapshot.bytesTransferred / snapshot.totalBytes) *
+                            100, // TODO Calculate progress percentage
+                    };
+                    if (snapshot.state === storage.TaskState.SUCCESS) {
+                        state = {
+                            ...state,
+                            filePath: '',
+                            fileData: '',
+                            fileUri: '',
+                            isLoading: false,
+                            isUploading: false,
+                            progress: 0,
+                        };
+                        console.log(
+                            `Success Upload Photo Probable3: ${
+                                this.state.urlPhotoFirebase
+                            }`,
+                        );
+                        this.setState(state);
+                        snapshot.ref.getDownloadURL().then(url => {
+                            this.setState({urlPhotoFirebase: url});
+                            this.addInfoProbableFirebase(
+                                `${this.state.objectId}`,
+                                `${this.state.uniqueId}`,
+                                `${this.state.globalId}`,
+                                `${this.state.statResponse}`,
+                                `${this.state.urlPhotoFirebase}`,
+                            ).then(r => {
+                                let stateAddInfo = {
+                                    isUploading: false,
+                                    isLoading: true,
+                                    loadingLabel: 'Mengirim Data...',
+                                };
+                                this.setState(stateAddInfo);
+                            });
+                        });
+                    }
+                },
+                error => {
+                    this.unsubscribe();
+                    Alert.alert('Error!', 'Sorry, Try again.');
+                },
+            );
+    };
 
     renderAttachmentProbable() {
         if (this.state.fileData.length > 0) {
@@ -305,6 +479,12 @@ class ProbableCases extends Component {
         this.ActionSheet.show();
     };
 
+    isUploadingLabel = () => {
+        if (this.state.isUploading) {
+            return <Text>{`${this.state.progress} %`}</Text>;
+        }
+    };
+
     render() {
         const optionArray = [
             <Text style={{color: colors.red01}}>Cancel</Text>,
@@ -324,7 +504,8 @@ class ProbableCases extends Component {
                         </Text>
                     </View>
                     <View style={styles.loadingBackground}>
-                        <Text>Sedang Memuat..</Text>
+                        <Text>{this.state.loadingLabel}</Text>
+                        {this.isUploadingLabel()}
                         <ActivityIndicator size="large" />
                     </View>
                 </View>
@@ -491,6 +672,7 @@ class ProbableCases extends Component {
                             }}
                         />
                     </ScrollView>
+                    {this.renderModulLoadingIndicatior()}
                 </View>
             );
         }

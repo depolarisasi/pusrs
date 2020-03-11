@@ -29,14 +29,13 @@ import MapView, {
     AnimatedRegion,
     Callout,
     MAP_TYPES,
-    Marker,
     PROVIDER_GOOGLE,
 } from 'react-native-maps';
 import auth from '@react-native-firebase/auth';
 import HeaderMap from './../components/headers/HeaderMap';
 import database from '@react-native-firebase/database';
 import MapMarker from 'react-native-maps/lib/components/MapMarker';
-import {AsyncStorage} from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const {width, height} = Dimensions.get('window');
 
@@ -164,8 +163,6 @@ class MapContainer extends Component {
                 });
             });
     }
-    accessToken;
-
     fetchGetToken = () => {
         AsyncStorage.getItem('accessToken', (error, result) => {
             if (result) {
@@ -3477,7 +3474,10 @@ class MapContainer extends Component {
                         onRegionChange={this.onRegionChange}
                         onPress={e => this.onMapPress(e)}>
                         {this.state.lokasi.map(function(item, i) {
-                            if (item.attributes.long && item.attributes.lat) {
+                            if (
+                                !!item.attributes.long &&
+                                !!item.attributes.lat
+                            ) {
                                 return (
                                     <MapMarker
                                         ref={ref => {
@@ -3490,8 +3490,7 @@ class MapContainer extends Component {
                                         }}
                                         title={item.attributes.notes}
                                         tracksViewChanges={true}
-                                        identifier="DestMarker"
-                                        draggable>
+                                        identifier="DestMarker">
                                         <Callout
                                             tooltip
                                             style={styles.customView}>
@@ -3512,6 +3511,16 @@ class MapContainer extends Component {
                                 );
                             }
                         })}
+                        {!!this.state.region.latitude &&
+                            !!this.state.region.longitude && (
+                                <MapView.Marker
+                                    coordinate={{
+                                        latitude: this.state.region.latitude,
+                                        longitude: this.state.region.longitude,
+                                    }}
+                                    title={'Lokasi Saya'}
+                                />
+                            )}
                     </MapView>
                 </DrawerLayout>
 

@@ -3,24 +3,25 @@
  * handikadwiputradev@gmail.com
  */
 
-import {AsyncStorage} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
-export async function getUserToken(key) {
+export async function getAsyncStorage(key) {
     try {
         const value = await AsyncStorage.getItem(key);
         if (value !== null) {
             return value;
         }
+        console.log(`getAsyncStorage: ${value}`);
     } catch (e) {
         alert(`getToken: ${e}`);
     }
 }
 
-export async function saveUserToken(key, value) {
-    await AsyncStorage.setItem('user', value);
+export async function saveAsyncStorage(key, value) {
+    await AsyncStorage.setItem(key, value);
 }
 
-export async function removeUserToken(key) {
+export async function removeAsyncStorage(key) {
     try {
         await AsyncStorage.removeItem(key);
     } catch (e) {

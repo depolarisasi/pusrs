@@ -17,8 +17,8 @@ import {NavigationActions, StackActions} from 'react-navigation';
 import auth from '@react-native-firebase/auth';
 import colors from './../styles/colors';
 import {getGenerateTokenArchGIS} from './GenerateTokenArchGIS';
-import {saveUserToken} from './UtilsHelper';
-import {getUserToken} from './UtilsHelper'
+import {saveAsyncStorage} from './UtilsHelper';
+import {getAsyncStorage} from './UtilsHelper';
 
 export default class Loading extends Component {
     static navigationOptions = ({navigation}) => {
@@ -35,6 +35,7 @@ export default class Loading extends Component {
             access_token: '',
             expires_in: '',
             date: new Date(),
+            dateExpired: '',
         };
     }
 
@@ -42,7 +43,6 @@ export default class Loading extends Component {
         if (this.state.loading) {
             this.fetchGenerateToken();
         }
-        await this.fetchGetToken();
     }
 
     setHandlerUserLogin() {
@@ -61,16 +61,6 @@ export default class Loading extends Component {
         }, 2000);
     }
 
-    async fetchGetToken() {
-        getUserToken('accessToken')
-            .then(data => {
-                console.log(`accessToken: ${data}`);
-            })
-            .catch(err => {
-                alert(`getUserToken: ${err}`);
-            });
-    }
-
     fetchGenerateToken = () => {
         getGenerateTokenArchGIS()
             .then(data => {
@@ -78,9 +68,19 @@ export default class Loading extends Component {
                     accessToken: data.access_token,
                     loading: false,
                 });
-                saveUserToken('accessToken', data.access_token).then();
-                console.log(`DateNow: ${this.state.date}`);
-
+                let now = new Date();
+                if (typeof this.state.dateExpired !== 'undefined') {
+                    let dateExpired = new Date();
+                    dateExpired.setMinutes(now.getMinutes() + 15);
+                    dateExpired = new Date(dateExpired);
+                    saveAsyncStorage(
+                        'accessToken',
+                        this.state.accessToken,
+                    ).then();
+                    saveAsyncStorage('dateExpired', `${dateExpired}`).then(
+                        r => {},
+                    );
+                }
                 this.setHandlerUserLogin();
             })
             .catch(error =>

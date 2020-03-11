@@ -3,11 +3,11 @@
  * handikadwiputradev@gmail.com
  */
 
-export async function PostTaskSubProbableCases(tokenArchGIS, generateJson) {
-    const submitProbableCases = {
+export async function addDataProbableCases(tokenArchGIS, generateJson) {
+    var submitProbableCases = {
         f: 'json',
-        token: tokenArchGIS,
-        adds: generateJson,
+        token: `${tokenArchGIS}`,
+        adds: `${generateJson}`,
     };
 
     var formBody = [];
@@ -19,7 +19,7 @@ export async function PostTaskSubProbableCases(tokenArchGIS, generateJson) {
 
     formBody = formBody.join('&');
 
-    return await fetch(
+    let result = await fetch(
         'https://services6.arcgis.com/KKQJ8UH8yQZJCyc5/ArcGIS/rest/services/Probable_Cases/FeatureServer/0/applyEdits',
         {
             method: 'POST',
@@ -31,4 +31,6 @@ export async function PostTaskSubProbableCases(tokenArchGIS, generateJson) {
     )
         .then(res => res.json())
         .catch(error => error);
+
+    return result.addResults[0];
 }
