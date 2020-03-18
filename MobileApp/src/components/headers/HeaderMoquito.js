@@ -26,7 +26,7 @@ export default class HeaderMoquito extends Component {
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={() => {
-                        // this.props.navigation.state.params.checkProbableCases();
+                        this.props.navigation.state.params.checkMoquitoCase();
                     }}>
                     <Text style={[styles.text, styles.bold]}>Selesai</Text>
                 </TouchableOpacity>

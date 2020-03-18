@@ -13,7 +13,8 @@ import {
     TouchableOpacity,
     ScrollView,
     StyleSheet,
-    ToastAndroid, DatePickerAndroid,
+    ToastAndroid,
+    DatePickerAndroid,
 } from 'react-native';
 import colors from './../../styles/colors';
 import HeaderTitleBackable from './../../components/headers/HeaderTitleBackable';

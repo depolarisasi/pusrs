@@ -3,11 +3,11 @@
  * handikadwiputradev@gmail.com
  */
 
-export async function PostTaskSubMoquitoCases(tokenArchGIS, generateJson) {
-    const submitMoquitoCases = {
+export async function addSubMoquitoCases(tokenArchGIS, generateJson) {
+    var submitMoquitoCases = {
         f: 'json',
-        token: tokenArchGIS,
-        adds: generateJson,
+        token: `${tokenArchGIS}`,
+        adds: `${generateJson}`,
     };
 
     var formBody = [];

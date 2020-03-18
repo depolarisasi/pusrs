@@ -21,6 +21,7 @@ import {
     Platform,
     TouchableHighlight,
     PermissionsAndroid,
+    ActivityIndicator,
 } from 'react-native';
 import colors from './../styles/colors';
 import DrawerLayout from 'react-native-drawer-layout';
@@ -36,6 +37,8 @@ import HeaderMap from './../components/headers/HeaderMap';
 import database from '@react-native-firebase/database';
 import MapMarker from 'react-native-maps/lib/components/MapMarker';
 import AsyncStorage from '@react-native-community/async-storage';
+import {getDataMoquitoCases} from './../screens/MoquitoCases/GetDataMoquitoCases';
+import {getDataProbableCases} from './../screens/ProbableCases/GetDataProbableCases';
 
 const {width, height} = Dimensions.get('window');
 
@@ -209,6 +212,9 @@ class MapContainer extends Component {
             contactNumbers: '',
             DengueText: '',
             DengvaxiaText: '',
+            dataMoCases: null,
+            dataProbable: null,
+            isLoading: true,
             lokasi: [
                 {
                     attributes: {
@@ -238,7 +244,7 @@ class MapContainer extends Component {
                         ID: null,
                         Reported_b: null,
                         Address: null,
-                        Barangay: '1',
+                        Bara5ngay: '1',
                         Residence: null,
                         lat: null,
                         long: null,
@@ -3114,7 +3120,26 @@ class MapContainer extends Component {
         this.forceUpdateHandler = this.forceUpdateHandler.bind(this);
         this.readMaps = this.readMaps.bind(this);
         this.requestGPSPermission = this.requestGPSPermission.bind(this);
+        this.fetchGetMoquitoCases = this.fetchGetMoquitoCases.bind(this);
+        this.fetchGetProbableCases = this.fetchGetProbableCases.bind(this);
     }
+
+    fetchGetMoquitoCases = () => {
+        getDataMoquitoCases()
+            .then(dataMoCases => {
+                this.setState({dataMoCases});
+                this.fetchGetProbableCases();
+            })
+            .catch(() => this.setState({isLoading: false}));
+    };
+
+    fetchGetProbableCases = () => {
+        getDataProbableCases()
+            .then(dataProbable => {
+                this.setState({dataProbable, isLoading: false});
+            })
+            .catch(() => this.setState({isLoading: false}));
+    };
 
     onClickLegend(index) {
         if (index === 1) {
@@ -3129,11 +3154,8 @@ class MapContainer extends Component {
             });
         }
     }
-    async componentDidUpdate(
-        prevProps: Readonly<P>,
-        prevState: Readonly<S>,
-        snapshot: SS,
-    ): void {
+
+    async componentDidUpdate() {
         await this.requestGPSPermission;
     }
 
@@ -3160,7 +3182,7 @@ class MapContainer extends Component {
         }
     }
 
-    async componentDidMount(): void {
+    async componentDidMount() {
         this._isMounted = true;
         this._isMounted &&
             this.props.navigation.setParams({
@@ -3438,108 +3460,130 @@ class MapContainer extends Component {
             'Probable Cases',
             'Moquito Cases',
         ];
-        return (
-            <View style={styles.wrapper}>
-                <StatusBar
-                    backgroundColor={colors.green01}
-                    barStyle="dark-content"
-                />
-                <DrawerLayout
-                    drawerBackgroundColor={colors.white}
-                    drawerWidth={300}
-                    ref={drawer => {
-                        return (this.drawer = drawer);
-                    }}
-                    renderNavigationView={() => navigationView}
-                    onDrawerOpen={() => this.setState({drawerActive: true})}
-                    onDrawerClose={() => this.setState({drawerActive: false})}>
-                    <MapView
-                        ref={MapView => (this.MapView = MapView)}
-                        key={this.state.forceRefresh}
-                        provider={PROVIDER_GOOGLE}
-                        style={styles.map}
-                        loadingEnabled={true}
-                        loadingIndicatorColor="#666666"
-                        moveOnMarkerPress={false}
-                        showsUserLocation={this.state.isShowLocation}
-                        showsMyLocationButton={true}
-                        showsPointsOfInterest={false}
-                        showsCompass={true}
-                        userLocationPriority="high"
-                        mapType={MAP_TYPES.STANDARD}
-                        showsScale={true}
-                        followsUserLocation={true}
-                        initialRegion={this.state.region}
-                        onMapReady={this.onMapReady}
-                        onRegionChange={this.onRegionChange}
-                        onPress={e => this.onMapPress(e)}>
-                        {this.state.lokasi.map(function(item, i) {
-                            if (
-                                !!item.attributes.long &&
-                                !!item.attributes.lat
-                            ) {
-                                return (
-                                    <MapMarker
-                                        ref={ref => {
-                                            this.marker = ref;
-                                        }}
-                                        key={i}
+        if (this.state.isLoading) {
+            return (
+                <View style={styles.container}>
+                    <StatusBar
+                        backgroundColor={colors.green01}
+                        barStyle="dark-content"
+                    />
+                    <Text>Sedang Memuat.</Text>
+                    <ActivityIndicator size="large" />
+                </View>
+            );
+        } else {
+            return (
+                <View style={styles.wrapper}>
+                    <StatusBar
+                        backgroundColor={colors.green01}
+                        barStyle="dark-content"
+                    />
+                    <DrawerLayout
+                        drawerBackgroundColor={colors.white}
+                        drawerWidth={300}
+                        ref={drawer => {
+                            return (this.drawer = drawer);
+                        }}
+                        renderNavigationView={() => navigationView}
+                        onDrawerOpen={() => this.setState({drawerActive: true})}
+                        onDrawerClose={() =>
+                            this.setState({drawerActive: false})
+                        }>
+                        <MapView
+                            ref={mapView => (this.MapView = mapView)}
+                            key={this.state.forceRefresh}
+                            provider={PROVIDER_GOOGLE}
+                            style={styles.map}
+                            loadingEnabled={true}
+                            loadingIndicatorColor="#666666"
+                            moveOnMarkerPress={false}
+                            showsUserLocation={this.state.isShowLocation}
+                            showsMyLocationButton={true}
+                            showsPointsOfInterest={false}
+                            showsCompass={true}
+                            userLocationPriority="high"
+                            mapType={MAP_TYPES.STANDARD}
+                            showsScale={true}
+                            followsUserLocation={true}
+                            initialRegion={this.state.region}
+                            onMapReady={this.onMapReady}
+                            onRegionChange={this.onRegionChange}
+                            onPress={e => this.onMapPress(e)}>
+                            {this.state.lokasi.map(function(item, i) {
+                                if (
+                                    !!item.attributes.long &&
+                                    !!item.attributes.lat
+                                ) {
+                                    return (
+                                        <MapMarker
+                                            ref={ref => {
+                                                this.marker = ref;
+                                            }}
+                                            key={i}
+                                            coordinate={{
+                                                latitude: item.attributes.lat,
+                                                longitude: item.attributes.long,
+                                            }}
+                                            title={item.attributes.notes}
+                                            tracksViewChanges={true}
+                                            identifier="DestMarker">
+                                            <Callout
+                                                tooltip
+                                                style={styles.customView}>
+                                                <TouchableHighlight
+                                                    onPress={() =>
+                                                        console.log('Click')
+                                                    }
+                                                    underlayColor="#dddddd">
+                                                    <View
+                                                        style={
+                                                            styles.calloutText
+                                                        }>
+                                                        <Text>
+                                                            {
+                                                                item.attributes
+                                                                    .notes
+                                                            }
+                                                        </Text>
+                                                    </View>
+                                                </TouchableHighlight>
+                                            </Callout>
+                                        </MapMarker>
+                                    );
+                                }
+                            })}
+                            {!!this.state.region.latitude &&
+                                !!this.state.region.longitude && (
+                                    <MapView.Marker
                                         coordinate={{
-                                            latitude: item.attributes.lat,
-                                            longitude: item.attributes.long,
+                                            latitude: this.state.region
+                                                .latitude,
+                                            longitude: this.state.region
+                                                .longitude,
                                         }}
-                                        title={item.attributes.notes}
-                                        tracksViewChanges={true}
-                                        identifier="DestMarker">
-                                        <Callout
-                                            tooltip
-                                            style={styles.customView}>
-                                            <TouchableHighlight
-                                                onPress={() =>
-                                                    console.log('Click')
-                                                }
-                                                underlayColor="#dddddd">
-                                                <View
-                                                    style={styles.calloutText}>
-                                                    <Text>
-                                                        {item.attributes.notes}
-                                                    </Text>
-                                                </View>
-                                            </TouchableHighlight>
-                                        </Callout>
-                                    </MapMarker>
-                                );
-                            }
-                        })}
-                        {!!this.state.region.latitude &&
-                            !!this.state.region.longitude && (
-                                <MapView.Marker
-                                    coordinate={{
-                                        latitude: this.state.region.latitude,
-                                        longitude: this.state.region.longitude,
-                                    }}
-                                    title={'Lokasi Saya'}
-                                />
-                            )}
-                    </MapView>
-                </DrawerLayout>
+                                        title={'Lokasi Saya'}
+                                    />
+                                )}
+                        </MapView>
+                    </DrawerLayout>
 
-                <ActionSheet
-                    ref={o => (this.ActionSheet = o)}
-                    title={
-                        <Text style={{color: '#000', fontSize: 18}}>
-                            Yang mana yang kamu suka?
-                        </Text>
-                    }
-                    style={styles.actionBar}
-                    options={optionArray}
-                    cancelButtonIndex={0}
-                    onPress={index => {
-                        this.onClickLegend(index);
-                    }}
-                />
-            </View>
-        );
+                    <ActionSheet
+                        ref={o => (this.ActionSheet = o)}
+                        title={
+                            <Text style={{color: '#000', fontSize: 18}}>
+                                Yang mana yang kamu suka?
+                            </Text>
+                        }
+                        style={styles.actionBar}
+                        options={optionArray}
+                        cancelButtonIndex={0}
+                        onPress={index => {
+                            this.onClickLegend(index);
+                        }}
+                    />
+                </View>
+            );
+        }
     }
 }
 

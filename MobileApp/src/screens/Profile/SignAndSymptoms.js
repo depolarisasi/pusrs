@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 /**
  * Created by Handika Dwiputra on 19/01/2020.
  * handikadwiputradev@gmail.com
@@ -13,6 +14,7 @@ import {
     TextInput,
     TouchableOpacity,
     ToastAndroid,
+    Alert,
 } from 'react-native';
 import {Image} from 'react-native';
 import Slider from '@react-native-community/slider';
@@ -46,7 +48,7 @@ class SignAndSymptoms extends Component {
         super(props);
         this.state = {
             dataPicker: ['Yes', 'No'],
-            picker01Fever: 'Yes',
+            picker01Fever: '',
             hwManyDayFever: '',
             temperatureFever: '',
             picker01Headache: '',
@@ -107,7 +109,7 @@ class SignAndSymptoms extends Component {
             })
             .catch(error => {
                 this.setState({
-                    picker01Fever: 'Yes',
+                    picker01Fever: 'Ya',
                     hwManyDayFever: '',
                     temperatureFever: '',
                     picker01Headache: '',
@@ -160,6 +162,26 @@ class SignAndSymptoms extends Component {
         signAndSyptoms.slider02Muscle = this.state.slider02Muscle;
         signAndSyptoms.picker01Rashes = this.state.picker01Rashes;
         signAndSyptoms.slider01Rashes = this.state.slider01Rashes;
+
+        console.log(`Masuk Sign And Sypmtoms ${this.state.picker01Fever}`);
+        if (this.state.picker01Fever === 'Ya') {
+            console.log('Masuk Sign And Sypmtoms2');
+            if (this.state.hwManyDayFever >= 3) {
+                if (this.state.temperatureFever === 37) {
+                    Alert.alert(
+                        'Peringatan Demam!',
+                        'Untuk memastikan penyakit anda lebih lanjut, silahkan kunjungi rumah sakit atau fasilitas kesehatan umum terdekat',
+                    );
+                }
+                if (this.state.temperatureFever >= 38) {
+                    Alert.alert(
+                        'Peringatan Demam!',
+
+                        'perdarahan trus sama yg lain lain dengan poin diatas 3,Anda bisa jadi terkena Dengue, silahkan datangi rumah sakit atau fasilitas kesehatan umum secepatnya',
+                    );
+                }
+            }
+        }
 
         let userId = auth().currentUser.uid;
         const refDb = database().ref(`/posts/${userId}`);
@@ -584,7 +606,8 @@ class SignAndSymptoms extends Component {
                     </View>
                     <View style={styles.mb5}>
                         <Text style={styles.fieldLabel}>
-                            Jika ya, dari 1 hingga 5, 5 adalah yang tertinggi, tingkat apa?
+                            Jika ya, dari 1 hingga 5, 5 adalah yang tertinggi,
+                            tingkat apa?
                         </Text>
                         <View style={styles.fieldInputRow}>
                             <Slider

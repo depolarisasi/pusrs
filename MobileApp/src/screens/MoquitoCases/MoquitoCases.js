@@ -10,11 +10,13 @@ import {
     Alert,
     Dimensions,
     Image,
+    Modal,
     ScrollView,
     StatusBar,
     StyleSheet,
     Text,
     TextInput,
+    ToastAndroid,
     TouchableOpacity,
     View,
 } from 'react-native';
@@ -24,6 +26,10 @@ import database from '@react-native-firebase/database';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ActionSheet from 'react-native-actionsheet';
 import ImagePicker from 'react-native-image-picker';
+import {getAsyncStorage} from '../UtilsHelper';
+import {addSubMoquitoCases} from './PostTaskSubMoquitoCases';
+import storage from '@react-native-firebase/storage';
+let uuid = require('react-native-uuid');
 
 class MoquitoCases extends Component {
     static navigationOptions = ({navigation}) => {
@@ -50,13 +56,38 @@ class MoquitoCases extends Component {
             },
             fileData: '',
             fileUri: '',
+            loadingLabel: 'Sedang Memuat',
+            urlPhotoFirebase: '',
+            statResponse: '',
+            progress: 0,
+            modalSubmitMoquitoVisible: false,
+            objectId: '',
+            uniqueId: '',
+            globalId: '',
+            condition: 'Moquito Cases',
         };
+        this.fetchGetTokenMoquito = this.fetchGetTokenMoquito.bind(this);
+        this.uploadImageMoquitoCases = this.uploadImageMoquitoCases.bind(this);
+        this.submitMoquitoCases = this.submitMoquitoCases.bind(this);
+        this.isUploadingLabel = this.isUploadingLabel.bind(this);
+        this.renderModulLoadingIndicatior = this.renderModulLoadingIndicatior.bind(
+            this,
+        );
     }
 
     async componentDidMount(): void {
         await this.readUserLoginMoq();
         this.props.navigation.setParams({
             checkMoquitoCase: this.checkMoquitoCase.bind(this),
+        });
+        this.fetchGetTokenMoquito();
+    }
+
+    fetchGetTokenMoquito() {
+        getAsyncStorage('accessToken').then(data => {
+            this.setState({
+                accessToken: data,
+            });
         });
     }
 
@@ -83,7 +114,153 @@ class MoquitoCases extends Component {
             });
     }
 
-    submitMoquitoCases() {}
+    toogleModalLoadingIndicator = state =>
+        this.setState({modalSubmitMoquitoVisible: state});
+
+    renderModulLoadingIndicatior() {
+        return (
+            <Modal
+                transparent={true}
+                animationType="fade"
+                onRequestClose={() => this.toogleModalLoadingIndicator(false)}
+                visible={this.state.modalSubmitMoquitoVisible}>
+                <View style={styles.wrapper}>
+                    <StatusBar
+                        backgroundColor={colors.green01}
+                        barStyle="dark-content"
+                    />
+                    <View style={styles.titleContainer}>
+                        <Text style={styles.titleText}>
+                            {this.state.condition}
+                        </Text>
+                    </View>
+                    <View style={styles.loadingBackground}>
+                        <Text>{this.state.loadingLabel}</Text>
+                        {this.isUploadingLabel()}
+                        <ActivityIndicator size="large" />
+                    </View>
+                </View>
+            </Modal>
+        );
+    }
+
+    async addInfoMoquitoFirebase(objectId, uniqueId, globalId, status, url) {
+        let userId = auth().currentUser.uid;
+        let addInfoPro = {};
+        addInfoPro.object_id = objectId;
+        addInfoPro.uniqueId = uniqueId;
+        addInfoPro.globalId = globalId;
+        addInfoPro.staResponse = status;
+        addInfoPro.imageUrl = url;
+        const refDb = database().ref(`/posts/${userId}/moquito_cases`);
+        await refDb.push(addInfoPro).then(() => {
+            this.props.navigation.goBack();
+            ToastAndroid.show('Input Data Berhasil', ToastAndroid.SHORT);
+            this.toogleModalLoadingIndicator(false);
+        });
+    }
+
+    submitMoquitoCases = accessToken => {
+        addSubMoquitoCases(accessToken, this.generateJsonMoquitoCases()).then(
+            data => {
+                let state;
+                state = {
+                    objectId: data.objectId,
+                    uniqueId: data.uniqueId,
+                    globalId: data.globalId,
+                    statResponse: data.success,
+                };
+                this.setState(state);
+                this.toogleModalLoadingIndicator(true);
+                if (this.state.fileUri.length > 0) {
+                    this.uploadImageMoquitoCases();
+                } else {
+                    this.addInfoMoquitoFirebase(
+                        `${this.state.objectId}`,
+                        `${this.state.uniqueId}`,
+                        `${this.state.globalId}`,
+                        `${this.state.statResponse}`,
+                        `${this.state.urlPhotoFirebase}`,
+                    ).then(r => {
+                        this.setState({
+                            isUploading: false,
+                            isLoading: true,
+                            loadingLabel: 'Mengirim Data...',
+                        });
+                    });
+                }
+            },
+        );
+    };
+    isUploadingLabel = () => {
+        if (this.state.isUploading) {
+            return <Text>{`${this.state.progress} %`}</Text>;
+        }
+    };
+
+    uploadImageMoquitoCases = () => {
+        const ext = this.state.fileUri.split('.').pop(); // Extract image extension
+        const filename = `${uuid()}.${ext}`; // Generate unique name
+        this.setState({
+            isLoading: true,
+            isUploading: true,
+            loadingLabel: 'Mengunggah Foto',
+        });
+        console.log(`firebase Storage ${this.state.fileUri}`);
+        storage()
+            .ref(`moquito_cases/${filename}`)
+            .putFile(this.state.fileUri)
+            .on(
+                storage.TaskEvent.STATE_CHANGED,
+                snapshot => {
+                    let state = {};
+                    state = {
+                        ...state,
+                        progress:
+                            (snapshot.bytesTransferred / snapshot.totalBytes) *
+                            100, // TODO Calculate progress percentage
+                    };
+                    if (snapshot.state === storage.TaskState.SUCCESS) {
+                        state = {
+                            ...state,
+                            filePath: '',
+                            fileData: '',
+                            fileUri: '',
+                            isLoading: false,
+                            isUploading: false,
+                            progress: 0,
+                        };
+                        console.log(
+                            `Success Upload Photo Moquito: ${
+                                this.state.urlPhotoFirebase
+                            }`,
+                        );
+                        this.setState(state);
+                        snapshot.ref.getDownloadURL().then(url => {
+                            this.setState({urlPhotoFirebase: url});
+                            this.addInfoMoquitoFirebase(
+                                `${this.state.objectId}`,
+                                `${this.state.uniqueId}`,
+                                `${this.state.globalId}`,
+                                `${this.state.statResponse}`,
+                                `${this.state.urlPhotoFirebase}`,
+                            ).then(r => {
+                                let stateAddInfo = {
+                                    isUploading: false,
+                                    isLoading: true,
+                                    loadingLabel: 'Mengirim Data...',
+                                };
+                                this.setState(stateAddInfo);
+                            });
+                        });
+                    }
+                },
+                error => {
+                    this.unsubscribe();
+                    Alert.alert('Error!', 'Sorry, Try again.');
+                },
+            );
+    };
 
     checkMoquitoCase() {
         let isErrorMoq = false;
@@ -254,7 +431,7 @@ class MoquitoCases extends Component {
             'Kamera',
         ];
 
-        if (this.state.loading) {
+        if (this.state.isLoading) {
             return (
                 <View style={styles.wrapper}>
                     <StatusBar
@@ -267,7 +444,7 @@ class MoquitoCases extends Component {
                         </Text>
                     </View>
                     <View style={styles.loadingBackground}>
-                        <Text>Sedang Memuat..</Text>
+                        <Text>{this.state.loadingLabel}</Text>
                         <ActivityIndicator size="large" />
                     </View>
                 </View>
@@ -404,6 +581,7 @@ class MoquitoCases extends Component {
                             }}
                         />
                     </ScrollView>
+                    {this.renderModulLoadingIndicatior()}
                 </View>
             );
         }
