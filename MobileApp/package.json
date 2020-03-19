@@ -11,7 +11,7 @@
         "build": "npm run-script build",
         "clean": "rmdir /s /q node_modules",
         "reinstall": "npm run clean && npm install",
-        "rebuild": "npm run clean && npm install && npm npm run-script build"
+        "rebuild": "npm run clean && npm install && npm run-script build"
     },
     "dependencies": {
         "@react-native-community/async-storage": "^1.8.1",
@@ -36,7 +36,7 @@
         "react-native-gesture-handler": "^1.4.1",
         "react-native-image-crop-picker": "^0.26.1",
         "react-native-image-picker": "^2.3.0",
-        "react-native-maps": "0.26.1",
+        "react-native-maps": "0.27.0",
         "react-native-pdf": "^6.0.1",
         "react-native-picker-module": "^1.2.3",
         "react-native-reanimated": "^1.3.0",

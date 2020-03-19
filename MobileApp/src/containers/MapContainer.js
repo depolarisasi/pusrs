@@ -22,6 +22,7 @@ import {
     TouchableHighlight,
     PermissionsAndroid,
     ActivityIndicator,
+    Image,
 } from 'react-native';
 import colors from './../styles/colors';
 import DrawerLayout from 'react-native-drawer-layout';
@@ -55,6 +56,10 @@ function randomColor() {
         .toString(16)
         .padStart(6, 0)}`;
 }
+
+const Pin = ({color}) => (
+    <View style={[styles.pin, {backgroundColor: color}]} />
+);
 
 class MapContainer extends Component {
     _isMounted = false;
@@ -215,6 +220,7 @@ class MapContainer extends Component {
             dataMoCases: null,
             dataProbable: null,
             isLoading: true,
+            loadingLabel: 'Sedang Memuat (1/2)',
             lokasi: [
                 {
                     attributes: {
@@ -3127,16 +3133,28 @@ class MapContainer extends Component {
     fetchGetMoquitoCases = () => {
         getDataMoquitoCases()
             .then(dataMoCases => {
-                this.setState({dataMoCases});
+                this.setState({
+                    dataMoCases,
+                    loadingLabel: 'Sedang Memuat (2/2)',
+                });
                 this.fetchGetProbableCases();
             })
-            .catch(() => this.setState({isLoading: false}));
+            .catch(() =>
+                this.setState({
+                    isLoading: false,
+                    loadingLabel: 'Error Moquito Cases',
+                }),
+            );
     };
 
     fetchGetProbableCases = () => {
         getDataProbableCases()
             .then(dataProbable => {
-                this.setState({dataProbable, isLoading: false});
+                this.setState({
+                    dataProbable,
+                    isLoading: false,
+                    loadingLabel: 'Sedang Memuat (Selesai)',
+                });
             })
             .catch(() => this.setState({isLoading: false}));
     };
@@ -3199,6 +3217,7 @@ class MapContainer extends Component {
             this.onBtnShowUserLocationTapped();
         }
         this.fetchGetToken();
+        this.fetchGetMoquitoCases();
     }
 
     // componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {}
@@ -3462,13 +3481,20 @@ class MapContainer extends Component {
         ];
         if (this.state.isLoading) {
             return (
-                <View style={styles.container}>
+                <View style={styles.wrapper}>
                     <StatusBar
                         backgroundColor={colors.green01}
                         barStyle="dark-content"
                     />
-                    <Text>Sedang Memuat.</Text>
-                    <ActivityIndicator size="large" />
+                    <View style={styles.titleContainer}>
+                        <Text style={styles.titleText}>
+                            {this.state.condition}
+                        </Text>
+                    </View>
+                    <View style={styles.loadingBackground}>
+                        <Text>{this.state.loadingLabel}</Text>
+                        <ActivityIndicator size="large" />
+                    </View>
                 </View>
             );
         } else {
@@ -3511,11 +3537,14 @@ class MapContainer extends Component {
                             onPress={e => this.onMapPress(e)}>
                             {this.state.lokasi.map(function(item, i) {
                                 if (
-                                    !!item.attributes.long &&
-                                    !!item.attributes.lat
+                                    item.attributes.long &&
+                                    item.attributes.lat
                                 ) {
+                                    console.log(
+                                        `Creator: ${item.attributes.length}`,
+                                    );
                                     return (
-                                        <MapMarker
+                                        <MapView.Marker
                                             ref={ref => {
                                                 this.marker = ref;
                                             }}
@@ -3524,9 +3553,13 @@ class MapContainer extends Component {
                                                 latitude: item.attributes.lat,
                                                 longitude: item.attributes.long,
                                             }}
-                                            title={item.attributes.notes}
+                                            title={item.attributes.Creator}
                                             tracksViewChanges={true}
                                             identifier="DestMarker">
+                                            <Image
+                                                source={require('./../img/marker_blue.png')}
+                                                style={styles.pinBackground}
+                                            />
                                             <Callout
                                                 tooltip
                                                 style={styles.customView}>
@@ -3548,7 +3581,7 @@ class MapContainer extends Component {
                                                     </View>
                                                 </TouchableHighlight>
                                             </Callout>
-                                        </MapMarker>
+                                        </MapView.Marker>
                                     );
                                 }
                             })}
@@ -3691,6 +3724,18 @@ const styles = StyleSheet.create({
     },
     calloutText: {
         backgroundColor: colors.white,
+    },
+    loadingBackground: {
+        flex: 1,
+        backgroundColor: colors.white,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    pinBackground: {
+        flex: 1,
+        width: 45,
+        height: 45,
+        resizeMode: 'contain',
     },
 });
 
