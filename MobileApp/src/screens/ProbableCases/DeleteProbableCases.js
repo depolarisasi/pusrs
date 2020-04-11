@@ -7,8 +7,8 @@ export async function DeleteProbableCases(tokenArchGIS, generateJson) {
     const deleteProbableCases = {
         key: 'ANxDjSZTKASRyOVa',
         f: 'json',
-        token: tokenArchGIS,
-        updates: generateJson,
+        token: `${tokenArchGIS}`,
+        deletes: `${generateJson}`,
     };
     var formBody = [];
     for (var property in deleteProbableCases) {
@@ -19,7 +19,7 @@ export async function DeleteProbableCases(tokenArchGIS, generateJson) {
 
     formBody = formBody.join('&');
 
-    return await fetch(
+    let responseBody = await fetch(
         'https://services6.arcgis.com/KKQJ8UH8yQZJCyc5/ArcGIS/rest/services/Probable_Cases/FeatureServer/0/applyEdits',
         {
             method: 'POST',
@@ -28,7 +28,7 @@ export async function DeleteProbableCases(tokenArchGIS, generateJson) {
             },
             body: formBody,
         },
-    )
-        .then(res => res.json())
-        .catch(error => error);
+    ).then(res => res.json());
+
+    return responseBody.deleteResults[0];
 }

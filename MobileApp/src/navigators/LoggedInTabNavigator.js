@@ -6,10 +6,7 @@
 
 import React from 'react';
 import {PropTypes} from 'prop-types';
-import {
-    createBottomTabNavigator,
-    createMaterialTopTabNavigator,
-} from 'react-navigation-tabs';
+import {createBottomTabNavigator} from 'react-navigation-tabs';
 import {createStackNavigator} from 'react-navigation-stack';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MapContainer from './../containers/MapContainer';
@@ -19,6 +16,8 @@ import VideoContainer from './../containers/VideoContainer';
 import ToDoContainer from './../containers/ToDoContainer';
 import ProbableCases from '../screens/ProbableCases/ProbableCases';
 import MoquitoCases from '../screens/MoquitoCases/MoquitoCases';
+import DetailMoquitoCases from '../screens/MoquitoCases/DetailMoquitoCases';
+import DetailProbableCases from '../screens/ProbableCases/DetailProbableCases';
 import Legend from './../screens/Legend';
 import colors from './../styles/colors';
 
@@ -36,6 +35,12 @@ const MapTab = createStackNavigator({
     },
     MoquitoCases: {
         screen: MoquitoCases,
+    },
+    DetailMoquitoCases: {
+        screen: DetailMoquitoCases,
+    },
+    DetailProbableCases: {
+        screen: DetailProbableCases,
     },
     Legend: {
         screen: Legend,

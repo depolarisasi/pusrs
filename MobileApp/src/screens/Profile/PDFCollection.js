@@ -34,7 +34,7 @@ class PDFCollection extends Component {
             PDF: [
                 {
                     id: 1,
-                    imgPdf: require('./../../img/pdf/1.png'),
+                    imgPdf: require('../../img/pdf/1.png'),
                     onPress: () =>
                         this.props.navigation.navigate('PdfScreen', {
                             onClickPdfScreen: {uri: 'bundle-assets://PDF1.pdf'},
@@ -42,7 +42,7 @@ class PDFCollection extends Component {
                 },
                 {
                     id: 2,
-                    imgPdf: require('./../../img/pdf/2.png'),
+                    imgPdf: require('../../img/pdf/2.png'),
                     onPress: () =>
                         this.props.navigation.navigate('PdfScreen', {
                             onClickPdfScreen: {uri: 'bundle-assets://PDF2.pdf'},
@@ -50,7 +50,7 @@ class PDFCollection extends Component {
                 },
                 {
                     id: 3,
-                    imgPdf: require('./../../img/pdf/3.png'),
+                    imgPdf: require('../../img/pdf/3.png'),
                     onPress: () =>
                         this.props.navigation.navigate('PdfScreen', {
                             onClickPdfScreen: {uri: 'bundle-assets://PDF3.pdf'},
@@ -58,7 +58,7 @@ class PDFCollection extends Component {
                 },
                 {
                     id: 4,
-                    imgPdf: require('./../../img/pdf/4.png'),
+                    imgPdf: require('../../img/pdf/4.png'),
                     onPress: () =>
                         this.props.navigation.navigate('PdfScreen', {
                             onClickPdfScreen: {uri: 'bundle-assets://PDF4.pdf'},
@@ -66,7 +66,7 @@ class PDFCollection extends Component {
                 },
                 {
                     id: 5,
-                    imgPdf: require('./../../img/pdf/5.png'),
+                    imgPdf: require('../../img/pdf/5.png'),
                     onPress: () =>
                         this.props.navigation.navigate('PdfScreen', {
                             onClickPdfScreen: {uri: 'bundle-assets://PDF5.pdf'},
@@ -74,7 +74,7 @@ class PDFCollection extends Component {
                 },
                 {
                     id: 6,
-                    imgPdf: require('./../../img/pdf/6.png'),
+                    imgPdf: require('../../img/pdf/6.png'),
                     onPress: () =>
                         this.props.navigation.navigate('PdfScreen', {
                             onClickPdfScreen: {uri: 'bundle-assets://pdf.pdf'},

@@ -7,8 +7,8 @@ export async function DeleteMoquitoCases(tokenArchGIS, generateJson) {
     const deleteMoquitoCases = {
         key: 'ANxDjSZTKASRyOVa',
         f: 'json',
-        token: tokenArchGIS,
-        updates: generateJson,
+        token: `${tokenArchGIS}`,
+        deletes: `${generateJson}`,
     };
 
     var formBody = [];
@@ -20,7 +20,7 @@ export async function DeleteMoquitoCases(tokenArchGIS, generateJson) {
 
     formBody = formBody.join('&');
 
-    return await fetch(
+    let responseBody = await fetch(
         'https://services6.arcgis.com/KKQJ8UH8yQZJCyc5/ArcGIS/rest/services/Mosquito_Bites/FeatureServer/0/applyEdits',
         {
             method: 'POST',
@@ -32,4 +32,6 @@ export async function DeleteMoquitoCases(tokenArchGIS, generateJson) {
     )
         .then(res => res.json())
         .catch(error => error);
+
+    return responseBody.deleteResults[0];
 }

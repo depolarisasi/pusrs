@@ -41,6 +41,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {getDataMoquitoCases} from './../screens/MoquitoCases/GetDataMoquitoCases';
 import {getDataProbableCases} from './../screens/ProbableCases/GetDataProbableCases';
 import stylesPin from './../screens/styles/Legend';
+import DetailMoquitoCases from "../screens/MoquitoCases/DetailMoquitoCases";
 
 const {width, height} = Dimensions.get('window');
 
@@ -278,6 +279,10 @@ class MapContainer extends Component {
                 longitude: this.state.region.longitude,
                 latitude: this.state.region.latitude,
             });
+        } else if (index === 3) {
+            this.props.navigation.navigate('DetailMoquitoCases');
+        } else if (index === 4) {
+            this.props.navigation.navigate('DetailProbableCases');
         }
     }
 
@@ -586,6 +591,8 @@ class MapContainer extends Component {
             <Text style={{color: colors.red01}}>Batal</Text>,
             'Probable Cases',
             'Moquito Cases',
+            'Detail Moquito Cases',
+            'Detail Probable Cases',
         ];
         if (this.state.isLoading) {
             return (
@@ -648,9 +655,6 @@ class MapContainer extends Component {
                                     item.attributes.long &&
                                     item.attributes.lat
                                 ) {
-                                    console.log(
-                                        `Creator: ${item.attributes.length}`,
-                                    );
                                     return (
                                         <MapView.Marker
                                             ref={ref => {
@@ -695,9 +699,6 @@ class MapContainer extends Component {
                                     item.attributes.long &&
                                     item.attributes.lat
                                 ) {
-                                    console.log(
-                                        `Creator: ${item.attributes.length}`,
-                                    );
                                     return (
                                         <MapView.Marker
                                             ref={ref => {

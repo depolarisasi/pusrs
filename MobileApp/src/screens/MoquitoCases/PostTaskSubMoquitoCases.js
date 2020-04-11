@@ -19,7 +19,7 @@ export async function addSubMoquitoCases(tokenArchGIS, generateJson) {
 
     formBody = formBody.join('&');
 
-    return await fetch(
+    let responseBody = await fetch(
         'https://services6.arcgis.com/KKQJ8UH8yQZJCyc5/ArcGIS/rest/services/Mosquito_Bites/FeatureServer/0/applyEdits',
         {
             method: 'POST',
@@ -31,4 +31,6 @@ export async function addSubMoquitoCases(tokenArchGIS, generateJson) {
     )
         .then(res => res.json())
         .catch(error => error);
+
+    return responseBody.addResults[0];
 }

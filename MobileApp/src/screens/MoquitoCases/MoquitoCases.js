@@ -175,6 +175,7 @@ class MoquitoCases extends Component {
                 if (this.state.fileUri.length > 0) {
                     this.uploadImageMoquitoCases();
                 } else {
+                    console.log(`objectId: ${this.state.objectId}`);
                     this.addInfoMoquitoFirebase(
                         `${this.state.objectId}`,
                         `${this.state.uniqueId}`,
@@ -192,6 +193,7 @@ class MoquitoCases extends Component {
             },
         );
     };
+
     isUploadingLabel = () => {
         if (this.state.isUploading) {
             return <Text>{`${this.state.progress} %`}</Text>;
@@ -200,7 +202,7 @@ class MoquitoCases extends Component {
 
     uploadImageMoquitoCases = () => {
         const ext = this.state.fileUri.split('.').pop(); // Extract image extension
-        const filename = `${uuid()}.${ext}`; // Generate unique name
+        const filename = `$  {uuid()}.${ext}`; // Generate unique name
         this.setState({
             isLoading: true,
             isUploading: true,
@@ -286,7 +288,7 @@ class MoquitoCases extends Component {
         }
 
         if (!isErrorMoq) {
-            this.submitMoquitoCases();
+            this.submitMoquitoCases(this.state.accessToken);
         }
     }
 
@@ -426,7 +428,7 @@ class MoquitoCases extends Component {
         | null
         | undefined {
         const optionArray = [
-            <Text style={{color: colors.red01}}>Cancel</Text>,
+            <Text style={{color: colors.red01}}>Batal</Text>,
             'Galeri',
             'Kamera',
         ];
