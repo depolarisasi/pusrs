@@ -6,8 +6,8 @@
         "start": "react-native start",
         "test": "jest",
         "lint": "eslint .",
-        "build-android": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
-        "android-windows": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && react-native run-android",
+        "build-android": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && cd android && gradlew clean && gradlew assembledebug && cd ..",
+        "android-windows": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && cd android && gradlew clean && cd .. && react-native run-android",
         "build": "npm run-script build",
         "clean": "rmdir /s /q node_modules",
         "clean-mac": "rm -R  node_modules",
@@ -58,8 +58,7 @@
         "redux-form": "^8.2.6",
         "redux-logger": "^3.0.6",
         "redux-thunk": "^2.3.0",
-        "rn-fetch-blob": "^0.12.0",
-        "React": "latest"
+        "rn-fetch-blob": "^0.12.0"
     },
     "devDependencies": {
         "@babel/core": "^7.6.0",

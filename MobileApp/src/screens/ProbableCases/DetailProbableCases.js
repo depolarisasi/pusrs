@@ -32,7 +32,7 @@ import colors from '../../styles/colors';
 import ActionSheet from 'react-native-actionsheet';
 import HeaderDetailProbable from '../../components/headers/HeaderDetailProbable';
 
-class DetailProbableCases extends Component {
+class DetailProbableCases extends React.Component {
     static navigationOptions = ({navigation}) => {
         return {
             header: () => (
@@ -74,101 +74,97 @@ class DetailProbableCases extends Component {
             dataProb: [],
             condition: 'Rincian Probable Cases',
         };
+        this.currentUser = auth().currentUser;
         // this.readLoginDetailProbable = this.readLoginDetailProbable.bind(this);
         this.readFirebaseProbableCases = this.readFirebaseProbableCases.bind(
             this,
         );
-        this.fetchGetTokenDetail = this.fetchGetTokenDetail.bind(this);
+        // this.fetchGetTokenDetail = this.fetchGetTokenDetail.bind(this);
         this.onDeleteProbableCases = this.onDeleteProbableCases.bind(this);
-        this.readLoginDetailProbable = this.readLoginDetailProbable.bind(this);
+        // this.readLoginDetailProbable = this.readLoginDetailProbable.bind(this);
         this.renderAttachmentProb = this.renderAttachmentProb.bind(this);
     }
 
     async componentDidMount(): * {
-        await this.getReportSpesificAsyncTask('100');
-        // await this.readLoginDetailProbable();
-        await this.readFirebaseProbableCases();
-        await this.fetchGetTokenDetail();
-    }
+        try {
+            this.setState({isLoading: true});
+            const data = this.props.navigation.getParam('data', {});
+            const {ID, FID} = data.attributes;
+            console.log('DetailProbableCases.didmount ', data);
 
-    async readLoginDetailProbable() {
-        let userId = auth().currentUser.uid;
-        const refDb = database().ref(`/users/profile/${userId}/account`);
-        refDb
-            .once('value')
-            .then(snapshot => {
-                this.setState({
-                    isLoading: false,
-                });
-            })
-            .catch(error => {
-                Alert.alert(
-                    'Pemberitahuan',
-                    `${error}: Silahkan Koneksi Internet Anda`,
-                );
-                this.setState({
-                    reportedBy: '',
-                    isLoading: false,
-                });
+            const accessToken = await getAsyncStorage('accessToken');
+            const detail = await this.getDetail(FID);
+            const resFirebase = await this.readFirebaseProbableCases(FID);
+
+            // this.getReportSpesificAsyncTask(FID);
+            // await this.readFirebaseProbableCases();
+            // await this.fetchGetTokenDetail();
+
+            this.setState({
+                isLoading: false,
+                accessToken: accessToken ? accessToken : '',
+                ...detail,
+                ...resFirebase,
             });
+        } catch (err) {
+            console.log('error ', err.message);
+            this.setState({isLoading: false});
+        }
     }
 
-    async readFirebaseProbableCases() {
-        let userId = auth().currentUser.uid;
-        const refDb = database()
-            .ref(`/posts/${userId}/probable_cases`)
-            .equalTo('100')
-            .orderByChild('object_id');
-        await refDb.once('value', data => {
-            console.log(`responseDetail: ${JSON.stringify(data)}`);
-            const items = [];
-            data.forEach(function(childSnapshot) {
-                try {
-                    items.push({
-                        imageUrl: childSnapshot.val().imageUrl,
-                    });
-                } catch (e) {
-                    console.error(`error read probable cases: ${e.message()}`);
-                    items.push({
-                        imageUrl: '',
-                    });
+    async readFirebaseProbableCases(FID) {
+        try {
+            let response = {};
+            let userId = auth().currentUser.uid;
+            // const refDb = database().ref(`/posts/${userId}/Probable_cases`);
+            const refDb = database().ref('/probable_cases');
+            const res = await refDb
+                .orderByChild('object_id')
+                .equalTo('' + FID)
+                .once('value')
+                .then(snapshot => snapshot);
+            const val = res.val();
+            console.log('value ', res, val);
+            if (val) {
+                const value = Object.values(val)[0];
+                response = value;
+                if (value.imageUrl) {
+                    response.isPhotoFirebase = true;
+                    response.urlPhotoFirebase = value.imageUrl;
                 }
-            });
-            this.setState({dataProb: items});
-            if (typeof null === data) {
-                this.setState({isPhotoFirebase: false});
-                this.setState({isLoading: false});
-            } else {
-                if (typeof this.state.dataProb[0].imageUrl !== 'undefined') {
-                    if (this.state.dataProb[0].imageUrl === '') {
-                        this.setState({isPhotoFirebase: false});
-                    } else {
-                        this.setState({
-                            urlPhotoFirebase: this.state.dataProb[0].imageUrl,
-                        });
-                        this.setState({isPhotoFirebase: true});
-                    }
-                    this.setState({isLoading: false});
-                } else {
-                    this.setState({isPhotoFirebase: false});
-                    this.setState({isLoading: false});
+                if (value.user && value.user.email) {
+                    response.reportedBy = value.user.email;
                 }
             }
-        });
+            return response;
+        } catch (err) {
+            console.log('ERROR readFirebaseProbableCases ', err.message);
+            this.setStat;
+            return null;
+        }
     }
 
-    async fetchGetTokenDetail() {
-        getAsyncStorage('accessToken').then(data => {
-            this.setState({accessToken: data});
-        });
+    async getDetail(FID) {
+        const detail = await getSpecificReportProbable(FID);
+        console.log('detail ', detail);
+        if (detail && detail.attributes) {
+            return {
+                address: detail.attributes.Address,
+                barangay: detail.attributes.Barangay,
+                residence: detail.attributes.Residence,
+                lat: detail.attributes.lat,
+                long: detail.attributes.long,
+                notes: detail.attributes.notes,
+            };
+        }
+        return {};
     }
 
-    async onDeleteProbableCases() {
-        let userId = auth().currentUser.uid;
-        const refDb = database().ref(`/posts/${userId}/probable_cases`);
+    async onDeleteProbableCases(FID) {
+        const refDb = database().ref('/probable_cases');
         await refDb
             .orderByChild('object_id')
-            .equalTo('100')
+            .equalTo('' + FID)
             .once('value')
             .then(function(snapshot) {
                 snapshot.forEach(function(childSnapshot) {
@@ -181,76 +177,31 @@ class DetailProbableCases extends Component {
         }
     }
 
-    deleteReportAsyncTask = FIDReport => {
-        DeleteProbableCases(this.state.accessToken, [FIDReport]).then(data => {
-            let state;
-            state = {
-                objectId: data.objectId,
-                uniqueId: data.uniqueId,
-                statResponse: data.success,
-                isLoading: true,
-            };
-            this.setState(state);
-            if (this.state.statResponse) {
-                this.onDeleteProbableCases().then(r => {});
-                NativeToastAndroid.show(
-                    'Berhasil di Hapus',
-                    NativeToastAndroid.SHORT,
-                );
-            } else {
-                this.setState({isLoading: false});
-                NativeToastAndroid.show(
-                    'Silahkan Coba lagi',
-                    NativeToastAndroid.SHORT,
-                );
+    deleteReportAsyncTask = async () => {
+        let message = 'Hapus Gagal, Silahkan coba lagi';
+        let success = false;
+        const {uniqueId, accessToken} = this.state;
+        console.log('deleteReportAsyncTask ', uniqueId, accessToken);
+        if (uniqueId && accessToken) {
+            this.setState({isLoading: true});
+            const resDelete = await DeleteProbableCases(accessToken, uniqueId);
+            console.log('res delete ', resDelete);
+            const deleteFirebase = await this.onDeleteProbableCases(uniqueId);
+            console.log('res delete firebase ', deleteFirebase);
+            if (resDelete) {
+                success = true;
+                message = 'Berhasil di hapus';
             }
-        });
+            this.setState({isLoading: false});
+        }
+        NativeToastAndroid.show(message, NativeToastAndroid.SHORT);
+        if (success) {
+            this.props.navigation.goBack();
+        }
     };
 
     toogleModalDetailLoadingIndicator = state =>
         this.setState({modalSubmitDetailProbableVisible: state});
-
-    getReportSpesificAsyncTask = objectId => {
-        getSpecificReportProbable(objectId).then(data => {
-            let state;
-            if (data.attributes.Reported_b) {
-                let reportSetState = data.attributes.Reported_b;
-                this.setState({reportedBy: reportSetState});
-            }
-            if (data.attributes.Address) {
-                let addressState = data.attributes.Address;
-                this.setState({address: addressState});
-            }
-            if (data.attributes.Barangay) {
-                let barangayState = data.attributes.Barangay;
-                this.setState({barangay: barangayState});
-            }
-            if (data.attributes.Residence) {
-                let residenceState = data.attributes.Residence;
-                this.setState({residence: residenceState});
-            }
-            if (data.attributes.lat) {
-                let latitudeState = `${data.attributes.lat}`;
-                this.setState({lat: latitudeState});
-            }
-            if (data.attributes.long) {
-                let longitudeState = `${data.attributes.long}`;
-                this.setState({long: longitudeState});
-            }
-            if (data.attributes.Notes) {
-                let notesState = `${data.attributes.Notes}`;
-                this.setState({notes: notesState});
-            } else {
-                this.setState({notes: '-'});
-            }
-            state = {
-                objectId: data.objectId,
-                uniqueId: data.uniqueId,
-            };
-            this.setState(state);
-            console.log(`responseBody Report: ${JSON.stringify(data)}`);
-        });
-    };
 
     renderLoadingIndicatorProb() {
         return (
@@ -289,7 +240,7 @@ class DetailProbableCases extends Component {
                 text: 'Ya',
                 onPress: async () => {
                     this.toogleModalDetailLoadingIndicator(true);
-                    this.deleteReportAsyncTask('100');
+                    this.deleteReportAsyncTask();
                 },
             },
         ]);
@@ -332,10 +283,29 @@ class DetailProbableCases extends Component {
         }
     }
 
-    render(): React.DetailedReactHTMLElement<
-        React.InputHTMLAttributes<HTMLInputElement>,
-        HTMLInputElement,
-    > {
+    renderDelete = () => {
+        try {
+            const {email, uid} = this.currentUser;
+            const {reportedBy} = this.state;
+            if (reportedBy == email) {
+                return (
+                    <TouchableOpacity
+                        onPress={() => {
+                            this.onDialogDelete();
+                        }}
+                        style={styles.saveButton}>
+                        <Text style={styles.saveButtonText}>Hapus</Text>
+                    </TouchableOpacity>
+                );
+            }
+            return null;
+        } catch (err) {
+            console.log('ERROR renderDelete ', err.message);
+            return null;
+        }
+    };
+
+    render(): React.ReactNode {
         const optionArray = [
             <Text style={{color: colors.red01}}>Batal</Text>,
             'Galeri',
@@ -471,13 +441,7 @@ class DetailProbableCases extends Component {
                                 this.onClickAttachments(index);
                             }}
                         />
-                        <TouchableOpacity
-                            onPress={() => {
-                                this.onDialogDelete();
-                            }}
-                            style={styles.saveButton}>
-                            <Text style={styles.saveButtonText}>Hapus</Text>
-                        </TouchableOpacity>
+                        {this.renderDelete()}
                     </ScrollView>
                     {this.renderLoadingIndicatorProb()}
                 </View>

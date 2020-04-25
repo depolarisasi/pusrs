@@ -57,7 +57,7 @@ class DetailMoquitoCases extends Component {
             },
             fileData: '',
             fileUri: '',
-            loadingLabel: 'Sedang Memuat (0/2)',
+            loadingLabel: 'Sedang Memuat',
             urlPhotoFirebase: '',
             statResponse: '',
             progress: 0,
@@ -70,91 +70,91 @@ class DetailMoquitoCases extends Component {
             isPhotoFirebase: false,
             condition: 'Rincian Moquito Cases',
         };
-        this.readLoginDetailMoq = this.readLoginDetailMoq.bind(this);
+        this.currentUser = auth().currentUser;
         this.onDeleteMoquitoCases = this.onDeleteMoquitoCases.bind(this);
         this.readFirebaseMoquitoCases = this.readFirebaseMoquitoCases.bind(
-            this,
-        );
-        this.getReportSpesificAsyncTask = this.getReportSpesificAsyncTask.bind(
             this,
         );
     }
 
     async componentDidMount(): void {
-        await this.readLoginDetailMoq();
-        this.getReportSpesificAsyncTask('124');
-    }
-
-    async readLoginDetailMoq() {
-        let userId = auth().currentUser.uid;
-        const refDb = database().ref(`/users/profile/${userId}/account`);
-        refDb
-            .once('value')
-            .then(snapshot => {
-                this.setState({
-                    reportedBy: snapshot.val().email,
-                    loadingLabel: 'Sedang Memuat (2/2)',
-                });
-                this.readFirebaseMoquitoCases();
-            })
-            .catch(error => {
-                Alert.alert(
-                    'Pemberitahuan',
-                    `${error}: Silahkan Koneksi Internet Anda`,
-                );
-                this.setState({
-                    reportedBy: '',
-                    isLoading: false,
-                });
+        try {
+            this.setState({isLoading: true});
+            const data = this.props.navigation.getParam('data', {
+                attributes: {FID: ''},
             });
+            const {FID} = data.attributes;
+            console.log(
+                'DetailMoquitoCases.didmount ',
+                data,
+                auth().currentUser,
+            );
+            // await this.readLoginDetailMoq(FID);
+            const accessToken = await getAsyncStorage('accessToken');
+            const detail = await this.getDetail(FID);
+            console.log('detail ', detail, accessToken);
+            if (detail && detail.attributes) {
+            }
+            const resFirebase = await this.readFirebaseMoquitoCases(FID);
+            // this.getReportSpesificAsyncTask(FID);
+            this.setState({
+                isLoading: false,
+                accessToken: accessToken ? accessToken : '',
+                ...detail,
+                ...resFirebase,
+            });
+        } catch (err) {
+            console.log('error ', err.message);
+            this.setState({isLoading: false});
+        }
     }
 
-    async readFirebaseMoquitoCases() {
-        let userId = auth().currentUser.uid;
-        const refDb = database().ref(`/posts/${userId}/moquito_cases`);
-
-        await refDb
-            .orderByChild('object_id')
-            .equalTo('126')
-            .once('value', data => {
-                const items = [];
-                data.forEach(function(childSnapshot) {
-                    if (typeof childSnapshot.val().imageUrl !== 'undefined') {
-                        items.push({
-                            imageUrl: childSnapshot.val().imageUrl,
-                        });
-                    }
-                });
-                this.setState({dataMoqu: items});
-                if (typeof null === data) {
-                    this.setState({isPhotoFirebase: false});
-                    this.setState({isLoading: false});
-                } else {
-                    if (
-                        typeof this.state.dataMoqu[0].imageUrl !== 'undefined'
-                    ) {
-                        if (this.state.dataMoqu[0].imageUrl === '') {
-                            this.setState({
-                                urlPhotoFirebase: '',
-                            });
-                            this.setState({isPhotoFirebase: false});
-                        } else {
-                            this.setState({
-                                urlPhotoFirebase: this.state.dataMoqu[0]
-                                    .imageUrl,
-                            });
-                            this.setState({isPhotoFirebase: true});
-                        }
-                        this.setState({isLoading: false});
-                    } else {
-                        this.setState({isPhotoFirebase: false});
-                        this.setState({isLoading: false});
-                    }
+    async readFirebaseMoquitoCases(FID = 0) {
+        try {
+            let response = {};
+            let userId = auth().currentUser.uid;
+            // const refDb = database().ref(`/posts/${userId}/moquito_cases`);
+            const refDb = database().ref('/moquito_cases');
+            const res = await refDb
+                .orderByChild('object_id')
+                .equalTo('' + FID)
+                .once('value')
+                .then(snapshot => snapshot);
+            const val = res.val();
+            console.log('value ', res, val);
+            if (val) {
+                const value = Object.values(val)[0];
+                response = value;
+                if (value.imageUrl) {
+                    response.isPhotoFirebase = true;
+                    response.urlPhotoFirebase = value.imageUrl;
                 }
-            })
-            .then(snapshot => {
-                console.log(`responseFirebase: ${JSON.stringify(snapshot)}`);
-            });
+                if (value.user && value.user.email) {
+                    response.reportedBy = value.user.email;
+                }
+            }
+            return response;
+        } catch (err) {
+            console.log('ERROR readFirebaseMoquitoCases ', err.message);
+            this.setStat;
+            return null;
+        }
+    }
+
+    async getDetail(FID) {
+        const detail = await getSpecificReportMoquito(FID);
+        console.log('detail ', detail);
+        if (detail && detail.attributes) {
+            return {
+                address: detail.attributes.Address,
+                barangay: detail.attributes.Barangay,
+                residence: detail.attributes.Residence,
+                lat: detail.attributes.lat,
+                long: detail.attributes.long,
+                notes: detail.attributes.notes,
+            };
+        }
+        return {};
     }
 
     async fetchGetTokenDetalMoquito() {
@@ -165,14 +165,16 @@ class DetailMoquitoCases extends Component {
         });
     }
 
-    async onDeleteMoquitoCases() {
+    async onDeleteMoquitoCases(FID) {
         let userId = auth().currentUser.uid;
-        const refDb = database().ref(`/posts/${userId}/moquito_cases`);
+        // const refDb = database().ref(`/posts/${userId}/moquito_cases`);
+        const refDb = database().ref('/moquito_cases');
         await refDb
             .orderByChild('object_id')
-            .equalTo('138')
+            .equalTo('' + FID)
             .once('value')
             .then(function(snapshot) {
+                console.log('onDeleteMoquitoCases ', userId, snapshot);
                 snapshot.forEach(function(childSnapshot) {
                     refDb.child(childSnapshot.key).remove();
                 });
@@ -183,73 +185,27 @@ class DetailMoquitoCases extends Component {
         }
     }
 
-    getReportSpesificAsyncTask = objectId => {
-        getSpecificReportMoquito(objectId).then(data => {
-            console.log(`responseBody: ${data}`);
-            let state;
-            if (data.attributes.Reported_b) {
-                let reportSetState = data.attributes.Reported_b;
-                this.setState({reportedBy: reportSetState});
+    deleteReportAsyncTask = async () => {
+        let message = 'Hapus Gagal, Silahkan coba lagi';
+        let success = false;
+        const {uniqueId, accessToken} = this.state;
+        console.log('deleteReportAsyncTask ', uniqueId, accessToken);
+        if (uniqueId && accessToken) {
+            this.setState({isLoading: true});
+            const resDelete = await DeleteMoquitoCases(accessToken, uniqueId);
+            console.log('res delete ', resDelete);
+            const deleteFirebase = await this.onDeleteMoquitoCases(uniqueId);
+            console.log('res delete firebase ', deleteFirebase);
+            if (resDelete) {
+                success = true;
+                message = 'Berhasil di hapus';
             }
-            if (data.attributes.Address) {
-                let addressState = data.attributes.Address;
-                this.setState({address: addressState});
-            }
-            if (data.attributes.Barangay) {
-                let barangayState = data.attributes.Barangay;
-                this.setState({barangay: barangayState});
-            }
-            if (data.attributes.Residence) {
-                let residenceState = data.attributes.Residence;
-                this.setState({residence: residenceState});
-            }
-            if (data.attributes.lat) {
-                let latitudeState = `${data.attributes.lat}`;
-                this.setState({lat: latitudeState});
-            }
-            if (data.attributes.long) {
-                let longitudeState = `${data.attributes.long}`;
-                this.setState({long: longitudeState});
-            }
-            if (data.attributes.Notes) {
-                let notesState = `${data.attributes.Notes}`;
-                this.setState({notes: notesState});
-            } else {
-                this.setState({notes: '-'});
-            }
-            state = {
-                objectId: data.objectId,
-                uniqueId: data.uniqueId,
-            };
-            this.setState(state);
-            console.log(`responseBody Report: ${JSON.stringify(data)}`);
-        });
-    };
-
-    deleteReportAsyncTask = FIDReport => {
-        DeleteMoquitoCases(this.state.accessToken, [FIDReport]).then(data => {
-            let state;
-            state = {
-                objectId: data.objectId,
-                uniqueId: data.uniqueId,
-                statResponse: data.success,
-                isLoading: true,
-            };
-            this.setState(state);
-            if (this.state.statResponse) {
-                this.onDeleteMoquitoCases().then(r => {});
-                NativeToastAndroid.show(
-                    'Berhasil di Hapus',
-                    NativeToastAndroid.SHORT,
-                );
-            } else {
-                this.setState({isLoading: false});
-                NativeToastAndroid.show(
-                    'Silahkan Coba lagi',
-                    NativeToastAndroid.SHORT,
-                );
-            }
-        });
+            this.setState({isLoading: false});
+        }
+        NativeToastAndroid.show(message, NativeToastAndroid.SHORT);
+        if (success) {
+            this.props.navigation.goBack();
+        }
     };
 
     onClickAttachments(index) {
@@ -327,6 +283,28 @@ class DetailMoquitoCases extends Component {
         }
     }
 
+    renderDelete = () => {
+        try {
+            const {email, uid} = this.currentUser;
+            const {reportedBy} = this.state;
+            if (reportedBy == email) {
+                return (
+                    <TouchableOpacity
+                        onPress={() => {
+                            this.onDialogDelete();
+                        }}
+                        style={styles.saveButton}>
+                        <Text style={styles.saveButtonText}>Hapus</Text>
+                    </TouchableOpacity>
+                );
+            }
+            return null;
+        } catch (err) {
+            console.log('ERROR renderDelete ', err.message);
+            return null;
+        }
+    };
+
     onDialogDelete() {
         Alert.alert('Pemberitahuan', 'Anda yakin ingin Menghapus?', [
             {
@@ -338,7 +316,7 @@ class DetailMoquitoCases extends Component {
                 text: 'Ya',
                 onPress: async () => {
                     this.toogleModalDetailLoadingIndicator(true);
-                    this.deleteReportAsyncTask('126');
+                    this.deleteReportAsyncTask();
                 },
             },
         ]);
@@ -359,6 +337,7 @@ class DetailMoquitoCases extends Component {
             'Galeri',
             'Kamera',
         ];
+        console.log('render ', this.state);
         if (this.state.isLoading) {
             return (
                 <View style={styles.wrapper}>
@@ -489,13 +468,7 @@ class DetailMoquitoCases extends Component {
                                 this.onClickAttachments(index);
                             }}
                         />
-                        <TouchableOpacity
-                            onPress={() => {
-                                this.onDialogDelete();
-                            }}
-                            style={styles.saveButton}>
-                            <Text style={styles.saveButtonText}>Hapus</Text>
-                        </TouchableOpacity>
+                        {this.renderDelete()}
                     </ScrollView>
                     {this.renderLoadingIndicatorMoq()}
                 </View>

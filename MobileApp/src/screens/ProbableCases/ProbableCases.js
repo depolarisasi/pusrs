@@ -44,10 +44,11 @@ class ProbableCases extends Component {
     constructor(props) {
         super(props);
         const {params} = this.props.navigation.state;
+        const currentUser = auth().currentUser
         this.state = {
             isLoading: true,
             isUploading: false,
-            reportedBy: '',
+            reportedBy: currentUser.email,
             accessToken: '',
             address: '',
             barangay: '',
@@ -57,7 +58,7 @@ class ProbableCases extends Component {
             gender: '',
             lat: params.latitude,
             long: params.longitude,
-            notes: '',
+            notes: 'test notes',
             filepath: {
                 data: '',
                 uri: '',
@@ -80,12 +81,20 @@ class ProbableCases extends Component {
             this,
         );
     }
+
     async componentDidMount(): void {
-        await this.readUserLogin();
-        this.props.navigation.setParams({
-            checkProbableCases: this.checkProbableCases.bind(this),
-        });
-        this.fetchGetTokenProbable();
+        try{
+            this.setState({isLoading: true})
+            this.props.navigation.setParams({
+                checkProbableCases: this.checkProbableCases.bind(this),
+            });
+            await this.fetchGetTokenProbable();
+            this.setState({isLoading: false})
+        }catch(err){
+            console.log('ERROR ', err.message)
+            this.setState({isLoading: false})
+        }
+
         this.submitProbableCases = this.submitProbableCases.bind(this);
     }
 
@@ -100,25 +109,6 @@ class ProbableCases extends Component {
     handleRefreshToken = () => {
         this.setState({isLoading: true}, () => this.fetchGenerateToken());
     };
-
-    async readUserLogin() {
-        let userId = auth().currentUser.uid;
-        const refDb = database().ref(`/users/profile/${userId}/account`);
-        refDb
-            .once('value')
-            .then(snapshot => {
-                this.setState({
-                    reportedBy: snapshot.val().email,
-                    isLoading: false,
-                });
-            })
-            .catch(error => {
-                this.setState({
-                    reportedBy: '',
-                    isLoading: false,
-                });
-            });
-    }
 
     toogleModalLoadingIndicator = state =>
         this.setState({modalSubmitProbableVisible: state});
@@ -151,14 +141,20 @@ class ProbableCases extends Component {
     }
 
     async addInfoProbableFirebase(objectId, uniqueId, globalId, status, url) {
-        let userId = auth().currentUser.uid;
+        // let userId = auth().currentUser.uid;
+        const user = auth().currentUser.toJSON()
         let addInfoPro = {};
         addInfoPro.object_id = objectId;
         addInfoPro.uniqueId = uniqueId;
         addInfoPro.globalId = globalId;
         addInfoPro.staResponse = status;
         addInfoPro.imageUrl = url;
-        const refDb = database().ref(`/posts/${userId}/probable_cases`);
+        addInfoPro.user = {
+            uid: user.uid,
+            email: user.email
+        }
+        // const refDb = database().ref(`/posts/${userId}/probable_cases`);
+        const refDb = database().ref(`/probable_cases`);
         await refDb.push(addInfoPro).then(() => {
             this.props.navigation.goBack();
             ToastAndroid.show('Input Data Berhasil', ToastAndroid.SHORT);

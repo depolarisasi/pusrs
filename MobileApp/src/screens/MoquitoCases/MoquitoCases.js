@@ -41,9 +41,11 @@ class MoquitoCases extends Component {
     constructor(props) {
         super(props);
         const {params} = this.props.navigation.state;
+        const currentUser = auth().currentUser
+        console.log('currentUser ', currentUser)
         this.state = {
             isLoading: true,
-            reportedBy: '',
+            reportedBy: currentUser.email,
             address: '',
             barangay: '',
             residence: '',
@@ -76,11 +78,21 @@ class MoquitoCases extends Component {
     }
 
     async componentDidMount(): void {
-        await this.readUserLoginMoq();
-        this.props.navigation.setParams({
-            checkMoquitoCase: this.checkMoquitoCase.bind(this),
-        });
-        this.fetchGetTokenMoquito();
+        try{
+            this.setState({isLoading: true})
+            this.props.navigation.setParams({
+                checkMoquitoCase: this.checkMoquitoCase.bind(this),
+            });
+            await this.fetchGetTokenMoquito();
+            this.setState({isLoading: false})
+        }catch(err){
+            this.setState({isLoading: false})
+        }
+        // await this.readUserLoginMoq();
+        // this.props.navigation.setParams({
+        //     checkMoquitoCase: this.checkMoquitoCase.bind(this),
+        // });
+        // this.fetchGetTokenMoquito();
     }
 
     fetchGetTokenMoquito() {
@@ -89,29 +101,6 @@ class MoquitoCases extends Component {
                 accessToken: data,
             });
         });
-    }
-
-    async readUserLoginMoq() {
-        let userId = auth().currentUser.uid;
-        const refDb = database().ref(`/users/profile/${userId}/account`);
-        refDb
-            .once('value')
-            .then(snapshot => {
-                this.setState({
-                    reportedBy: snapshot.val().email,
-                    isLoading: false,
-                });
-            })
-            .catch(error => {
-                Alert.alert(
-                    'Pemberitahuan',
-                    `${error}: Silahkan Koneksi Internet Anda`,
-                );
-                this.setState({
-                    reportedBy: '',
-                    isLoading: false,
-                });
-            });
     }
 
     toogleModalLoadingIndicator = state =>
@@ -145,14 +134,22 @@ class MoquitoCases extends Component {
     }
 
     async addInfoMoquitoFirebase(objectId, uniqueId, globalId, status, url) {
-        let userId = auth().currentUser.uid;
+        // let userId = auth().currentUser.uid;
+        const user = auth().currentUser.toJSON()
         let addInfoPro = {};
         addInfoPro.object_id = objectId;
         addInfoPro.uniqueId = uniqueId;
         addInfoPro.globalId = globalId;
         addInfoPro.staResponse = status;
         addInfoPro.imageUrl = url;
-        const refDb = database().ref(`/posts/${userId}/moquito_cases`);
+        addInfoPro.user = {
+            uid: user.uid,
+            email: user.email
+        }
+        console.log('addInfoMoquitoFirebase ', addInfoPro, user)
+        // return false
+        // const refDb = database().ref(`/posts/${userId}/moquito_cases`);
+        const refDb = database().ref(`/moquito_cases`);
         await refDb.push(addInfoPro).then(() => {
             this.props.navigation.goBack();
             ToastAndroid.show('Input Data Berhasil', ToastAndroid.SHORT);
@@ -160,7 +157,7 @@ class MoquitoCases extends Component {
         });
     }
 
-    submitMoquitoCases = accessToken => {
+    submitMoquitoCases = async accessToken => {
         addSubMoquitoCases(accessToken, this.generateJsonMoquitoCases()).then(
             data => {
                 let state;

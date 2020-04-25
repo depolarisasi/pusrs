@@ -4,7 +4,7 @@
  * Copyright (c) 2019 Justin
  */
 
-import React, {Component} from 'react';
+import React from 'react';
 import Geolocation from 'react-native-geolocation-service';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Icon2 from 'react-native-vector-icons/Feather';
@@ -22,7 +22,7 @@ import {
     TouchableHighlight,
     PermissionsAndroid,
     ActivityIndicator,
-    Image,
+    Button,
 } from 'react-native';
 import colors from './../styles/colors';
 import DrawerLayout from 'react-native-drawer-layout';
@@ -32,16 +32,16 @@ import MapView, {
     Callout,
     MAP_TYPES,
     PROVIDER_GOOGLE,
+    InfoWindow,
 } from 'react-native-maps';
 import auth from '@react-native-firebase/auth';
 import HeaderMap from './../components/headers/HeaderMap';
 import database from '@react-native-firebase/database';
-import MapMarker from 'react-native-maps/lib/components/MapMarker';
 import AsyncStorage from '@react-native-community/async-storage';
 import {getDataMoquitoCases} from './../screens/MoquitoCases/GetDataMoquitoCases';
 import {getDataProbableCases} from './../screens/ProbableCases/GetDataProbableCases';
 import stylesPin from './../screens/styles/Legend';
-import DetailMoquitoCases from "../screens/MoquitoCases/DetailMoquitoCases";
+import DetailMoquitoCases from '../screens/MoquitoCases/DetailMoquitoCases';
 
 const {width, height} = Dimensions.get('window');
 
@@ -63,7 +63,7 @@ const PinMaps = ({color}) => (
     <View style={[stylesPin.pin, {backgroundColor: color}]} />
 );
 
-class MapContainer extends Component {
+class MapContainer extends React.PureComponent {
     _isMounted = false;
 
     static navigationOptions = ({navigation}) => {
@@ -121,7 +121,7 @@ class MapContainer extends Component {
                         error: null,
                     });
                 },
-                error => alert(error.message),
+                error => Alert.alert('Error', `${error.message}`),
                 {
                     enableHighAccuracy: true,
                     distanceFilter: 1,
@@ -242,10 +242,12 @@ class MapContainer extends Component {
     fetchGetMoquitoCases = () => {
         getDataMoquitoCases()
             .then(dataMoCases => {
-                this.setState({
-                    dataMoCases,
-                    loadingLabel: 'Sedang Memuat (2/2)',
-                });
+                if (this._isMounted) {
+                    this.setState({
+                        dataMoCases,
+                        loadingLabel: 'Sedang Memuat (2/2)',
+                    });
+                }
                 this.fetchGetProbableCases();
             })
             .catch(() =>
@@ -259,11 +261,13 @@ class MapContainer extends Component {
     fetchGetProbableCases = () => {
         getDataProbableCases()
             .then(dataProbable => {
-                this.setState({
-                    dataProbable,
-                    isLoading: false,
-                    loadingLabel: 'Sedang Memuat (Selesai)',
-                });
+                if (this._isMounted) {
+                    this.setState({
+                        dataProbable,
+                        loadingLabel: 'Sedang Memuat (Selesai)',
+                    });
+                }
+                this.setState({isLoading: false});
             })
             .catch(() => this.setState({isLoading: false}));
     };
@@ -279,10 +283,6 @@ class MapContainer extends Component {
                 longitude: this.state.region.longitude,
                 latitude: this.state.region.latitude,
             });
-        } else if (index === 3) {
-            this.props.navigation.navigate('DetailMoquitoCases');
-        } else if (index === 4) {
-            this.props.navigation.navigate('DetailProbableCases');
         }
     }
 
@@ -324,22 +324,41 @@ class MapContainer extends Component {
             });
         this._isMounted && this.renderGeoLocation();
         this._isMounted && this.readMaps();
-        BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
+        // BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
+        // BackHandler.addEventListener(
+        //     'requestGPSPermission',
+        //     this.requestGPSPermission,
+        // );
+        // BackHandler.addEventListener(
+        //     'onBtnShowUserLocation',
+        //     this.onBtnShowUserLocationTapped,
+        // );
+        // BackHandler.addEventListener('fetchGetToken', this.fetchGetToken);
+        // BackHandler.addEventListener(
+        //     'fetchGetMoquitoCases',
+        //     this.fetchGetMoquitoCases,
+        // );
+        // BackHandler.addEventListener(
+        //     'fetchGetProbableCases',
+        //     this.fetchGetProbableCases,
+        // );
+        // BackHandler.addEventListener(
+        //     'fetchGetMoquitoCases',
+        //     this.fetchGetMoquitoCases,
+        // );
         await this.requestGPSPermission();
         if (this.state._isPermission) {
             this.onBtnShowUserLocationTapped();
         }
         this.fetchGetToken();
-        this.fetchGetMoquitoCases();
+        // this.fetchGetMoquitoCases();
+        // this._isMounted && this.fetchGetMoquitoCases();
     }
 
-    // componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {}
-
-    // shouldComponentUpdate(
-    //     nextProps: Readonly<P>,
-    //     nextState: Readonly<S>,
-    //     nextContext: any,
-    // ): boolean {}
+    UNSAFE_componentWillReceiveProps(
+        nextProps: Readonly<P>,
+        nextContext: any,
+    ): void {}
 
     forceUpdateHandler() {
         this.forceUpdate();
@@ -349,6 +368,27 @@ class MapContainer extends Component {
         this._isMounted = false;
         Geolocation.clearWatch(this.watchID);
         BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
+        BackHandler.removeEventListener(
+            'requestGPSPermission',
+            this.requestGPSPermission,
+        );
+        BackHandler.removeEventListener(
+            'onBtnShowUserLocation',
+            this.onBtnShowUserLocationTapped,
+        );
+        // BackHandler.removeEventListener('fetchGetToken', this.fetchGetToken);
+        // BackHandler.removeEventListener(
+        //     'fetchGetMoquitoCases',
+        //     this.fetchGetMoquitoCases,
+        // );
+        // BackHandler.removeEventListener(
+        //     'fetchGetProbableCases',
+        //     this.fetchGetProbableCases,
+        // );
+        // BackHandler.removeEventListener(
+        //     'fetchGetMoquitoCases',
+        //     this.fetchGetMoquitoCases,
+        // );
     }
 
     onBackPress = () => {
@@ -426,6 +466,7 @@ class MapContainer extends Component {
         };
         this.forceUpdateHandler();
         this.renderGeoLocation();
+        this.fetchGetMoquitoCases();
         this.props.navigation.getParam('MapContainer');
         if (this.state.isShowLocation === true) {
             this.setState({
@@ -591,8 +632,6 @@ class MapContainer extends Component {
             <Text style={{color: colors.red01}}>Batal</Text>,
             'Probable Cases',
             'Moquito Cases',
-            'Detail Moquito Cases',
-            'Detail Probable Cases',
         ];
         if (this.state.isLoading) {
             return (
@@ -648,17 +687,24 @@ class MapContainer extends Component {
                             followsUserLocation={true}
                             initialRegion={this.state.region}
                             onMapReady={this.onMapReady}
-                            onRegionChange={this.onRegionChange}
-                            onPress={e => this.onMapPress(e)}>
-                            {this.state.dataMoCases.map(function(item, i) {
+                            onRegionChange={this.onRegionChange}>
+                            {this.state.dataMoCases.map((item, i) => {
                                 if (
                                     item.attributes.long &&
                                     item.attributes.lat
                                 ) {
                                     return (
                                         <MapView.Marker
+                                            onPress={() => {
+                                                this.props.navigation.navigate(
+                                                    'DetailMoquitoCases',
+                                                    {
+                                                        data: item,
+                                                    },
+                                                );
+                                            }}
                                             ref={ref => {
-                                                this.marker = ref;
+                                                // this.marker = ref;
                                             }}
                                             key={i}
                                             coordinate={{
@@ -669,40 +715,27 @@ class MapContainer extends Component {
                                             tracksViewChanges={true}
                                             identifier="DestMarker">
                                             <PinMaps color={colors.yellow01} />
-                                            <Callout
-                                                tooltip
-                                                style={styles.customView}>
-                                                <TouchableHighlight
-                                                    onPress={() =>
-                                                        console.log('Click')
-                                                    }
-                                                    underlayColor="#dddddd">
-                                                    <View
-                                                        style={
-                                                            styles.calloutText
-                                                        }>
-                                                        <Text>
-                                                            {
-                                                                item.attributes
-                                                                    .notes
-                                                            }
-                                                        </Text>
-                                                    </View>
-                                                </TouchableHighlight>
-                                            </Callout>
                                         </MapView.Marker>
                                     );
                                 }
                             })}
-                            {this.state.dataProbable.map(function(item, i) {
+                            {this.state.dataProbable.map((item, i) => {
                                 if (
                                     item.attributes.long &&
                                     item.attributes.lat
                                 ) {
                                     return (
                                         <MapView.Marker
+                                            onPress={() => {
+                                                this.props.navigation.navigate(
+                                                    'DetailProbableCases',
+                                                    {
+                                                        data: item,
+                                                    },
+                                                );
+                                            }}
                                             ref={ref => {
-                                                this.marker = ref;
+                                                // this.marker = ref;
                                             }}
                                             key={i}
                                             coordinate={{
@@ -713,27 +746,29 @@ class MapContainer extends Component {
                                             tracksViewChanges={true}
                                             identifier="DestMarker">
                                             <PinMaps color={colors.blue01} />
-                                            <Callout
-                                                tooltip
-                                                style={styles.customView}>
-                                                <TouchableHighlight
-                                                    onPress={() =>
-                                                        console.log('Click')
-                                                    }
-                                                    underlayColor="#dddddd">
-                                                    <View
-                                                        style={
-                                                            styles.calloutText
-                                                        }>
-                                                        <Text>
-                                                            {
-                                                                item.attributes
-                                                                    .notes
-                                                            }
-                                                        </Text>
-                                                    </View>
-                                                </TouchableHighlight>
-                                            </Callout>
+                                            {
+                                                // <Callout
+                                                //     tooltip
+                                                //     style={styles.customView}>
+                                                //     <TouchableHighlight
+                                                //         onPress={() =>
+                                                //             console.log('Click')
+                                                //         }
+                                                //         underlayColor="#dddddd">
+                                                //         <View
+                                                //             style={
+                                                //                 styles.calloutText
+                                                //             }>
+                                                //             <Text>
+                                                //                 {
+                                                //                     item.attributes
+                                                //                         .notes
+                                                //                 }
+                                                //             </Text>
+                                                //         </View>
+                                                //     </TouchableHighlight>
+                                                // </Callout>
+                                            }
                                         </MapView.Marker>
                                     );
                                 }
@@ -752,7 +787,6 @@ class MapContainer extends Component {
                                 )}
                         </MapView>
                     </DrawerLayout>
-
                     <ActionSheet
                         ref={o => (this.ActionSheet = o)}
                         title={
@@ -773,10 +807,47 @@ class MapContainer extends Component {
     }
 }
 
+const mapStyle = StyleSheet.create({
+    container: {
+        display: 'flex',
+        height: Dimensions.get('window').height,
+        width: Dimensions.get('window').width,
+    },
+    map: {
+        flex: 1,
+    },
+    mapMarkerContainer: {
+        left: '47%',
+        position: 'absolute',
+        top: '42%',
+    },
+    mapMarker: {
+        fontSize: 40,
+        color: 'red',
+    },
+    deatilSection: {
+        flex: 0.55,
+        backgroundColor: '#fff',
+        padding: 10,
+        display: 'flex',
+        justifyContent: 'flex-start',
+    },
+    spinnerView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    btnContainer: {
+        width: Dimensions.get('window').width - 20,
+        position: 'absolute',
+        bottom: 100,
+        left: 10,
+    },
+});
+
 const styles = StyleSheet.create({
     customView: {
         height: 50,
-        width: 50,
         borderRadius: 50 / 2,
     },
     wrapper: {
@@ -846,14 +917,6 @@ const styles = StyleSheet.create({
         color: colors.gray02,
         fontSize: 11,
         fontWeight: 'bold',
-    },
-    deatilSection: {
-        backgroundColor: '#fff',
-        padding: 10,
-        flex: 0.35,
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
     },
     btnContainer: {
         width: Dimensions.get('window').width - 20,
