@@ -14,7 +14,10 @@ import ProfileContainer from './../containers/ProfileContainer';
 import NewsContainer from './../containers/NewsContainer';
 import VideoContainer from './../containers/VideoContainer';
 import ToDoContainer from './../containers/ToDoContainer';
-import ProbableCases from './../screens/ProbableCases';
+import ProbableCases from '../screens/ProbableCases/ProbableCases';
+import MoquitoCases from '../screens/MoquitoCases/MoquitoCases';
+import DetailMoquitoCases from '../screens/MoquitoCases/DetailMoquitoCases';
+import DetailProbableCases from '../screens/ProbableCases/DetailProbableCases';
 import Legend from './../screens/Legend';
 import colors from './../styles/colors';
 
@@ -29,6 +32,15 @@ const MapTab = createStackNavigator({
     },
     ProbableCases: {
         screen: ProbableCases,
+    },
+    MoquitoCases: {
+        screen: MoquitoCases,
+    },
+    DetailMoquitoCases: {
+        screen: DetailMoquitoCases,
+    },
+    DetailProbableCases: {
+        screen: DetailProbableCases,
     },
     Legend: {
         screen: Legend,
@@ -55,7 +67,6 @@ MapTab.navigationOptions = ({navigation}) => {
         tabBarVisible,
     };
 };
-
 const ProfileTab = createStackNavigator({
     ProfileContainer: {
         screen: ProfileContainer,
@@ -120,21 +131,21 @@ const LoggedInTabNavigator = createBottomTabNavigator(
         Map: {
             screen: MapTab,
             navigationOptions: {
-                tabBarLabel: 'Map',
+                tabBarLabel: 'Peta',
                 tabBarIcon: CustomTabBarIcon('ios-map', 22),
             },
         },
         Profile: {
             screen: ProfileTab,
             navigationOptions: {
-                tabBarLabel: 'Profile',
+                tabBarLabel: 'Profil',
                 tabBarIcon: CustomTabBarIcon('ios-person', 22),
             },
         },
         News: {
             screen: NewsTab,
             navigationOptions: {
-                tabBarLabel: 'News',
+                tabBarLabel: 'Berita',
                 tabBarIcon: CustomTabBarIcon('ios-paper', 22),
             },
         },

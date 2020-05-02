@@ -5,7 +5,6 @@
  */
 
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import colors from '../../styles/colors';
 
@@ -15,10 +14,13 @@ export default class HeaderForm extends Component {
             <View style={styles.container}>
                 <TouchableOpacity
                     onPress={() => this.props.navigation.goBack()}>
-                    <Text style={styles.text}>Cancel</Text>
+                    <Text style={styles.text}>Batal</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => {}}>
-                    <Text style={[styles.text, styles.bold]}>Done</Text>
+                <TouchableOpacity
+                    onPress={() => {
+                        this.props.navigation.state.params.checkProbableCases();
+                    }}>
+                    <Text style={[styles.text, styles.bold]}>Selesai</Text>
                 </TouchableOpacity>
             </View>
         );

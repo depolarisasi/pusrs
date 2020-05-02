@@ -13,17 +13,19 @@ import {
     ScrollView,
     StyleSheet,
     ToastAndroid,
+    DatePickerAndroid,
 } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import HeaderTitleBackable from '../../components/headers/HeaderTitleBackable';
 import colors from '../../styles/colors';
+import Picker from '@react-native-community/picker/js/Picker';
 
 class UpdateProfile extends Component {
     static navigationOptions = ({navigation}) => {
         return {
             header: () => (
-                <HeaderTitleBackable navigation={navigation} title="Profile" />
+                <HeaderTitleBackable navigation={navigation} title="Profil" />
             ),
         };
     };
@@ -158,7 +160,7 @@ class UpdateProfile extends Component {
                 .update(account)
                 .then(() => {
                     ToastAndroid.show(
-                        'Update Profile berhasil',
+                        'Update Profil berhasil',
                         ToastAndroid.SHORT,
                     );
                     this.props.navigation.goBack();
@@ -170,6 +172,256 @@ class UpdateProfile extends Component {
                         }`,
                     );
                 });
+        }
+    }
+
+    async showDateBirthday() {
+        try {
+            const {action, year, month, day} = await DatePickerAndroid.open({
+                date: new Date(),
+                maxDate: new Date(),
+            });
+            if (action !== DatePickerAndroid.dismissedAction) {
+                this.setState({
+                    yearDate: `${year}`,
+                    monthDate: `${month}`,
+                    dayDate: `${day}`,
+                });
+                this.setState({Birthday: `${day}/${month + 1}/${year}`});
+            }
+        } catch ({code, message}) {
+            console.warn('Cannot open date picker', message);
+        }
+    }
+
+    validationGender() {
+        if (this.state.Gender.length === 0) {
+            return (
+                <Picker
+                    selectedValue={this.state.Gender}
+                    style={styles.fieldInput}
+                    onValueChange={(Gender, itemIndex) =>
+                        this.setState({
+                            Gender: Gender,
+                        })
+                    }>
+                    <Picker.Item label="-" value="-" />
+                    <Picker.Item label="Pria" value="Pria" />
+                    <Picker.Item label="Wanita" value="Wanita" />
+                </Picker>
+            );
+        } else {
+            return (
+                <Picker
+                    selectedValue={this.state.Gender}
+                    style={styles.fieldInput}
+                    onValueChange={(Gender, itemIndex) =>
+                        this.setState({
+                            Gender: Gender,
+                        })
+                    }>
+                    <Picker.Item label="Pria" value="Pria" />
+                    <Picker.Item label="Wanita" value="Wanita" />
+                </Picker>
+            );
+        }
+    }
+
+    validationWork() {
+        if (this.state.Work.length === 0) {
+            return (
+                <Picker
+                    selectedValue={this.state.Work}
+                    style={styles.fieldInput}
+                    onValueChange={(Work, itemIndex) =>
+                        this.setState({
+                            Work: Work,
+                        })
+                    }>
+                    <Picker.Item label="-" value="-" />
+                    <Picker.Item
+                        label="Pegawai Negeri / BUMN"
+                        value="Pegawai Negeri / BUMN"
+                    />
+                    <Picker.Item
+                        label="Pegawai Swasta"
+                        value="Pegawai Swasta"
+                    />
+
+                    <Picker.Item label="Wiraswasta" value="Wiraswasta" />
+                    <Picker.Item label="TNI / POLRI" value="TNI / POLRI" />
+                    <Picker.Item label="Pensiun" value="Pensiun" />
+                </Picker>
+            );
+        } else {
+            return (
+                <Picker
+                    selectedValue={this.state.Work}
+                    style={styles.fieldInput}
+                    onValueChange={(Work, itemIndex) =>
+                        this.setState({
+                            Work: Work,
+                        })
+                    }>
+                    <Picker.Item
+                        label="Pegawai Negeri / BUMN"
+                        value="Pegawai Negeri / BUMN"
+                    />
+                    <Picker.Item
+                        label="Pegawai Swasta"
+                        value="Pegawai Swasta"
+                    />
+
+                    <Picker.Item label="Wiraswasta" value="Wiraswasta" />
+                    <Picker.Item label="TNI / POLRI" value="TNI / POLRI" />
+                    <Picker.Item label="Pensiun" value="Pensiun" />
+                </Picker>
+            );
+        }
+    }
+
+    validationDengvaxiaText() {
+        if (this.state.DengvaxiaText.length === 0) {
+            return (
+                <Picker
+                    selectedValue={this.state.DengvaxiaText}
+                    style={styles.fieldInput}
+                    onValueChange={(DengvaxiaText, itemIndex) =>
+                        this.setState({
+                            DengvaxiaText: DengvaxiaText,
+                        })
+                    }>
+                    <Picker.Item label="-" value="-" />
+                    <Picker.Item label="Ya" value="Ya" />
+                    <Picker.Item label="Tidak" value="Tidak" />
+                </Picker>
+            );
+        } else {
+            return (
+                <Picker
+                    selectedValue={this.state.DengvaxiaText}
+                    style={styles.fieldInput}
+                    onValueChange={(DengvaxiaText, itemIndex) =>
+                        this.setState({
+                            DengvaxiaText: DengvaxiaText,
+                        })
+                    }>
+                    <Picker.Item label="Ya" value="Ya" />
+                    <Picker.Item label="Tidak" value="Tidak" />
+                </Picker>
+            );
+        }
+    }
+
+    validationDengueText() {
+        if (this.state.DengueText.length === 0) {
+            return (
+                <Picker
+                    selectedValue={this.state.DengueText}
+                    style={styles.fieldInput}
+                    onValueChange={(DengueText, itemIndex) =>
+                        this.setState({
+                            DengueText: DengueText,
+                        })
+                    }>
+                    <Picker.Item label="-" value="-" />
+                    <Picker.Item label="Ya" value="Ya" />
+                    <Picker.Item label="Tidak" value="Tidak" />
+                </Picker>
+            );
+        } else {
+            return (
+                <Picker
+                    selectedValue={this.state.DengueText}
+                    style={styles.fieldInput}
+                    onValueChange={(DengueText, itemIndex) =>
+                        this.setState({
+                            DengueText: DengueText,
+                        })
+                    }>
+                    <Picker.Item label="Ya" value="Ya" />
+                    <Picker.Item label="Tidak" value="Tidak" />
+                </Picker>
+            );
+        }
+    }
+
+    validationFamilyIncome() {
+        if (this.state.income.length === 0) {
+            return (
+                <Picker
+                    selectedValue={this.state.income}
+                    style={styles.fieldInput}
+                    onValueChange={(income, itemIndex) =>
+                        this.setState({
+                            income: income,
+                        })
+                    }>
+                    <Picker.Item label="-" value="-" />
+                    <Picker.Item label="<= Rp 500.000" value="<= Rp 500.000" />
+                    <Picker.Item
+                        label="> Rp 500.000 & Rp <= Rp. 1.500.000"
+                        value=">= Rp 500.000 & Rp <= Rp. 1.500.000"
+                    />
+                    <Picker.Item
+                        label="> Rp 1.500.000 & Rp <= Rp. 3.000.000"
+                        value="> Rp 1.500.000 & Rp <= Rp. 3.000.000"
+                    />
+                    <Picker.Item
+                        label="> Rp 3.000.000 & Rp <= Rp. 6.000.000"
+                        value="> Rp 3.000.000 & Rp <= Rp. 6.000.000"
+                    />
+                    <Picker.Item
+                        label="> Rp 6.000.000 & Rp <= Rp. 10.000.000"
+                        value="> Rp 6.000.000 & Rp <= Rp. 10.000.000"
+                    />
+                    <Picker.Item
+                        label="> Rp 10.000.000 & Rp <= Rp. 15.000.000"
+                        value="> Rp 10.000.000 & Rp <= Rp. 15.000.000"
+                    />
+                    <Picker.Item
+                        label=">= Rp. 15.000.000"
+                        value=">= Rp. 15.000.000"
+                    />
+                </Picker>
+            );
+        } else {
+            return (
+                <Picker
+                    selectedValue={this.state.income}
+                    style={styles.fieldInput}
+                    onValueChange={(income, itemIndex) =>
+                        this.setState({
+                            income: income,
+                        })
+                    }>
+                    <Picker.Item label="<= Rp 500.000" value="<= Rp 500.000" />
+                    <Picker.Item
+                        label="> Rp 500.000 & Rp <= Rp. 1.500.000"
+                        value=">= Rp 500.000 & Rp <= Rp. 1.500.000"
+                    />
+                    <Picker.Item
+                        label="> Rp 1.500.000 & Rp <= Rp. 3.000.000"
+                        value="> Rp 1.500.000 & Rp <= Rp. 3.000.000"
+                    />
+                    <Picker.Item
+                        label="> Rp 3.000.000 & Rp <= Rp. 6.000.000"
+                        value="> Rp 3.000.000 & Rp <= Rp. 6.000.000"
+                    />
+                    <Picker.Item
+                        label="> Rp 6.000.000 & Rp <= Rp. 10.000.000"
+                        value="> Rp 6.000.000 & Rp <= Rp. 10.000.000"
+                    />
+                    <Picker.Item
+                        label="> Rp 10.000.000 & Rp <= Rp. 15.000.000"
+                        value="> Rp 10.000.000 & Rp <= Rp. 15.000.000"
+                    />
+                    <Picker.Item
+                        label=">= Rp. 15.000.000"
+                        value=">= Rp. 15.000.000"
+                    />
+                </Picker>
+            );
         }
     }
 
@@ -186,7 +438,7 @@ class UpdateProfile extends Component {
                     style={styles.scrollView}>
                     <View style={styles.titleContainer}>
                         <View style={styles.borderLine}>
-                            <Text style={styles.titleText}>Profile</Text>
+                            <Text style={styles.titleText}>Profil</Text>
                         </View>
                     </View>
 
@@ -194,7 +446,6 @@ class UpdateProfile extends Component {
                         {/*TODO Username / name */}
                         <View style={styles.formGroup}>
                             {/*TODO Username FieldInput*/}
-                            <Text style={styles.fieldLabel}>Username/Name</Text>
                             <TextInput
                                 value={this.state.fullName}
                                 style={styles.fieldInput}
@@ -211,11 +462,12 @@ class UpdateProfile extends Component {
                         <View style={styles.formGroup}>
                             {/*TODO AGE : FieldInput */}
                             <View style={styles.mb5}>
-                                <Text style={styles.fieldLabel}>Age</Text>
+                                <Text style={styles.fieldLabel}>Umur</Text>
                                 <TextInput
                                     value={this.state.age}
                                     style={styles.fieldInput}
-                                    placeholder="Age"
+                                    placeholder="Umur (Contoh: 26)"
+                                    keyboardType="number-pad"
                                     placeholderTextColor={colors.gray04}
                                     underlineColorAndroid="transparent"
                                     onChangeText={age => this.setState({age})}
@@ -223,17 +475,10 @@ class UpdateProfile extends Component {
                             </View>
                             {/*TODO Gender : FieldInput */}
                             <View style={styles.mb5}>
-                                <Text style={styles.fieldLabel}>Gender</Text>
-                                <TextInput
-                                    value={this.state.Gender}
-                                    style={styles.fieldInput}
-                                    placeholder="Gender"
-                                    placeholderTextColor={colors.gray04}
-                                    underlineColorAndroid="transparent"
-                                    onChangeText={Gender =>
-                                        this.setState({Gender})
-                                    }
-                                />
+                                <Text style={styles.fieldLabel}>
+                                    Jenis Kelamin
+                                </Text>
+                                {this.validationGender()}
                             </View>
                         </View>
 
@@ -241,29 +486,37 @@ class UpdateProfile extends Component {
                         <View style={styles.formGroup}>
                             <View style={styles.mb5}>
                                 <Text style={styles.fieldLabel}>
-                                    Date of Birthday
+                                    Tanggal Kelahiran
                                 </Text>
-                                <TextInput
-                                    value={this.state.Birthday}
-                                    style={styles.fieldInput}
-                                    placeholder="Birthday"
-                                    placeholderTextColor={colors.gray04}
-                                    underlineColorAndroid="transparent"
-                                    onChangeText={Birthday =>
-                                        this.setState({Birthday})
-                                    }
-                                />
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        this.showDateBirthday().then('Execute');
+                                    }}>
+                                    <TextInput
+                                        value={this.state.Birthday}
+                                        style={styles.fieldInput}
+                                        placeholder="Tanggal Kelahiran"
+                                        placeholderTextColor={colors.gray04}
+                                        underlineColorAndroid="transparent"
+                                        editable={false}
+                                        onChangeText={Birthday =>
+                                            this.setState({Birthday})
+                                        }
+                                    />
+                                </TouchableOpacity>
                             </View>
                         </View>
 
                         {/*TODO FormGroup ADDRESS*/}
                         <View style={styles.formGroup}>
                             <View style={styles.mb5}>
-                                <Text style={styles.fieldLabel}>Address</Text>
+                                <Text style={styles.fieldLabel}>
+                                    Alamat Rumah
+                                </Text>
                                 <TextInput
                                     value={this.state.Address}
                                     style={styles.fieldInput}
-                                    placeholder="Address"
+                                    placeholder="Alamat Rumah"
                                     placeholderTextColor={colors.gray04}
                                     underlineColorAndroid="transparent"
                                     onChangeText={Address =>
@@ -276,15 +529,8 @@ class UpdateProfile extends Component {
                         {/*TODO FormGroup Work*/}
                         <View style={styles.formGroup}>
                             <View style={styles.mb5}>
-                                <Text style={styles.fieldLabel}>Work</Text>
-                                <TextInput
-                                    values={this.state.Work}
-                                    style={styles.fieldInput}
-                                    placeholder="Name of Work (e.g student, employee, etc.)"
-                                    placeholderTextColor={colors.gray04}
-                                    underlineColorAndroid={'transparent'}
-                                    onChangeText={Work => this.setState({Work})}
-                                />
+                                <Text style={styles.fieldLabel}>Pekerjaan</Text>
+                                {this.validationWork()}
                             </View>
                         </View>
 
@@ -292,13 +538,13 @@ class UpdateProfile extends Component {
                         <View style={styles.formGroup}>
                             <View style={styles.mb5}>
                                 <Text style={styles.fieldLabel}>
-                                    School/Company
+                                    Sekolah / Perusahaan
                                 </Text>
                                 <View style={styles.sizeInput}>
                                     <TextInput
                                         value={this.state.schoolCompany}
                                         style={styles.fieldInput}
-                                        placeholder="Name of school or company"
+                                        placeholder="Nama Perusahaan / Sekolah"
                                         placeholderTextColor={colors.gray04}
                                         underlineColorAndroid="transparent"
                                         onChangeText={schoolCompany =>
@@ -311,7 +557,7 @@ class UpdateProfile extends Component {
                                     <TextInput
                                         value={this.state.schoolCompanyAddress}
                                         style={styles.fieldInput}
-                                        placeholder="Address School / Company"
+                                        placeholder="Alamat Perusahaan / Sekolah"
                                         placeholderTextColor={colors.gray04}
                                         underlineColorAndroid="transparent"
                                         onChangeText={schoolCompanyAddress => {
@@ -328,18 +574,9 @@ class UpdateProfile extends Component {
                         <View style={styles.formGroup}>
                             <View style={styles.mb5}>
                                 <Text style={styles.fieldLabel}>
-                                    Family Monthly Income
+                                    Pendapatan Bulanan Keluarga
                                 </Text>
-                                <TextInput
-                                    value={this.state.income}
-                                    style={styles.fieldInput}
-                                    placeholder="Family Monthly Income"
-                                    placeholderTextColor={colors.gray04}
-                                    underlineColorAndroid="transparent"
-                                    onChangeText={income =>
-                                        this.setState({income})
-                                    }
-                                />
+                                {this.validationFamilyIncome()}
                             </View>
                         </View>
 
@@ -347,12 +584,13 @@ class UpdateProfile extends Component {
                         <View style={styles.sizeInput}>
                             <View style={styles.mb5}>
                                 <Text style={styles.fieldLabel}>
-                                    Contacts number/s
+                                    No. Handphone
                                 </Text>
                                 <TextInput
                                     value={this.state.contactNumbers}
                                     style={styles.fieldInput}
-                                    placeholder="Contacts number"
+                                    placeholder="No Handphone"
+                                    keyboardType="number-pad"
                                     placeholderTextColor={colors.gray04}
                                     underlineColorAndroid="transparent"
                                     onChangeText={contactNumbers =>
@@ -363,45 +601,29 @@ class UpdateProfile extends Component {
                         </View>
 
                         <View style={styles.borderLine}>
-                            <Text style={styles.titleText}>Health</Text>
+                            <Text style={styles.titleText}>Kesehatan</Text>
                         </View>
 
                         <View style={styles.sizeInput}>
                             <Text style={styles.fieldLabel}>
-                                Have you had Dengue before?
+                                Pernahkah Anda menderita Demam Berdarah?
                             </Text>
                             <View style={styles.sizeInput}>
-                                <TextInput
-                                    value={this.state.DengueText}
-                                    style={styles.fieldInput}
-                                    placeholderTextColor={colors.gray04}
-                                    underlineColorAndroid="transparent"
-                                    onChangeText={DengueText =>
-                                        this.setState({DengueText})
-                                    }
-                                />
+                                {this.validationDengueText()}
                             </View>
                         </View>
                         <Text style={styles.fieldLabel}>
-                            Did you get Dengvaxia vaccine shots?
+                            Apakah Anda mendapatkan suntikan vaksin Dengvaxia?
                         </Text>
                         <View style={styles.sizeInput}>
-                            <TextInput
-                                value={this.state.DengvaxiaText}
-                                style={styles.fieldInput}
-                                placeholderTextColor={colors.gray04}
-                                underlineColorAndroid="transparent"
-                                onChangeText={DengvaxiaText =>
-                                    this.setState({DengvaxiaText})
-                                }
-                            />
+                            {this.validationDengvaxiaText()}
                         </View>
                         <TouchableOpacity
                             onPress={() => {
                                 this.submitUpdateProfil();
                             }}
                             style={styles.saveButton}>
-                            <Text style={styles.saveButtonText}>Save</Text>
+                            <Text style={styles.saveButtonText}>Simpan</Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>

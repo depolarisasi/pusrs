@@ -34,7 +34,7 @@ const entryBorderRadius = 8;
 class ProfileContainer extends Component {
     static navigationOptions = () => {
         return {
-            header: () => <HeaderTitleOnly title="Profile" />,
+            header: () => <HeaderTitleOnly title="Profil" />,
         };
     };
 
@@ -45,25 +45,25 @@ class ProfileContainer extends Component {
             entries: [
                 {
                     img: require('./../img/carousels/1.jpg'),
-                    title: 'Profile',
+                    title: 'Profil',
                     onPress: () =>
                         this.props.navigation.navigate('UpdateProfile'),
                 },
                 {
                     img: require('./../img/carousels/2.jpg'),
-                    title: 'Sign and Symptoms',
+                    title: 'Tanda dan Gejala',
                     onPress: () =>
                         this.props.navigation.navigate('SignAndSymptoms'),
                 },
                 {
                     img: require('./../img/carousels/3.jpg'),
-                    title: 'Clinical Data',
+                    title: 'Data klinis',
                     onPress: () =>
                         this.props.navigation.navigate('ClinicalData'),
                 },
                 {
                     img: require('./../img/carousels/4.jpg'),
-                    title: 'PDF Collection',
+                    title: 'Koleksi PDF',
                     onPress: () =>
                         this.props.navigation.navigate('PDFCollection'),
                 },

@@ -14,6 +14,7 @@ import {
     ScrollView,
     StyleSheet,
     ToastAndroid,
+    DatePickerAndroid,
 } from 'react-native';
 import colors from './../../styles/colors';
 import HeaderTitleBackable from './../../components/headers/HeaderTitleBackable';
@@ -26,7 +27,7 @@ class ClinicalData extends Component {
             header: () => (
                 <HeaderTitleBackable
                     navigation={navigation}
-                    title="Clinical Data"
+                    title="Data klinis"
                 />
             ),
         };
@@ -120,6 +121,19 @@ class ClinicalData extends Component {
             });
     }
 
+    async showDateAdmitted() {
+        try {
+            const {action, year, month, day} = await DatePickerAndroid.open({
+                date: new Date(),
+            });
+            if (action !== DatePickerAndroid.dismissedAction) {
+                this.setState({dateAdmitted: `${day}/${month + 1}/${year}`});
+            }
+        } catch ({code, message}) {
+            console.warn('Cannot open date picker', message);
+        }
+    }
+
     render() {
         return (
             <View style={styles.wrapper}>
@@ -131,15 +145,15 @@ class ClinicalData extends Component {
                     contentContainerStyle={{paddingBottom: 20}}
                     style={styles.scrollView}>
                     <View style={styles.titleContainer}>
-                        <Text style={styles.titleText}>CLINICAL DATA</Text>
+                        <Text style={styles.titleText}>DATA KLINIS</Text>
                     </View>
                     <View style={styles.formContainer}>
                         <View style={styles.formGroup}>
-                            <Text style={styles.fieldLabel}>Diagnosis</Text>
+                            <Text style={styles.fieldLabel}>Diagnosa</Text>
                             <TextInput
                                 value={this.state.diagnosis}
                                 style={styles.fieldInput}
-                                placeholder="Main diagnosis"
+                                placeholder="Diagnosis utama"
                                 placeholderTextColor={colors.gray04}
                                 underlineColorAndroid="transparent"
                                 onChangeText={diagnosis =>
@@ -150,7 +164,7 @@ class ClinicalData extends Component {
                         <View style={styles.formGroup}>
                             <View style={styles.mb5}>
                                 <Text style={styles.fieldLabel}>
-                                    Dengue Test/s
+                                    Tes Demam Berdarah
                                 </Text>
                                 <TextInput
                                     value={this.state.dengueTest}
@@ -199,12 +213,12 @@ class ClinicalData extends Component {
                         </View>
                         <View style={styles.formGroup}>
                             <Text style={styles.fieldLabel}>
-                                Hospital/Clinic
+                                Rumah Sakit / Klinik
                             </Text>
                             <TextInput
                                 value={this.state.hospitalName}
                                 style={styles.fieldInput}
-                                placeholder="Name of Hospital/Clinic"
+                                placeholder="Nama Rumah Sakit / Klinik"
                                 placeholderTextColor={colors.gray04}
                                 underlineColorAndroid="transparent"
                                 onChangeText={hospitalName =>
@@ -213,11 +227,11 @@ class ClinicalData extends Component {
                             />
                         </View>
                         <View style={styles.formGroup}>
-                            <Text style={styles.fieldLabel}>Address</Text>
+                            <Text style={styles.fieldLabel}>Alamat</Text>
                             <TextInput
                                 value={this.state.address}
                                 style={styles.fieldInput}
-                                placeholder="Unit No./Street, Barangay/Village/Subdivision, Municipality/City"
+                                placeholder="Unit No / Nama Jalan, Sub ketat / Desa / Subdivisi, Kotamadya / Kota"
                                 placeholderTextColor={colors.gray04}
                                 underlineColorAndroid="transparent"
                                 onChangeText={address =>
@@ -226,24 +240,33 @@ class ClinicalData extends Component {
                             />
                         </View>
                         <View style={styles.formGroup}>
-                            <Text style={styles.fieldLabel}>Date Admitted</Text>
-                            <TextInput
-                                value={this.state.dateAdmitted}
-                                style={styles.fieldInput}
-                                underlineColorAndroid="transparent"
-                                onChangeText={dateAdmitted =>
-                                    this.setState({dateAdmitted})
-                                }
-                            />
+                            <Text style={styles.fieldLabel}>
+                                Tanggal Diakui
+                            </Text>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    this.showDateAdmitted().then('Execute');
+                                }}>
+                                <TextInput
+                                    value={this.state.dateAdmitted}
+                                    style={styles.fieldInput}
+                                    placeholderTextColor={colors.gray04}
+                                    underlineColorAndroid="transparent"
+                                    editable={false}
+                                    onChangeText={dateAdmitted =>
+                                        this.setState({dateAdmitted})
+                                    }
+                                />
+                            </TouchableOpacity>
                         </View>
                         <View style={styles.formGroup}>
                             <Text style={styles.fieldLabel}>
-                                Room Number/Unit/Ward
+                                Nomor kamar / unit / Ruang
                             </Text>
                             <TextInput
                                 value={this.state.roomNumber}
                                 style={styles.fieldInput}
-                                placeholder="Room number/unit/ward"
+                                placeholder="Nomor kamar / unit / Ruang"
                                 placeholderTextColor={colors.gray04}
                                 underlineColorAndroid="transparent"
                                 onChangeText={roomNumber =>
@@ -253,12 +276,12 @@ class ClinicalData extends Component {
                         </View>
                         <View style={styles.formGroup}>
                             <Text style={styles.fieldLabel}>
-                                Attending Physician
+                                Nama Dokter yang menghadiri
                             </Text>
                             <TextInput
                                 value={this.state.attendingPhysician}
                                 style={styles.fieldInput}
-                                placeholder="Main attending physician"
+                                placeholder="Dokter yang merawat utama"
                                 placeholderTextColor={colors.gray04}
                                 underlineColorAndroid="transparent"
                                 onChangeText={attendingPhysician =>
@@ -268,12 +291,14 @@ class ClinicalData extends Component {
                         </View>
                         <View style={styles.formGroup}>
                             <Text style={styles.fieldLabel}>
-                                Number of day/s in the hospital
+                                Jumlah hari di rumah sakit
                             </Text>
                             <TextInput
                                 value={this.state.numberOfDays}
                                 style={styles.fieldInput}
-                                placeholder="Number of days co."
+                                placeholder="Jumlah hari di rumah sakit"
+                                keyboardType="number-pad"
+                                maxLength={4}
                                 placeholderTextColor={colors.gray04}
                                 underlineColorAndroid="transparent"
                                 onChangeText={numberOfDays =>
@@ -286,7 +311,7 @@ class ClinicalData extends Component {
                                 this.submitClinicalData();
                             }}
                             style={styles.saveButton}>
-                            <Text style={styles.saveButtonText}>Save</Text>
+                            <Text style={styles.saveButtonText}>Simpan</Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>

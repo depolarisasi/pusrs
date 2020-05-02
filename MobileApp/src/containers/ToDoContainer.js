@@ -5,10 +5,8 @@
  */
 
 import React, {Component} from 'react';
-import {PropTypes} from 'prop-types';
 import {
     StatusBar,
-    BackHandler,
     View,
     Text,
     TextInput,
@@ -17,21 +15,20 @@ import {
     FlatList,
     TouchableOpacity,
     TouchableHighlight,
+    DatePickerAndroid,
+    TimePickerAndroid,
+    ToastAndroid,
+    ActivityIndicator,
 } from 'react-native';
 import colors from './../styles/colors';
 import HeaderToDo from './../components/headers/HeaderToDo';
-
-const TODOS = [
-    {id: 1, name: 'Throw burnable garbage'},
-    {id: 2, name: 'Throw plastic garbage'},
-    {id: 3, name: 'Clean and cover water containers'},
-    {id: 4, name: 'Replace water in flower vases'},
-    {id: 5, name: 'Clean ditches around the house'},
-    {id: 6, name: 'Barangay fogging'},
-    {id: 7, name: 'Spray insecticides'},
-    {id: 8, name: 'Cut bushes around the house'},
-    {id: 9, name: 'Apply repllent lotion'},
-];
+import database from '@react-native-firebase/database';
+import auth from '@react-native-firebase/auth';
+import * as AddCalendarEvent from 'react-native-add-calendar-event';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import moment from 'moment';
+import AsyncStorage from '@react-native-community/async-storage';
 
 class ToDoContainer extends Component {
     static navigationOptions = ({navigation}) => {
@@ -42,17 +39,32 @@ class ToDoContainer extends Component {
 
     constructor(props) {
         super(props);
-
+        this.toggleModalChooseTodo = this.toggleModalChooseTodo.bind(this);
         this.state = {
             newToDoName: '',
+            newAddPostTimeline: '',
+            androidDate: '-',
+            chooseAndroidTime: '-',
+            yearDate: '',
+            monthDate: '',
+            dayDate: '',
+            hourTime: '',
+            minutesTime: '',
+            secondTime: '',
             modalAddToDoVisible: false,
+            modalChooseTodoVisible: false,
+            todoArr: [],
+            indexChooseTodo: null,
+            isLoading: true,
         };
+        this.toDoList = {}
     }
 
     componentDidMount() {
         this.props.navigation.setParams({
             toggleModalAddToDo: this.toggleModalAddToDo.bind(this),
         });
+        this.readToDo().then(console.log('Success'));
     }
 
     renderListItemSeparator = () => {
@@ -66,6 +78,223 @@ class ToDoContainer extends Component {
             />
         );
     };
+
+    async readToDo() {
+        let userId = auth().currentUser.uid;
+        const toDoList = await AsyncStorage.getItem('todoList')
+        if(toDoList != null){
+            this.toDoList = JSON.parse(toDoList)
+        }
+        const refDb = database().ref(`/posts/${userId}/ToDo`);
+        await refDb
+            .once('value', data => {
+                const items = [];
+                data.forEach((childSnapshot) => {
+                    try {
+                        const toDo = childSnapshot.val()
+                        const reminder = this.toDoList[toDo.id_todo]
+                        // console.log('childSnapshot ', toDo, reminder)
+                        items.push({ ...toDo, reminder});
+                    } catch (e) {
+                        console.log('error ', e.message)
+                        items.push({
+                            id_todo: '',
+                            name: '',
+                            date: '',
+                            time: '',
+                            reminder: '',
+                        });
+                    }
+                });
+                this.setState({todoArr: items});
+            })
+            .then(() => {
+                this.setState({isLoading: false});
+            })
+            .catch(error => {
+                this.setState({isLoading: false});
+                console.error(error);
+                ToastAndroid.show(
+                    'Maaf Timeline sedang Kosong',
+                    ToastAndroid.SHORT,
+                );
+            });
+    }
+
+    async addDataToDo() {
+        let userId = auth().currentUser.uid;
+        const n = new Date();
+        console.log(userId);
+        let todo = {};
+        todo.id_todo = n.getTime();
+        todo.name = this.state.newToDoName;
+        todo.date = this.state.androidDate;
+        todo.time = this.state.chooseAndroidTime;
+        todo.reminder = '0';
+        const refDb = database().ref(`/posts/${userId}/ToDo`);
+        await refDb.push(todo).then(() => {
+            this.toggleModalAddToDo(false);
+            this.readToDo().then(console.log('Successful add Todo'));
+        });
+    }
+    renderDataToDo() {
+        if (this.state.isLoading) {
+            return (
+                <View style={styles.wrapper}>
+                    <ActivityIndicator size="large" />
+                </View>
+            );
+        } else {
+            if (this.state.todoArr.length === 0) {
+                return (
+                    <View>
+                        <Text style={styles.textEmpty}>
+                            Maaf, Data Agenda sedang Kosong
+                        </Text>
+                    </View>
+                );
+            } else {
+                const {todoArr} = this.state;
+                return (
+                    <View>
+                        <FlatList
+                            contentContainerStyle={styles.listContainer}
+                            data={todoArr}
+                            showsVerticalScrollIndicator={false}
+                            renderItem={({item, index}) => (
+                                <TouchableHighlight
+                                    key={item.id_todo}
+                                    onPress={() => {
+                                        if (!item.reminder) {
+                                            console.log(item.name);
+                                            console.log(index);
+                                            this.setState({
+                                                indexChooseTodo: index,
+                                                androidDate: '-',
+                                                newToDoName: '',
+                                                chooseAndroidTime: '-',
+                                            });
+                                            // this.setState({
+                                            // });
+                                            // this.setState({
+                                            // });
+                                            this.toggleModalChooseTodo(true);
+                                        } else {
+                                            ToastAndroid.show(
+                                                'You have set the reminder!',
+                                                ToastAndroid.SHORT,
+                                            );
+                                        }
+                                    }}>
+                                    <View style={styles.listRow}>
+                                        <View style={styles.listLeft}>
+                                            <Text>{item.name}</Text>
+                                        </View>
+                                        {this.handleEventAddReminder({
+                                            item,
+                                            index,
+                                        })}
+                                    </View>
+                                </TouchableHighlight>
+                            )}
+                            ItemSeparatorComponent={
+                                this.renderListItemSeparator
+                            }
+                            keyExtractor={item => `${item.id_todo}`}
+                        />
+                    </View>
+                );
+            }
+        }
+    }
+
+    static addToCalendar = (title: string, startDateUTC: string) => {
+        const eventConfig = {
+            title,
+            startDate: startDateUTC,
+            endDate: startDateUTC,
+            notes: 'PUSRS',
+            navigationBarIOS: {
+                tintColor: 'orange',
+                backgroundColor: 'green',
+                titleColor: 'blue',
+            },
+        };
+
+        AddCalendarEvent.presentEventCreatingDialog(eventConfig)
+            .then(
+                (eventInfo: {
+                    calendarItemIdentifier: string,
+                    eventIdentifier: string,
+                }) => {
+                    console.log(`eventInfo: ${eventInfo.eventIdentifier}`);
+                    //xalert('eventInfo -> ' + JSON.stringify(eventInfo));
+                },
+            )
+            .catch((error: string) => {
+                console.warn(error);
+                // handle error such as when user rejected permissions
+            });
+    };
+
+    async onDeleteToDo() {
+        let userId = auth().currentUser.uid;
+        const refDb = database().ref(`/posts/${userId}/ToDo`);
+        await refDb
+            .orderByChild('id_todo')
+            .equalTo(this.state.todoArr[this.state.activeRow].id_timeline)
+            .once('value')
+            .then(function(snapshot) {
+                snapshot.forEach(function(childSnapshot) {
+                    refDb.child(childSnapshot.key).remove();
+                });
+            });
+    }
+
+    onChangeDate = (event, selectedDate) => {
+        try {
+            // const {action, year, month, day} = await DatePickerAndroid.open({
+            //     date: new Date(),
+            //     minDate: new Date(),
+            // });
+            const year = selectedDate.getFullYear();
+            const month = selectedDate.getMonth();
+            const day = selectedDate.getDay();
+            console.log('selectedDate ', year, month, day)
+
+            // if (action !== DatePickerAndroid.dismissedAction) {
+            this.setState({
+                yearDate: `${year}`,
+                monthDate: `${month}`,
+                dayDate: `${day}`,
+                androidDate: `${day}/${month + 1}/${year}`,
+                showDatePicker: false
+            });
+            // this.setState({androidDate: `${day}/${month + 1}/${year}`});
+            // }
+        } catch ({code, message}) {
+            console.warn('Cannot open date picker', message);
+        }
+    }
+
+    onChangeTime = (event, selectedTime) => {
+        try {
+            const hour = selectedTime.getHours();
+            const minute = selectedTime.getMinutes();
+            const second = selectedTime.getSeconds();
+            console.log('selectedTime ', hour, minute, second, selectedTime)
+
+            const m = minute < 10 ? `0${minute}` : minute;
+            const h = hour < 10 ? `0${hour}` : hour;
+            this.setState({
+                hourTime: `${h}`, minutesTime: `${m}`,
+                chooseAndroidTime: `${h}:${m}`,
+                showTimePicker: false
+            });
+        } catch ({code, message}) {
+            console.warn('Cannot open time picker', message);
+        }
+    }
 
     renderModalAddToDo() {
         return (
@@ -107,7 +336,22 @@ class ToDoContainer extends Component {
                             <TouchableOpacity
                                 style={styles.buttonAddToDo}
                                 activeOpacity={0.7}
-                                onPress={() => {}}>
+                                onPress={() => {
+                                    if (
+                                        this.state.newToDoName ===
+                                        'undefined' ||
+                                        this.state.newToDoName.length === 0
+                                    ) {
+                                        ToastAndroid.show(
+                                            'Please Insert Todo',
+                                            ToastAndroid.SHORT,
+                                        );
+                                    } else {
+                                        this.addDataToDo().then(
+                                            console.log('Success'),
+                                        );
+                                    }
+                                }}>
                                 <Text style={styles.buttonAddToDoText}>
                                     Add
                                 </Text>
@@ -121,6 +365,9 @@ class ToDoContainer extends Component {
 
     toggleModalAddToDo = state => this.setState({modalAddToDoVisible: state});
 
+    toggleModalChooseTodo = state =>
+        this.setState({modalChooseTodoVisible: state});
+
     render() {
         return (
             <View style={styles.wrapper}>
@@ -128,30 +375,240 @@ class ToDoContainer extends Component {
                     backgroundColor={colors.green01}
                     barStyle="dark-content"
                 />
-                <FlatList
-                    contentContainerStyle={styles.listContainer}
-                    data={TODOS}
-                    showsVerticalScrollIndicator={false}
-                    renderItem={({item}) => (
-                        <View style={styles.listRow}>
-                            <View style={styles.listLeft}>
-                                <Text>{item.name}</Text>
-                            </View>
-                            <View style={styles.listRight}>
-                                <TouchableOpacity onPress={() => {}}>
-                                    <Text style={styles.listButton}>
-                                        Add Reminder
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                    )}
-                    ItemSeparatorComponent={this.renderListItemSeparator}
-                    keyExtractor={item => `${item.id}`}
-                />
+
+                {this.renderDataToDo()}
                 {this.renderModalAddToDo()}
+                {this.renderModalChooseTodo()}
             </View>
         );
+    }
+
+    handleEventAddReminder({item, index}) {
+        if (!item.reminder) {
+            return (
+                <View style={styles.listRight} key={index}>
+                    <TouchableOpacity>
+                        <Text style={styles.listButton}>Add Reminder</Text>
+                    </TouchableOpacity>
+                </View>
+            );
+        } else {
+            return (
+                <View style={styles.listRight} key={index}>
+                    <EvilIcons
+                        name={'check'}
+                        size={25}
+                        style={styles.iconApproved}
+                        color={colors.green01}
+                    />
+                </View>
+            );
+        }
+    }
+
+    renderModalChooseTodo() {
+        const {
+            yearDate,
+            monthDate,
+            dayDate,
+            hourTime,
+            minutesTime,
+        } = this.state;
+        return (
+            <Modal
+                transparent={true}
+                animationType="fade"
+                onRequestClose={() => this.toggleModalChooseTodo(false)}
+                visible={this.state.modalChooseTodoVisible}>
+                <TouchableHighlight
+                    style={styles.modalBackground}
+                    onPress={() => this.toggleModalChooseTodo(false)}
+                    underlayColor={'transparent'}>
+                    <View />
+                </TouchableHighlight>
+                <View style={styles.modalContainer}>
+                    <View style={styles.modalChooseToDo}>
+                        <View style={styles.fieldLabelContainer}>
+                            <Text style={styles.fieldLabel}>Add Reminder</Text>
+                        </View>
+                        <View style={styles.formGroup}>
+                            <Text style={styles.fieldLabel}>Date</Text>
+                            {
+                                this.state.showDatePicker &&
+                                <DateTimePicker
+                                    mode='date'
+                                    value={new Date()}
+                                    onChange={this.onChangeDate}
+                                />
+                            }
+                            <TouchableOpacity
+                                onPress={() => {
+                                    this.setState({showDatePicker: true})
+                                }}>
+                                <TextInput
+                                    value={this.state.androidDate}
+                                    style={styles.fieldInput}
+                                    underlineColorAndroid="transparent"
+                                    editable={false}
+                                />
+                            </TouchableOpacity>
+                            <Text style={styles.fieldLabel}>Time</Text>
+                            {
+                                this.state.showTimePicker &&
+                                <DateTimePicker
+                                    mode='time'
+                                    value={new Date()}
+                                    onChange={this.onChangeTime}
+                                />
+                            }
+                            <TouchableOpacity
+                                onPress={() => {
+                                    this.setState({showTimePicker: true});
+                                }}>
+                                <TextInput
+                                    value={this.state.chooseAndroidTime}
+                                    style={styles.fieldInput}
+                                    underlineColorAndroid="transparent"
+                                    editable={false}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.buttonContainer}>
+                            <TouchableOpacity
+                                style={styles.buttonDismiss}
+                                activeOpacity={0.7}
+                                onPress={() => {
+                                    this.setState({
+                                        isLoading: false,
+                                        newAddPostTimeline: '',
+                                    });
+                                    this.toggleModalChooseTodo(false);
+                                }}>
+                                <Text style={styles.buttonDismissText}>
+                                    Cancel
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={styles.buttonAddToDo}
+                                activeOpacity={0.7}
+                                onPress={() => {
+                                    if (this.state.chooseAndroidTime === '-') {
+                                        ToastAndroid.show(
+                                            'Please Insert Time',
+                                            ToastAndroid.SHORT,
+                                        );
+                                    } else if (this.state.androidDate === '-') {
+                                        ToastAndroid.show(
+                                            'Please Insert Date',
+                                            ToastAndroid.SHORT,
+                                        );
+                                    } else {
+                                        const dt = new Date(
+                                            yearDate,
+                                            monthDate,
+                                            dayDate,
+                                            hourTime,
+                                            minutesTime,
+                                            0,
+                                            0,
+                                        );
+                                        console.log(
+                                            `Android Date: ${
+                                                this.state.androidDate
+                                            } `,
+                                        );
+                                        console.log(
+                                            `Date_old1 : ${dt.toLocaleDateString(
+                                                'en-GB',
+                                            )}`,
+                                        );
+                                        console.log(`Date_old2 : ${dt}`);
+                                        console.log(
+                                            `Date_new : ${dt.toISOString()}`,
+                                        );
+                                        this.addReminderTodo().then(
+                                            ToDoContainer.addToCalendar(
+                                                this.state.todoArr[
+                                                    this.state.indexChooseTodo
+                                                    ].name,
+                                                moment
+                                                    .utc([
+                                                        yearDate,
+                                                        monthDate,
+                                                        dayDate,
+                                                        hourTime,
+                                                        minutesTime,
+                                                        0,
+                                                        0,
+                                                    ])
+                                                    .toISOString(),
+                                            ),
+                                            console.log(
+                                                'Execute Add Reminder ToDo',
+                                            ),
+                                        );
+                                    }
+                                }}>
+                                <Text style={styles.buttonAddToDoText}>
+                                    Submit
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
+        );
+    }
+
+    async addReminderTodo() {
+        let userId = auth().currentUser.uid;
+        let todochange = {};
+        todochange.date = this.state.androidDate;
+        todochange.time = this.state.chooseAndroidTime;
+        todochange.reminder = false;
+        const refDb = database().ref(`/posts/${userId}/ToDo`);
+        await refDb
+            .orderByChild('id_todo')
+            .equalTo(this.state.todoArr[this.state.indexChooseTodo].id_todo)
+            .once('child_added', function(snapshot) {
+                snapshot.ref.update(todochange);
+            });
+        this.setState({
+            androidDate: '-',
+            chooseAndroidTime: '-',
+        });
+        this.setState({indexChooseTodo: ''});
+        this.readToDo().then('Execute');
+        this.toggleModalChooseTodo(false);
+    }
+
+    async addReminderTodo() {
+        // let userId = auth().currentUser.uid;
+        const idTodo = this.state.todoArr[this.state.indexChooseTodo].id_todo
+        let todochange = {
+            date: this.state.androidDate,
+            time: this.state.chooseAndroidTime,
+            reminder: false
+        };
+        console.log('addReminderTodo ', this.state, todochange)
+        this.toDoList[idTodo] = todochange
+        AsyncStorage.setItem('todoList', JSON.stringify(this.toDoList))
+        // const refDb = database().ref(`/posts/${userId}/ToDo`);
+        // await refDb
+        //     .orderByChild('id_todo')
+        //     .equalTo(this.state.todoArr[this.state.indexChooseTodo].id_todo)
+        //     .once('child_added', function(snapshot) {
+        //         snapshot.ref.update(todochange);
+        //     });
+        this.setState({
+            androidDate: '-',
+            chooseAndroidTime: '-',
+            indexChooseTodo: '',
+            modalChooseTodoVisible: false
+        });
+        // this.setState({indexChooseTodo: ''});
+        this.readToDo().then('Execute');
+        // this.toggleModalChooseTodo(false);
     }
 }
 
@@ -172,6 +629,11 @@ const styles = StyleSheet.create({
     listLeft: {
         flex: 7,
     },
+    iconApproved: {
+        width: 25,
+        height: 25,
+        borderRadius: 50,
+    },
     listRight: {
         flex: 3,
         flexDirection: 'row',
@@ -182,6 +644,11 @@ const styles = StyleSheet.create({
         fontSize: 12,
         fontWeight: 'bold',
         color: colors.green01,
+    },
+    listButtonApproved: {
+        fontSize: 12,
+        fontWeight: 'bold',
+        color: colors.gray01,
     },
     modalBackground: {
         flex: 1,
@@ -197,12 +664,29 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         padding: 10,
     },
+    modalChooseContainer: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 10,
+    },
     modalAddToDo: {
         width: 300,
         height: 150,
         padding: 10,
         flexDirection: 'column',
         justifyContent: 'center',
+        backgroundColor: '#FFF',
+    },
+    modalChooseToDo: {
+        width: 300,
+        padding: 10,
+        alignSelf: 'center',
+        flexDirection: 'column',
         backgroundColor: '#FFF',
     },
     fieldLabelContainer: {
@@ -223,6 +707,11 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         color: '#212121',
         fontSize: 12,
+    },
+    formGroup: {
+        paddingVertical: 20,
+        borderBottomWidth: 1,
+        borderBottomColor: colors.gray04,
     },
     buttonContainer: {
         display: 'flex',
@@ -258,6 +747,12 @@ const styles = StyleSheet.create({
         color: '#FFF',
         fontSize: 16,
         fontWeight: '400',
+    },
+    textEmpty: {
+        fontWeight: 'bold',
+        color: colors.black,
+        marginHorizontal: 15,
+        justifyContent: 'center',
     },
 });
 

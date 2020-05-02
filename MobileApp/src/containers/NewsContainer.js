@@ -23,7 +23,7 @@ import TimelineScreen from './../screens/NewsTimeline/Timeline';
 class NewsContainer extends Component {
     static navigationOptions = () => {
         return {
-            header: () => <HeaderTitleOnly title="News and Timeline" />,
+            header: () => <HeaderTitleOnly title="Berita dan Timeline" />,
         };
     };
 
@@ -33,7 +33,7 @@ class NewsContainer extends Component {
             tab: {
                 index: 0,
                 routes: [
-                    {key: 'news', title: 'News'},
+                    {key: 'news', title: 'Berita'},
                     {key: 'timeline', title: 'Timeline'},
                 ],
             },

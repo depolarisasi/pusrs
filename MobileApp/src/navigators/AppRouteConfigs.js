@@ -13,6 +13,7 @@ import PrivacyTerms from './../screens/PrivacyTerms';
 import PdfScreen from '../screens/Profile/PdfScreen';
 import PDFCollection from '../screens/Profile/PDFCollection';
 import LoggedInTabNavigator from './LoggedInTabNavigator';
+import formTabNavigator from './LoggedInTabNavigator';
 
 const AppRouteConfigs = createStackNavigator(
     {
