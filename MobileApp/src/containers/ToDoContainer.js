@@ -25,8 +25,10 @@ import HeaderToDo from './../components/headers/HeaderToDo';
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 import * as AddCalendarEvent from 'react-native-add-calendar-event';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import moment from 'moment';
+import AsyncStorage from '@react-native-community/async-storage';
 
 class ToDoContainer extends Component {
     static navigationOptions = ({navigation}) => {
@@ -55,6 +57,7 @@ class ToDoContainer extends Component {
             indexChooseTodo: null,
             isLoading: true,
         };
+        this.toDoList = {}
     }
 
     componentDidMount() {
@@ -78,20 +81,22 @@ class ToDoContainer extends Component {
 
     async readToDo() {
         let userId = auth().currentUser.uid;
+        const toDoList = await AsyncStorage.getItem('todoList')
+        if(toDoList != null){
+            this.toDoList = JSON.parse(toDoList)
+        }
         const refDb = database().ref(`/posts/${userId}/ToDo`);
         await refDb
             .once('value', data => {
                 const items = [];
-                data.forEach(function(childSnapshot) {
+                data.forEach((childSnapshot) => {
                     try {
-                        items.push({
-                            id_todo: childSnapshot.val().id_todo,
-                            name: childSnapshot.val().name,
-                            date: childSnapshot.val().date,
-                            time: childSnapshot.val().time,
-                            reminder: childSnapshot.val().reminder,
-                        });
+                        const toDo = childSnapshot.val()
+                        const reminder = this.toDoList[toDo.id_todo]
+                        // console.log('childSnapshot ', toDo, reminder)
+                        items.push({ ...toDo, reminder});
                     } catch (e) {
+                        console.log('error ', e.message)
                         items.push({
                             id_todo: '',
                             name: '',
@@ -160,19 +165,19 @@ class ToDoContainer extends Component {
                                 <TouchableHighlight
                                     key={item.id_todo}
                                     onPress={() => {
-                                        if (item.reminder) {
+                                        if (!item.reminder) {
                                             console.log(item.name);
                                             console.log(index);
                                             this.setState({
                                                 indexChooseTodo: index,
-                                            });
-                                            this.setState({
                                                 androidDate: '-',
                                                 newToDoName: '',
-                                            });
-                                            this.setState({
                                                 chooseAndroidTime: '-',
                                             });
+                                            // this.setState({
+                                            // });
+                                            // this.setState({
+                                            // });
                                             this.toggleModalChooseTodo(true);
                                         } else {
                                             ToastAndroid.show(
@@ -246,39 +251,46 @@ class ToDoContainer extends Component {
             });
     }
 
-    async showDate(name) {
+    onChangeDate = (event, selectedDate) => {
         try {
-            const {action, year, month, day} = await DatePickerAndroid.open({
-                date: new Date(),
-                minDate: new Date(),
+            // const {action, year, month, day} = await DatePickerAndroid.open({
+            //     date: new Date(),
+            //     minDate: new Date(),
+            // });
+            const year = selectedDate.getFullYear();
+            const month = selectedDate.getMonth();
+            const day = selectedDate.getDay();
+            console.log('selectedDate ', year, month, day)
+
+            // if (action !== DatePickerAndroid.dismissedAction) {
+            this.setState({
+                yearDate: `${year}`,
+                monthDate: `${month}`,
+                dayDate: `${day}`,
+                androidDate: `${day}/${month + 1}/${year}`,
+                showDatePicker: false
             });
-            if (action !== DatePickerAndroid.dismissedAction) {
-                this.setState({
-                    yearDate: `${year}`,
-                    monthDate: `${month}`,
-                    dayDate: `${day}`,
-                });
-                this.setState({androidDate: `${day}/${month + 1}/${year}`});
-            }
+            // this.setState({androidDate: `${day}/${month + 1}/${year}`});
+            // }
         } catch ({code, message}) {
             console.warn('Cannot open date picker', message);
         }
     }
 
-    async showTime() {
+    onChangeTime = (event, selectedTime) => {
         try {
-            let date = new Date();
-            const {action, hour, minute} = await TimePickerAndroid.open({
-                hour: date.getHours(),
-                minute: date.getMinutes(),
-                is24Hour: true,
+            const hour = selectedTime.getHours();
+            const minute = selectedTime.getMinutes();
+            const second = selectedTime.getSeconds();
+            console.log('selectedTime ', hour, minute, second, selectedTime)
+
+            const m = minute < 10 ? `0${minute}` : minute;
+            const h = hour < 10 ? `0${hour}` : hour;
+            this.setState({
+                hourTime: `${h}`, minutesTime: `${m}`,
+                chooseAndroidTime: `${h}:${m}`,
+                showTimePicker: false
             });
-            if (action !== TimePickerAndroid.dismissedAction) {
-                const m = minute < 10 ? `0${minute}` : minute;
-                const h = hour < 10 ? `0${hour}` : hour;
-                this.setState({chooseAndroidTime: `${h}:${m}`});
-                this.setState({hourTime: `${h}`, minutesTime: `${m}`});
-            }
         } catch ({code, message}) {
             console.warn('Cannot open time picker', message);
         }
@@ -327,7 +339,7 @@ class ToDoContainer extends Component {
                                 onPress={() => {
                                     if (
                                         this.state.newToDoName ===
-                                            'undefined' ||
+                                        'undefined' ||
                                         this.state.newToDoName.length === 0
                                     ) {
                                         ToastAndroid.show(
@@ -372,7 +384,7 @@ class ToDoContainer extends Component {
     }
 
     handleEventAddReminder({item, index}) {
-        if (item.reminder) {
+        if (!item.reminder) {
             return (
                 <View style={styles.listRight} key={index}>
                     <TouchableOpacity>
@@ -421,34 +433,43 @@ class ToDoContainer extends Component {
                         </View>
                         <View style={styles.formGroup}>
                             <Text style={styles.fieldLabel}>Date</Text>
+                            {
+                                this.state.showDatePicker &&
+                                <DateTimePicker
+                                    mode='date'
+                                    value={new Date()}
+                                    onChange={this.onChangeDate}
+                                />
+                            }
                             <TouchableOpacity
                                 onPress={() => {
-                                    this.showDate().then('Execute');
+                                    this.setState({showDatePicker: true})
                                 }}>
                                 <TextInput
                                     value={this.state.androidDate}
                                     style={styles.fieldInput}
                                     underlineColorAndroid="transparent"
                                     editable={false}
-                                    onChangeText={androidDate =>
-                                        this.setState({androidDate})
-                                    }
                                 />
                             </TouchableOpacity>
                             <Text style={styles.fieldLabel}>Time</Text>
+                            {
+                                this.state.showTimePicker &&
+                                <DateTimePicker
+                                    mode='time'
+                                    value={new Date()}
+                                    onChange={this.onChangeTime}
+                                />
+                            }
                             <TouchableOpacity
                                 onPress={() => {
-                                    this.setState({chooseAndroidTime: ''});
-                                    this.showTime().then('Execute');
+                                    this.setState({showTimePicker: true});
                                 }}>
                                 <TextInput
                                     value={this.state.chooseAndroidTime}
                                     style={styles.fieldInput}
                                     underlineColorAndroid="transparent"
                                     editable={false}
-                                    onChangeText={chooseAndroidTime =>
-                                        this.setState({chooseAndroidTime})
-                                    }
                                 />
                             </TouchableOpacity>
                         </View>
@@ -509,7 +530,7 @@ class ToDoContainer extends Component {
                                             ToDoContainer.addToCalendar(
                                                 this.state.todoArr[
                                                     this.state.indexChooseTodo
-                                                ].name,
+                                                    ].name,
                                                 moment
                                                     .utc([
                                                         yearDate,
@@ -562,25 +583,32 @@ class ToDoContainer extends Component {
     }
 
     async addReminderTodo() {
-        let userId = auth().currentUser.uid;
-        let todochange = {};
-        todochange.date = this.state.androidDate;
-        todochange.time = this.state.chooseAndroidTime;
-        todochange.reminder = false;
-        const refDb = database().ref(`/posts/${userId}/ToDo`);
-        await refDb
-            .orderByChild('id_todo')
-            .equalTo(this.state.todoArr[this.state.indexChooseTodo].id_todo)
-            .once('child_added', function(snapshot) {
-                snapshot.ref.update(todochange);
-            });
+        // let userId = auth().currentUser.uid;
+        const idTodo = this.state.todoArr[this.state.indexChooseTodo].id_todo
+        let todochange = {
+            date: this.state.androidDate,
+            time: this.state.chooseAndroidTime,
+            reminder: false
+        };
+        console.log('addReminderTodo ', this.state, todochange)
+        this.toDoList[idTodo] = todochange
+        AsyncStorage.setItem('todoList', JSON.stringify(this.toDoList))
+        // const refDb = database().ref(`/posts/${userId}/ToDo`);
+        // await refDb
+        //     .orderByChild('id_todo')
+        //     .equalTo(this.state.todoArr[this.state.indexChooseTodo].id_todo)
+        //     .once('child_added', function(snapshot) {
+        //         snapshot.ref.update(todochange);
+        //     });
         this.setState({
             androidDate: '-',
             chooseAndroidTime: '-',
+            indexChooseTodo: '',
+            modalChooseTodoVisible: false
         });
-        this.setState({indexChooseTodo: ''});
+        // this.setState({indexChooseTodo: ''});
         this.readToDo().then('Execute');
-        this.toggleModalChooseTodo(false);
+        // this.toggleModalChooseTodo(false);
     }
 }
 

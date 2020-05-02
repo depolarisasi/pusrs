@@ -1,12 +1,8 @@
 package com.mobileapp;
 
 import android.app.Application;
-import android.util.Log;
 
-import com.facebook.react.BuildConfig;
 import com.facebook.react.PackageList;
-import com.facebook.hermes.reactexecutor.HermesExecutorFactory;
-import com.facebook.react.bridge.JavaScriptExecutorFactory;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -17,10 +13,10 @@ import java.util.List;
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
-    @Override
-    public boolean getUseDeveloperSupport() {
-      return BuildConfig.DEBUG;
-    }
+//    @Override
+//    public boolean getUseDeveloperSupport() {
+//     return false;
+//    }
 
     @Override
     protected List<ReactPackage> getPackages() {
@@ -35,6 +31,11 @@ public class MainApplication extends Application implements ReactApplication {
     protected String getJSMainModuleName() {
       return "index";
     }
+
+      @Override
+      public boolean getUseDeveloperSupport() {
+          return false;
+      }
   };
 
   @Override
