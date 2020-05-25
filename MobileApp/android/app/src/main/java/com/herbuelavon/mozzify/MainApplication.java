@@ -1,4 +1,4 @@
-package com.mobileapp;
+package com.herbuelavon.mozzify;
 
 import android.app.Application;
 

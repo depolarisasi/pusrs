@@ -8,18 +8,26 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:438226534972:android:7ce42b440ed07b92817939",
+        "mobilesdk_app_id": "1:438226534972:android:9cbae53c4d2fab07817939",
         "android_client_info": {
-          "package_name": "com.mobileapp"
+          "package_name": "com.herbuelavon.mozzify"
         }
       },
       "oauth_client": [
         {
-          "client_id": "438226534972-797frcmiju6s3nkpclnifkqa3piva4m0.apps.googleusercontent.com",
+          "client_id": "438226534972-b2dhgu95fpcia0je7o225o5anjlvbtmc.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.mobileapp",
-            "certificate_hash": "3b8343aaee48481a8a7a0e9730217518921434f4"
+            "package_name": "com.herbuelavon.mozzify",
+            "certificate_hash": "1cc84238d9a07c3e388b7e69ac6fdd607b6ed03d"
+          }
+        },
+        {
+          "client_id": "438226534972-5oid8pree02gjpp9k2l4eo1jodn10me2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.herbuelavon.mozzify",
+            "certificate_hash": "89783b605c0a4876766da9584df8454a2ee91715"
           }
         },
         {

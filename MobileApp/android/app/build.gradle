@@ -130,11 +130,11 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.mobileapp"
+        applicationId "com.herbuelavon.mozzify"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 11
+        versionName "1.1"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
     }
