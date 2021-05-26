@@ -15,22 +15,21 @@
     <link rel="icon" href="./favicon.ico" type="image/x-icon"/>
     <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico" />
     <!-- Generated: 2018-04-16 09:29:05 +0200 -->
-    
+
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>PUSRS</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,500,500i,600,600i,700,700i&amp;subset=latin-ext">
-   
+    @notifyCss
     <!-- Dashboard Core -->
-    
+
     <script src="{{asset('assets/js/vendors/jquery-3.2.1.min.js')}}"></script>
     <script src="{{asset('assets/js/vendors/bootstrap.bundle.min.js')}}"></script>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <link href="{{asset('assets/css/dashboard.css')}}" rel="stylesheet" />
     <!-- Input Mask Plugin -->
-    
+
     @yield('css')
   </head>
   <body class="">
@@ -43,7 +42,7 @@
                <h3>PUSRS</h3>
               </a>
               <div class="d-flex order-lg-2 ml-auto">
-               
+
                 <div class="dropdown">
                   <a href="#" class="nav-link pr-0 leading-none" data-toggle="dropdown">
                     <span class="avatar" style="background-image: url(./demo/faces/female/25.jpg)"></span>
@@ -53,7 +52,7 @@
                     </span>
                   </a>
                   <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                  
+
                     <a class="dropdown-item" href="{{url('setting')}}">
                       <i class="dropdown-icon fe fe-settings"></i> Setting Profil
                     </a>
@@ -78,7 +77,7 @@
         <div class="header collapse d-lg-flex p-0" id="headerMenuCollapse">
           <div class="container">
             <div class="row align-items-center">
-             
+
               <div class="col-lg order-lg-first">
                 <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
                   <li class="nav-item">
@@ -100,7 +99,7 @@
                       <a href="{{url('pasien')}}" class="dropdown-item ">Semua Pasien</a>
                     </div>
                   </li>
-                  
+
                   <li class="nav-item">
                   <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown"><i class="fe fe-box"></i>Pelaporan</a>
                     <div class="dropdown-menu dropdown-menu-arrow">
@@ -125,9 +124,9 @@
                   </li>
                   <li class="nav-item">
                     <a href="{{url('log')}}" class="nav-link"><i class="fe fe-map"></i> Log Aktivitas</a>
-                    
+
                   </li>
-                 
+
                 </ul>
               </div>
             </div>
@@ -136,7 +135,7 @@
 
         <div class="my-3 my-md-5">
           <div class="container">
-           
+
 
            @yield('content')
 
@@ -144,7 +143,7 @@
           </div>  <!-- container -->
         </div> <!-- container my-3 -->
       </div> <!-- page-main -->
-   
+@include('notify::messages')
       <footer class="footer">
         <div class="container">
           <div class="row align-items-center flex-row-reverse">
@@ -166,19 +165,7 @@
       </footer>
     </div> <!-- page -->
 
-    @if (notify()->ready())
- <script type="text/javascript">
-swal({
-            title: "{!! notify()->option('title') !!}",
-            text: "{!! notify()->message() !!}", 
-            icon: "{{ notify()->type() }}",
-            @if (notify()->option('timer'))
-                timer: {{ notify()->option('timer') }},
-                showConfirmButton: false
-            @endif
-        });
- </script>
- @endif
-
+    @include('notify::messages')
+    @notifyJs
   </body>
 </html>
