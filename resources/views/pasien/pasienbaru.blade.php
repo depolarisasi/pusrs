@@ -78,7 +78,7 @@
     position: relative;
     width: 100px;
 
-    
+
 }
 #imgwrapperx .m-img-wrapper img {
     width: 100%;
@@ -109,16 +109,16 @@
                         </div>
                         <div class="form-group">
                           <label class="form-label">Alamat Pasien</label>
-                         
+
                           <input type="text" class="form-control" name="alamat" placeholder="Alamat Pasien" required>
                         </div>
-                        
+
                         <div class="form-group">
                             <label class="form-label">Umur Pasien</label>
                             <div class="input-group date">
       <input type="text" id="inputtanggal" class="form-control" name="tanggallahir" required ><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
     </div>
-                          
+
                           </div>
                         <div class="form-group">
                           <label class="form-label">Kecamatan Pasien</label>
@@ -152,54 +152,54 @@
                         <select name="kd_kel" class="form-control" required="">
                         </select>
                    <script>
-                   
+
   $(document).ready(function() {
-   
+
        $('select[name="kd_kec"]').on('change', function() {
-   
+
            var kode_kec = $('select[name="kd_kec"]').val();
-   
+
            if(kode_kec) {
-   
+
                $.ajax({
-   
+
                    url: '/api/getkel/?kodekecamatan='+kode_kec,
-   
+
                    type: "GET",
-   
+
                    dataType: "json",
-   
+
                    success:function(data) {
-   
+
                        $('select[name="kd_kel"]').empty();
-   
+
                        $.each(data, function(key, value) {
-   
+
                            $('select[name="kd_kel"]').append('<option value="'+ key +'">'+ value +'</option>');
-   
+
                        });
-   
-   
+
+
                    }
-   
+
                });
-   
+
            }else{
-   
+
               console.log("KSONK");
            }
-   
+
        });
-   
+
    });
    </script>
                       </div>
                         </div>
-                      
 
-                    
-                     
-                 
+
+
+
+
 
                          <!-- <div class="form-group">
                         <div class="form-label">Dokumen Hasil Lab (Jika Ada)</div>
@@ -208,7 +208,7 @@
                           <label class="custom-file-label">File Scan/Foto Hasil Lab</label>
                         </div>
                       </div>
-                    
+
                 </div> -->
                 <div class="card-footer text-right">
                   <div class="d-flex">
@@ -217,7 +217,7 @@
                   </div>
                 </div>
               </form>
-            
+
             </div>
 
         </div>
@@ -225,8 +225,8 @@
     </div>
    <script>
     $('#inputtanggal').datepicker({
-        format: "yyyy/dd/mm"
+        format: "yyyy-mm-dd"
     });
    </script>
- 
+
 @endsection

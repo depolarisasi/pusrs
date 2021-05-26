@@ -78,7 +78,7 @@
     position: relative;
     width: 100px;
 
-    
+
 }
 #imgwrapperx .m-img-wrapper img {
     width: 100%;
@@ -110,14 +110,14 @@
                         </div>
                         <div class="form-group">
                           <label class="form-label">Alamat Pasien</label>
-                         
+
                           <input type="text" class="form-control" name="alamat_pasien" value="{{$edit->alamat}}" required>
                         </div>
-                        
+
                         <div class="form-group">
                         <label class="form-label">Tanggal Lahir Pasien</label>
-                            
-                            <input type="text" id="tgllahir" class="form-control" name="umur_pasien" value="{{$edit->umur}}" required>
+
+                            <input type="text" id="tgllahir" class="form-control" name="tanggal_lahir" value="{{$edit->tanggal_lahir}}" required>
                             <script>
                           $('#tgllahir').datepicker({
         format: "yyyy/dd/mm",
@@ -157,14 +157,14 @@
                           <label class="form-label">Kelurahan Pasien</label>
                           <div class="form-group">
                         <select name="kelurahan" class="form-control" required="">
-                        
+
   <option value="{{$edit->kd_kel}}" selected="">{{$edit->nama_kelurahan}}</option>
                         </select>
                    <script>
-                   
+
   $(document).ready(function() {
     var kode_kecx = $('select[name="kecamatan"]').val();
-   
+
    if(kode_kecx) {
 
        $.ajax({
@@ -195,41 +195,41 @@
       console.log("KSONK");
    }
        $('select[name="kecamatan"]').on('change', function() {
-   
+
            var kode_kec = $('select[name="kecamatan"]').val();
-   
+
            if(kode_kec) {
-   
+
                $.ajax({
-   
+
                    url: '/api/getkel/?kodekecamatan='+kode_kec,
-   
+
                    type: "GET",
-   
+
                    dataType: "json",
-   
+
                    success:function(data) {
-   
+
                        $('select[name="kelurahan"]').empty();
-   
+
                        $.each(data, function(key, value) {
-   
+
                            $('select[name="kelurahan"]').append('<option value="'+ key +'">'+ value +'</option>');
-   
+
                        });
-   
-   
+
+
                    }
-   
+
                });
-   
+
            }else{
-   
+
               console.log("KSONK");
            }
-   
+
        });
-   
+
    });
    </script>
                       </div>
@@ -245,14 +245,14 @@
                             <input type="radio" id="labdarah" name="pilihanlab" value="labdarah" class="selectgroup-input" required>
                             <span class="selectgroup-button">Pemeriksaan Lab Darah</span>
                           </label>
-                        
+
                         </div>
 
-                        
-                        
+
+
                       </div>
 
-                      <div class="form-group" id="pilihns1"> 
+                      <div class="form-group" id="pilihns1">
                        <div class="selectgroup w-100">
                           <label class="selectgroup-item">
                             <input type="radio" name="hasilns1" value="true" class="selectgroup-input hasilns1">
@@ -262,26 +262,26 @@
                             <input type="radio" name="hasilns1" value="false" class="selectgroup-input hasilns1">
                             <span class="selectgroup-button">Negatif</span>
                           </label>
-                        
+
                         </div>
 
                       </div>
                       <div class="form-group" id="pilihlabdarah">
-                      
+
                       <label class="form-label">Jumlah Hemoglobin</label>
                       <input type="text" class="form-control" id="hb" name="hemoglobin" placeholder="Jumlah Hemoglobin">
-                      
+
                       <label class="form-label">Jumlah Leukosit</label>
                       <input type="text" class="form-control" id="leukosit" name="leukosit" placeholder="Jumlah Leukosit">
-                      
+
                       <label class="form-label">Jumlah Hematokrit</label>
                       <input type="text" class="form-control" id="hematokrit" name="hematokrit" placeholder="Jumlah Hematokrit tanpa persen">
 
                       <label class="form-label">Jumlah Trombosit</label>
                       <input type="text" class="form-control" id="trombosit" name="trombosit" placeholder="Jumlah Trombosit">
                       </div>
-                       
-                     
+
+
                       <script>
                       var ns1 = $('#ns1').prop('checked');
                       var labdarah =  $('#labdarah').prop('checked');
@@ -329,14 +329,14 @@ $("#pilihns1").hide();
 }
 });
                           </script>
-                    
+
 
 <div class="form-group" id="imgwrapperx" style="display:inline-block">
 <label class="form-label">Upload Scan / Foto Hasil Pemeriksaan Disini : </label>
 @if($edit->scan_lab != NULL)
 @foreach($unserial as $un)
-<div class="m-img-wrapper" id="{{$un}}"><img src="{{asset('hasillab/'.$un)}}" class="img-fluid" /> 
- <a style="cursor:pointer;" class="gux delup" data-id="{{$un}}">X</a> 
+<div class="m-img-wrapper" id="{{$un}}"><img src="{{asset('hasillab/'.$un)}}" class="img-fluid" />
+ <a style="cursor:pointer;" class="gux delup" data-id="{{$un}}">X</a>
 <input type="hidden" value="{{$un}}" name="per_udah_ada[]" /> </div>
 @endforeach
 @endif
@@ -348,7 +348,7 @@ $("#pilihns1").hide();
 
  </div>
  <script>
- 
+
  $('.delup').click(function(){
         imgname = $(this).attr('data-id');
         swal({
@@ -367,7 +367,7 @@ $("#pilihns1").hide();
 		$.ajax({
 			url : '/api/delete-upload',
 			type : 'POST',
-			data : 
+			data :
 			file_name=imgname,
 			_token:"{{csrf_token()}}",
 			processData: false,  // tell jQuery not to process the data
@@ -377,7 +377,7 @@ $("#pilihns1").hide();
 					console.log(data.status);
 
 				}
-			}  
+			}
 		});
   } else {
     swal("Hapus Hasil Scan Telah Dibatalkan", {
@@ -397,7 +397,7 @@ $("#pilihns1").hide();
                           <label class="custom-file-label">File Scan/Foto Hasil Lab</label>
                         </div>
                       </div>
-                    
+
                 </div> -->
                 <div class="card-footer text-right">
                   <div class="d-flex">
@@ -406,12 +406,12 @@ $("#pilihns1").hide();
                   </div>
                 </div>
               </form>
-            
+
             </div>
 
         </div>
       </div>
     </div>
- 
- 
+
+
 @endsection

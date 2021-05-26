@@ -18,11 +18,11 @@
                   <div class="card-header">
                     <h3 class="card-title">Semua Pasien</h3>
                   </div>
-                 
+
                   <div class="card-body">
                   <div class="text-right">
                  <a href="{{url('laporan/new')}}" class="btn btn-md btn-primary">Tambah Pasien</a>
-            
+
                  </div>
                  <br>
                       <div class="table-responsive">
@@ -31,18 +31,25 @@
             <tr>
                 <th>Info Pasien</th>
                 <th>Alamat</th>
-                
+
                 <th class="kecamatan">Kecamatan</th>
-                
+
                 <th class="kelurahan">Kelurahan</th>
-                
+
                 <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
         @foreach($data as $pasien)
+        @php
+        $userDob = $pasien->tanggallahir;
+        $dob = new DateTime($userDob);
+        $now = new DateTime();
+        $difference = $now->diff($dob);
+        $age = $difference->y;
+        @endphp
             <tr>
-                <td>{{$pasien->nama_pasien}} ({{$pasien->umur}} tahun)
+                <td>{{$pasien->nama_pasien}} ({{$age}} tahun)
                 <br>NIK : {{$pasien->nik}} </td>
 
                 <td>{{$pasien->alamat}}</td>
@@ -53,9 +60,9 @@
                 <a href="{{url('pasien/edit/'.$pasien->idpasien)}}" class="btn btn-warning btn-sm"><i class="fe fe-edit"></i></a>
                 <a href="{{url('pasien/delete/'.$pasien->idpasien)}}" class="btn btn-danger btn-sm"><i class="fe fe-trash-2"></i></a></td>
             </tr>
-         @endforeach   
+         @endforeach
         </tbody>
-      
+
     </table>
     </div>
                         <script>
@@ -64,7 +71,7 @@
     var table = $('#semualaporan').DataTable();
     table.columns( '.kecamatan' ).every( function () {
     var that = this;
- 
+
     // Create the select list and search operation
     var select = $('#searchkecm')
         .on( 'change', function () {
@@ -72,7 +79,7 @@
                 .search( $(this).val() )
                 .draw();
         } );
- 
+
     // Get the search data for the first column and add to the select list
     this
         .cache( 'search' )
@@ -86,7 +93,7 @@
 
 table.columns( '.puskesmas' ).every( function () {
     var that = this;
- 
+
     // Create the select list and search operation
     var select = $('#searchpusk')
         .on( 'change', function () {
@@ -94,7 +101,7 @@ table.columns( '.puskesmas' ).every( function () {
                 .search( $(this).val() )
                 .draw();
         } );
- 
+
     // Get the search data for the first column and add to the select list
     this
         .cache( 'search' )
@@ -106,7 +113,7 @@ table.columns( '.puskesmas' ).every( function () {
 } );
                     $('.btn-danger').on('click', function(e){
                         e.preventDefault(); //cancel default action
-                
+
                         //Recuperate href value
                         var href = $(this).attr('href');
                         var message = $(this).data('confirm');
@@ -159,19 +166,19 @@ $('.date-range-filter').change(function() {
 });
 
 $('#my-table_filter').hide();
-                    
+
 } );
                         </script>
-                    
-                 
+
+
                 </div>
-                
+
 </div> <!-- card !-->
-            
+
             </div>
 
         </div>
       </div>
     </div>
- 
+
 @endsection

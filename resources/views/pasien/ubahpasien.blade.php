@@ -79,7 +79,7 @@
     position: relative;
     width: 100px;
 
-    
+
 }
 #imgwrapperx .m-img-wrapper img {
     width: 100%;
@@ -111,14 +111,14 @@
                         </div>
                         <div class="form-group">
                           <label class="form-label">Alamat Pasien</label>
-                         
-                          <input type="text" class="form-control" name="alamat_pasien" value="{{$edit->alamat}}" required>
+
+                          <input type="text" class="form-control" name="alamat" value="{{$edit->alamat}}" required>
                         </div>
-                        
+
                         <div class="form-group">
                             <label class="form-label">Umur Pasien</label>
-                            
-                          <input type="text" class="form-control" name="umur_pasien" value="{{$edit->tanggallahir}}" required>
+
+                          <input id="inputtanggal" class="form-control" name="tanggallahir" value="{{$edit->tanggallahir}}" required><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
                           </div>
                         <div class="form-group">
                           <label class="form-label">Kecamatan Pasien</label>
@@ -154,14 +154,14 @@
                           <label class="form-label">Kelurahan Pasien</label>
                           <div class="form-group">
                         <select name="kelurahan" class="form-control" required="">
-                        
+
   <option value="{{$edit->kd_kel}}" selected="">{{$edit->nama_kelurahan}}</option>
                         </select>
                    <script>
-                   
+
   $(document).ready(function() {
     var kode_kecx = $('select[name="kecamatan"]').val();
-   
+
    if(kode_kecx) {
 
        $.ajax({
@@ -192,47 +192,47 @@
       console.log("KSONK");
    }
        $('select[name="kecamatan"]').on('change', function() {
-   
+
            var kode_kec = $('select[name="kecamatan"]').val();
-   
+
            if(kode_kec) {
-   
+
                $.ajax({
-   
+
                    url: '/api/getkel/?kodekecamatan='+kode_kec,
-   
+
                    type: "GET",
-   
+
                    dataType: "json",
-   
+
                    success:function(data) {
-   
+
                        $('select[name="kelurahan"]').empty();
-   
+
                        $.each(data, function(key, value) {
-   
+
                            $('select[name="kelurahan"]').append('<option value="'+ key +'">'+ value +'</option>');
-   
+
                        });
-   
-   
+
+
                    }
-   
+
                });
-   
+
            }else{
-   
+
               console.log("KSONK");
            }
-   
+
        });
-   
+
    });
    </script>
                       </div>
                         </div>
-                 
-                     
+
+
 
                          <!-- <div class="form-group">
                         <div class="form-label">Dokumen Hasil Lab (Jika Ada)</div>
@@ -241,7 +241,7 @@
                           <label class="custom-file-label">File Scan/Foto Hasil Lab</label>
                         </div>
                       </div>
-                    
+
                 </div> -->
                 <div class="card-footer text-right">
                   <div class="d-flex">
@@ -249,12 +249,16 @@
                   </div>
                 </div>
               </form>
-            
+
             </div>
 
         </div>
       </div>
     </div>
- 
- 
+    <script>
+        $('#inputtanggal').datepicker({
+            format: "yyyy-mm-dd"
+        });
+       </script>
+
 @endsection

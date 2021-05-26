@@ -51,12 +51,12 @@
                 <div class="card">
                   <div class="card-header">
                     <h3 class="card-title">Detail Laporan</h3>
-                   
+
                   </div>
                   <div class="card-body">
-                
+
                  <br>
-                
+
                         <div class="row">
                         <div class="col-md-9">
                         <div class="table-responsive">
@@ -68,8 +68,15 @@
                 </tr>
                 <tr>
                 <tr>
+                    @php
+              $userDob = $detail->tanggal_lahir;
+              $dob = new DateTime($userDob);
+              $now = new DateTime();
+              $difference = $now->diff($dob);
+              $age = $difference->y;
+              @endphp
                 <td><b>Nama Pasien, umur</b></td>
-                <td>{{$detail->nama_pasien}} ({{$detail->umur}} tahun) </td>
+                <td>{{$detail->nama_pasien}} ({{$age}} tahun) </td>
                 </tr>
                 <tr>
                 <td><b>Alamat Pasien</b></td>
@@ -85,7 +92,7 @@
                 @endif</span></td>
                 <tr>
                 <td><b>Faskes yang Melayani</b></td>
-                
+
                 <td>{{$detail->nama_puskesmas}}</td>
                 </tr>
                 <tr>
@@ -98,7 +105,7 @@
                 @endif
                 </td>
         </tbody>
-       
+
     </table>
     </div>
     <td>@if($detail->scan_lab != NULL)
@@ -126,15 +133,15 @@
                         <div class="col-md-3">
                  <a href="{{url('laporan/edit/'.$detail->idpasien)}}" class="btn btn-md btn-warning">Ubah Laporan</a>
                  <a href="{{url('laporan/delete/'.$detail->idpasien)}}" class="btn btn-md btn-danger">Hapus Laporan</a>
-                 
+
                         </div>
                         </div>
-                    
+
                  <script>
                     $(document).ready(function(){
                     $('.btn-danger').on('click', function(e){
                         e.preventDefault(); //cancel default action
-                
+
                         //Recuperate href value
                         var href = $(this).attr('href');
                         var message = $(this).data('confirm');
@@ -161,13 +168,13 @@
                 });
                  </script>
                 </div>
-                
+
 </div> <!-- card !-->
-            
+
             </div>
 
         </div>
       </div>
     </div>
- 
+
 @endsection
