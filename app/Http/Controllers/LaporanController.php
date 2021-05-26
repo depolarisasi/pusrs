@@ -23,7 +23,7 @@ class LaporanController extends Controller
 * Apakah NIK sudah terdaftar ?
 */
 public function checkNIK($nik){
-    $pasien = Pasien::where('nik',$nik)->first(); 
+    $pasien = Pasien::where('nik',$nik)->first();
     if($pasien){
             return true;
     }else {
@@ -67,7 +67,7 @@ public function addToPasien($nik, $namapasien, $alamat, $kd_kec, $kd_kel, $tangg
     $newpasien->tanggallahir = $tanggallahir;
     try{
         $this->addToLog($newpasien->idpasien,$newpasien->nama_pasien," Ditambahkan"); //add to log
-        
+
     $newpasien->save();
     }catch(QE $e){  return $e; } //show db error message
 
@@ -108,13 +108,13 @@ public function addToPasien($nik, $namapasien, $alamat, $kd_kec, $kd_kel, $tangg
     public function SaveLaporanBaru(Request $request){
         if($this->checkNIK($request->nik) == false){
             $this->AddToPasien($request->nik,$request->nama_pasien, $request->alamat_pasien, $request->kecamatan, $request->kelurahan, $request->umur_pasien);
-  
+
         }
         $checkmonth = LaporanFaskes::where('nik_pasien',$request->nik)->whereMonth('created_at','=',date("d",strtotime(date("Y-m-d"))))->first();
         if($checkmonth){
-        
-        $msg = notify()->flash('Kasus Pasien Tersebut Sudah Ada Bulan Ini', 'error');
-        return redirect('laporan')->with(compact('msg'));
+
+       notify()->error('Kasus Pasien Tersebut Sudah Ada Bulan Ini');
+        return redirect('laporan');
     }else {
             $insert = new LaporanFaskes;
             $insert->kd_pasien = Auth::user()->kode_faskes.$request->nik;
@@ -130,8 +130,8 @@ public function addToPasien($nik, $namapasien, $alamat, $kd_kec, $kd_kel, $tangg
             if($request->pilihanlab == "ns1"){
                 $insert->ns1 = $request->hasilns1 == false?0:1; //apakah hasilnya TRUE atau FALSE ?
                 if($insert->ns1 == 0){ //kalau False maka tidak terkena dengue
-                    $msg = notify()->flash('Jika NS1 NEGATIF Pasien tidak terjangkit dengue!', 'error');
-            return redirect()->back()->with(compact('msg'));
+                   notify()->error('Jika NS1 NEGATIF Pasien tidak terjangkit dengue!');
+            return redirect()->back();
                 }
                 $insert->kd_icd = "A90"; //jika true maka dia bisa jadi terkena dengue dengan ICD A90
                 } else if($request->pilihanlab = "labdarah"){
@@ -148,7 +148,7 @@ public function addToPasien($nik, $namapasien, $alamat, $kd_kec, $kd_kel, $tangg
                     if (File::exists('temporary/'.$img)) { //jika ada di temporary
                         File::delete('temporary/'.$img); //delete saja
                     }
-                    
+
            $insert->scan_lab = serialize($request->per_image_file); //masukan ke database dengan cara serialize array
                 }
             }
@@ -163,8 +163,8 @@ public function addToPasien($nik, $namapasien, $alamat, $kd_kec, $kd_kel, $tangg
                 $insert->save();
             }catch(QE $e){  return $e; } //show db error message
 
-            $msg = notify()->flash('Berhasil ! Laporan berhasil dimasukkan', 'success');
-                return redirect('laporan')->with(compact('msg'));
+           notify()->success('Berhasil ! Laporan berhasil dimasukkan');
+                return redirect('laporan');
             }
 
     }
@@ -177,10 +177,10 @@ public function addToPasien($nik, $namapasien, $alamat, $kd_kec, $kd_kel, $tangg
         ->where('idlaporan',$id)->first();
         if($edit->scan_lab != NULL){
         $unserial = unserialize($edit->scan_lab);
-        
+
         return view('laporan.ubahlaporan',compact('edit','unserial'));
         }else {
-            
+
         return view('laporan.ubahlaporan',compact('edit'));
         }
     }
@@ -200,8 +200,8 @@ public function addToPasien($nik, $namapasien, $alamat, $kd_kec, $kd_kel, $tangg
         if($request->pilihanlab == "ns1"){
             $insert->ns1 = $request->hasilns1 == false?0:1;
             if($insert->ns1 == 0){
-                $msg = notify()->flash('Jika NS1 NEGATIF Pasien tidak terjangkit dengue!', 'error');
-        return redirect()->back()->with(compact('msg'));
+               notify()->error('Jika NS1 NEGATIF Pasien tidak terjangkit dengue!');
+        return redirect()->back();
             }else {
                 if($insert->kd_icd == "A91"){
             $insert->kd_icd = "A91";}
@@ -238,15 +238,15 @@ public function addToPasien($nik, $namapasien, $alamat, $kd_kec, $kd_kel, $tangg
         }
         $insert->scan_lab = serialize($arraybaru); //kalau ga ada yg diupload, masukin gambar yg lama
 
-       
+
         try{
             $this->addToLog($request->idlaporan,$request->nama_pasien," Diubah"); //tambahkan ke log
             $insert->update(); //update record lama
         }catch(QE $e){ return $e; } //show db error message
 
-        $msg = notify()->flash('Berhasil ! Laporan berhasil diubah', 'success');
+       notify()->success('Berhasil ! Laporan berhasil diubah');
 
-        return redirect()->back()->with(compact('msg'));
+        return redirect()->back();
     }
 
 
@@ -258,12 +258,12 @@ public function addToPasien($nik, $namapasien, $alamat, $kd_kec, $kd_kel, $tangg
                 $hapus->delete(); //delete
             }catch(QE $e){ return $e;}
         }else {
-                   
-        $msg = notify()->flash('Data tidak ditemukan!', 'error'); //return error jika data tersebut tidak ada di db
-        return redirect()->back()->with(compact('msg'));
+
+        notify()->error('Data tidak ditemukan!'); //return error jika data tersebut tidak ada di db
+        return redirect()->back();
         }
-        
-        $msg = notify()->flash('Laporan berhasil dihapus', 'success'); //return to laporan
-        return redirect('laporan')->with(compact('msg'));
+
+        notify()->success('Laporan berhasil dihapus'); //return to laporan
+        return redirect('laporan');
     }
 }

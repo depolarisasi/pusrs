@@ -42,16 +42,16 @@ class UserController extends Controller
 
         } catch(QueryException $e){
 
-            $msg = notify()->flash('Oh No! Page tersebut gagal diubah', 'alert');
+            notify()->error('Oh No! Page tersebut gagal diubah');
 
-            return redirect('setting')->with('msg', $msg);
+            return redirect('setting');
         }
 
-        $msg = notify()->flash('Berhasil! Page sudah diubah!', 'success');
+        notify()->success('Berhasil! Page sudah diubah!');
 
-        return redirect('setting')->with('msg', $msg);
+        return redirect('setting');
     }
- 
+
     public function saveuserpassword(Request $request)
     {
         $passondb = User::where('id', $request->userid)->first();
@@ -64,23 +64,23 @@ class UserController extends Controller
                 try {
                     $passondb->update();
                 } catch (QE $e) {
-                    $msg = notify()->flash('Oh No! Perubahan gagal disimpan, coba lagi', 'error');
+                    notify()->error('Oh No! Perubahan gagal disimpan, coba lagi');
 
-                    return redirect()->back()->with(compact('msg'));
+                    return redirect()->back();
                 }
             } else {
-                $msg = notify()->flash('Oh No! Perubahan gagal disimpan, password baru tidak cocok', 'error');
+                notify()->error('Oh No! Perubahan gagal disimpan, password baru tidak cocok');
 
-                return redirect()->back()->with(compact('msg'));
+                return redirect()->back();
             }
         } else {
-            $msg = notify()->flash('Oh No! Perubahan gagal disimpan, password lama tidak cocok', 'error');
+            notify()->error('Oh No! Perubahan gagal disimpan, password lama tidak cocok');
 
-            return redirect()->back()->with(compact('msg'));
+            return redirect()->back();
         }
 
-        $msg = notify()->flash('Berhasil! Perubahan berhasil disimpan', 'success');
+        notify()->success('Berhasil! Perubahan berhasil disimpan');
 
-        return redirect()->back()->with(compact('msg'));
+        return redirect()->back();
     }
 }

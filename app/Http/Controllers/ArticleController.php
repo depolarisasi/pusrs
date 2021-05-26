@@ -55,9 +55,9 @@ class ArticleController extends Controller
                 // that the provided file was not an adequate type
                 $err = '<strong>File yang di upload bukanlah gambar, atau ukuran gambar kamu melebihi batas upload</strong>';
 
-                $msg = notify()->warning('Oh No ! File yang di upload bukanlah gambar, atau ukuran gambar anda melebihi batas upload';
+                notify()->warning('Oh No ! File yang di upload bukanlah gambar, atau ukuran gambar anda melebihi batas upload';
 
-                return redirect()->back()->with('msg', $msg);
+                return redirect()->back();
             } else {
                 // Store the File Now
                 // read image from temporary file
@@ -78,9 +78,9 @@ class ArticleController extends Controller
             return $e;
         }
 
-        $msg = notify()->success('Berhasil! Post sudah diterbitkan!');
+        notify()->success('Berhasil! Post sudah diterbitkan!');
 
-        return redirect('artikel')->with('msg', $msg);
+        return redirect('artikel');
 
 
     }
@@ -138,9 +138,9 @@ class ArticleController extends Controller
                 // that the provided file was not an adequate type
                 $err = '<strong>File yang di upload bukanlah gambar, atau ukuran gambar kamu melebihi batas upload</strong>';
 
-                $msg = notify()->warning('Oh No ! File yang di upload bukanlah gambar, atau ukuran gambar anda melebihi batas upload', 'warning');
+                notify()->warning('Oh No ! File yang di upload bukanlah gambar, atau ukuran gambar anda melebihi batas upload', 'warning');
 
-                return redirect()->back()->with('msg', $msg);
+                return redirect()->back();
             } else {
                 // Store the File Now
                 // read image from temporary file
@@ -161,9 +161,9 @@ class ArticleController extends Controller
             return $e;
         }
 
-        $msg = notify()->success('Berhasil! Post sudah diubah!');
+        notify()->success('Berhasil! Post sudah diubah!');
 
-        return redirect('artikel')->with('msg', $msg);
+        return redirect('artikel');
 
 
     }
@@ -183,7 +183,7 @@ class ArticleController extends Controller
             $article->delete();
         }catch(QE $e){  return $e; } //show db error message
 
-        $msg = notify()->success('Berhasil ! Article berhasil dihapus');
-            return redirect('artikel')->with(compact('msg'));
+        notify()->success('Berhasil ! Article berhasil dihapus');
+            return redirect('artikel');
     }
 }

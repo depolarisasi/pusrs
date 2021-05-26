@@ -10,7 +10,7 @@ use App\LaporanFaskes;
 
 class PasienController extends Controller
 {
-// 
+//
 public function addToLog( $namapasien,$idlaporan, $action){
     $log = new Log;
     $log->log_event = "Laporan ".$idlaporan." (".$namapasien.")".$action;
@@ -30,7 +30,7 @@ public function addToLog( $namapasien,$idlaporan, $action){
 
     public function PasienBaru(){
         return view('pasien.pasienbaru');
-        
+
     }
 
     public function SavePasienBaru(Request $request){
@@ -40,9 +40,9 @@ public function addToLog( $namapasien,$idlaporan, $action){
             Pasien::create($data->all());
         }catch(QE $e){  return $e; } //show db error message
 
-        $msg = notify()->flash('Berhasil ! Pasien berhasil ditambahkan', 'success');
-            return redirect('pasien')->with(compact('msg'));
-            
+        notify()->success('Berhasil ! Pasien berhasil ditambahkan');
+            return redirect('pasien');
+
     }
 
     public function EditPasien($id){
@@ -52,7 +52,7 @@ public function addToLog( $namapasien,$idlaporan, $action){
         ->find($id);
 
         return view('pasien.ubahpasien')->with(compact('edit'));
-        
+
     }
 
     public function UpdatePasien(Request $request){
@@ -63,9 +63,9 @@ public function addToLog( $namapasien,$idlaporan, $action){
             $pasien->update($data);
         }catch(QE $e){  return $e; } //show db error message
 
-        $msg = notify()->flash('Berhasil ! Pasien berhasil ditambahkan', 'success');
-            return redirect('pasien')->with(compact('msg'));
-        
+        notify()->success('Berhasil ! Pasien berhasil ditambahkan');
+            return redirect('pasien');
+
     }
 
     public function DetailPasien($id){
@@ -75,7 +75,7 @@ public function addToLog( $namapasien,$idlaporan, $action){
         ->find($id);
         $riwayat = LaporanFaskes::where('nik_pasien',$pasien->nik)->get();
         return view('pasien.detailpasien')->with(compact('pasien','riwayat'));
-        
+
     }
 
     public function HapusPasien($id){
@@ -86,13 +86,13 @@ public function addToLog( $namapasien,$idlaporan, $action){
                 $hapus->delete(); //delete
             }catch(QE $e){ return $e;}
         }else {
-                   
-        $msg = notify()->flash('Data tidak ditemukan!', 'error'); //return error jika data tersebut tidak ada di db
-        return redirect()->back()->with(compact('msg'));
+
+        notify()->error('Data tidak ditemukan!'); //return error jika data tersebut tidak ada di db
+        return redirect()->back();
         }
-        
-        $msg = notify()->flash('Pasien berhasil dihapus', 'success'); //return to laporan
-        return redirect('pasien')->with(compact('msg'));
+
+        notify()->success('Pasien berhasil dihapus'); //return to laporan
+        return redirect('pasien');
 
     }
 }
